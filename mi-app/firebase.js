@@ -1,0 +1,17 @@
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAcW8W0l0ymXWInaF70xXFo7RhyZpM0nDA",
+  authDomain: "eco-app-cb48b.firebaseapp.com",
+  projectId: "eco-app-cb48b",
+  storageBucket: "eco-app-cb48b.firebasestorage.app",
+  messagingSenderId: "140699394049",
+  appId: "1:140699394049:web:0d59af21f16e23b8bc2000",
+  measurementId: "G-Y42N6XBS1S"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+export {auth};
