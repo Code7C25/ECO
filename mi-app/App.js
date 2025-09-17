@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, TextInput, View, StyleSheet, TouchableOpacity, Alert, Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { auth } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
+// 🔥 Firestore
+import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { app } from "./firebase"; // 👈 asegurate que exportes también `app` desde firebase.js
+const db = getFirestore(app);
 
 const Stack = createNativeStackNavigator();
 
@@ -24,14 +29,22 @@ function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenido 💜</Text>
       <Text style={styles.subtitle}>No estás solo, estamos para ayudarte</Text>
+
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
         <Text style={styles.buttonText}>Ingresar</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Registro")}>
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={[styles.button, styles.buttonAlt]} onPress={() => navigation.navigate("Anonimo")}>
         <Text style={styles.buttonTextAlt}>Ingresar como anónimo</Text>
+      </TouchableOpacity>
+
+      {/* 👇 Botón nuevo para psicólogos */}
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Psicologos")}>
+        <Text style={styles.buttonText}>Soy psicólogo</Text>
       </TouchableOpacity>
     </View>
   );
@@ -68,7 +81,6 @@ function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* 👇 Botón atrás agregado */}
       <BackButton navigation={navigation} />
 
       <Text style={styles.title}>Iniciar Sesión</Text>
@@ -133,6 +145,88 @@ function RegistroScreen({ navigation }) {
   );
 }
 
+/* =============================
+   👨‍⚕️ Pantallas de psicólogos
+============================= */
+
+function PsicologosScreen({ navigation }) {
+  const [psicologos, setPsicologos] = useState([]);
+
+  useEffect(() => {
+    const cargarPsicologos = async () => {
+      const querySnapshot = await getDocs(collection(db, "psicologos"));
+      const lista = [];
+      querySnapshot.forEach((docu) => {
+        lista.push({ id: docu.id, ...docu.data() });
+      });
+      setPsicologos(lista);
+    };
+    cargarPsicologos();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <BackButton navigation={navigation} />
+      <Text style={styles.title}>Selecciona tu usuario</Text>
+      {psicologos.map((p) => (
+        <TouchableOpacity 
+          key={p.id} 
+          style={styles.button} 
+          onPress={() => navigation.navigate("LoginPsicologo", { id: p.id })}
+        >
+          <Text style={styles.buttonText}>{p.nombre}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}
+
+function LoginPsicologoScreen({ route, navigation }) {
+  const { id } = route.params;
+  const [password, setPassword] = useState("");
+
+  const verificarPassword = async () => {
+    const docRef = doc(db, "psicologos", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (password === data.password) {
+        Alert.alert("Éxito", "Bienvenido " + data.nombre);
+        navigation.navigate("PanelPsicologo", { nombre: data.nombre });
+      } else {
+        Alert.alert("Error", "Contraseña incorrecta");
+      }
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <BackButton navigation={navigation} />
+      <Text style={styles.title}>Ingresar contraseña</Text>
+      <TextInput
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        placeholder="Contraseña"
+      />
+      <TouchableOpacity style={styles.button} onPress={verificarPassword}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function PanelPsicologoScreen({ route }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Panel de {route.params.nombre}</Text>
+      <Text style={styles.subtitle}>Aquí irá el chat o herramientas del psicólogo</Text>
+    </View>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -141,6 +235,10 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registro" component={RegistroScreen} />
         <Stack.Screen name="Anonimo" component={AnonimoScreen} />
+        {/* 👨‍⚕️ Rutas nuevas para psicólogos */}
+        <Stack.Screen name="Psicologos" component={PsicologosScreen} />
+        <Stack.Screen name="LoginPsicologo" component={LoginPsicologoScreen} />
+        <Stack.Screen name="PanelPsicologo" component={PanelPsicologoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
