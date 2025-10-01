@@ -9,7 +9,6 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { app } from "./firebase"; // 👈 asegurate que exportes también `app` desde firebase.js
 const db = getFirestore(app);
-
 const Stack = createNativeStackNavigator();
 
 // 🔙 Botón reutilizable para volver atrás
