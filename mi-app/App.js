@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { auth } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-
 import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { app } from "./firebase"; 
 const db = getFirestore(app);
@@ -27,7 +26,6 @@ function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenido 💜</Text>
       <Text style={styles.subtitle}>No estás solo, estamos para ayudarte</Text>
-
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
         <Text style={styles.buttonText}>Ingresar</Text>
       </TouchableOpacity>
