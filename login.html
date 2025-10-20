@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Iniciar sesión</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+
+</head>
+<body>
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <ul id="menu" class="menu-hidden">
+    <li><a href="herramientas.html">Herramientas propias</a></li>
+  </ul>
+
+  <main>
+    <h2>Iniciar sesión</h2>
+    <input id="loginEmail" type="email" placeholder="Correo electrónico" />
+    <input id="loginPass" type="password" placeholder="Contraseña" />
+    <button id="loginBtn">Ingresar</button>
+
+    <h3>¿No tenés cuenta?</h3>
+    <input id="regEmail" type="email" placeholder="Correo electrónico" />
+    <input id="regPass" type="password" placeholder="Contraseña" />
+    <input id="regCurso" type="text" placeholder="Curso" />
+    <button id="registerBtn">Registrarse</button>
+  </main>
+
+  <script src="menu.js"></script>
+  <script src="firebase.js"></script>
+</body>
+</html>

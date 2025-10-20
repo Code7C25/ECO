@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+}
+
+button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.menu-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#menu {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 5px;
+  display: none;
+}
+
+#menu li {
+  margin: 5px 0;
+}
+
+#menu a {
+  text-decoration: none;
+  color: black;
+}
+
+.menu-hidden {
+  display: none;
+}
+
+#menu:not(.menu-hidden) {
+  display: block;
+}
