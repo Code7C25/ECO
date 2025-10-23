@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECO - Iniciar sesión</title>
+  <title>ECO - Registrarse</title>
   <link rel="stylesheet" href="style.css" />
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -17,13 +17,20 @@
   </ul>
 
   <main>
-    <h2>Iniciar sesión</h2>
-    <input id="loginEmail" type="email" placeholder="Correo electrónico" />
-    <input id="loginPass" type="password" placeholder="Contraseña" />
-    <button id="loginBtn">Ingresar</button>
+    <h2>Crear una cuenta</h2>
 
-    <h3>¿No tenés cuenta?</h3>
-    <button onclick="window.location.href='registro.html'">Registrarse</button>
+    <div id="registerForm">
+      <input id="regEmail" type="email" placeholder="Correo electrónico" />
+      <input id="regPass" type="password" placeholder="Contraseña" />
+      <input id="regCurso" type="text" placeholder="Curso" />
+      <button id="registerBtn">Registrarse</button>
+    </div>
+
+    <div id="gracias" style="display:none; text-align:center;">
+      <h2>💚 Gracias por confiar en nosotros 💚</h2>
+      <p>Tu cuenta fue creada con éxito.</p>
+      <button onclick="window.location.href='login.html'">Ir al inicio de sesión</button>
+    </div>
   </main>
 
   <script src="menu.js"></script>
