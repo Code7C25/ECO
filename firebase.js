@@ -102,3 +102,59 @@ if (registerBtn) {
   });
 }
 
+const psicoBtn = document.getElementById("psicoBtn");
+if (psicoBtn) {
+  psicoBtn.addEventListener("click", async () => {
+    const dni = document.getElementById("psicoDNI").value.trim();
+    const clave = document.getElementById("psicoClave").value;
+    const msgId = "psicoMsg";
+
+    function mostrarMensajeLocal(idElemento, mensaje, color = "red") {
+      const el = document.getElementById(idElemento);
+      if (el) {
+        el.textContent = mensaje;
+        el.style.color = color;
+        el.style.marginTop = "10px";
+        el.style.fontWeight = "500";
+        el.style.textAlign = "center";
+      }
+    }
+
+    mostrarMensajeLocal(msgId, "");
+
+    if (!dni || !clave) {
+      mostrarMensajeLocal(msgId, "Completá DNI y contraseña.");
+      return;
+    }
+
+    try {
+      const snapshot = await db.collection("psicologos").where("dni", "==", dni).get();
+
+      if (snapshot.empty) {
+        mostrarMensajeLocal(msgId, "DNI o contraseña incorrectos.");
+        return;
+      }
+
+      
+      let accesoPermitido = false;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.clave && data.clave === clave) {
+          accesoPermitido = true;
+        }
+      });
+
+      if (accesoPermitido) {
+        mostrarMensajeLocal(msgId, "Acceso permitido ✅", "green");
+        setTimeout(() => { window.location.href = "psicologo_panel.html"; }, 500);
+      } else {
+        mostrarMensajeLocal(msgId, "DNI o contraseña incorrectos.");
+      }
+
+    } catch (e) {
+      console.error("Error validando psicólogo:", e);
+      mostrarMensajeLocal(msgId, "Error de conexión. Intentá de nuevo.");
+    }
+  });
+}
+

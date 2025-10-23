@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Panel Psicólogo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <ul id="menu" class="menu-hidden">
+    <li><a href="herramientas.html">Herramientas propias</a></li>
+  </ul>
+
+  <main style="text-align:center;">
+    <h2>Panel de Psicólogo</h2>
+    <p>Acceso permitido</p>
+
+    <div style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
+      <button onclick="window.location.href='formularios_anonimos.html'">Formularios anónimos</button>
+      <button onclick="window.location.href='formularios_publicos.html'">Formularios públicos</button>
+    </div>
+  </main>
+
+  <script src="menu.js"></script>
+</body>
+</html>
