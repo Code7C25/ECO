@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Herramientas propias</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="menu.js" defer></script>
+</head>
+<body>
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <ul id="menu" class="menu-hidden">
+    <li><a href="herramientas.html">Herramientas propias</a></li>
+    <li><a href="diario.html">Mi diario personal</a></li>
+  </ul>
+
+  <main class="tool-section">
+    <h2>Herramientas para actuar frente al bullying</h2>
+    <p>Elegí la opción que más se acerque a tu situación:</p>
+
+    <button class="tool-btn" onclick="mostrarInfo('victima')">🧍‍♀️ Si sos víctima de bullying</button>
+    <button class="tool-btn" onclick="mostrarInfo('testigo')">👀 Si sos testigo de bullying</button>
+    <button class="tool-btn" onclick="mostrarInfo('agresor')">🧩 Si sos parte del grupo que hace bullying</button>
+
+    
+    <div id="info-victima" class="info-box">
+      <h3>🧍‍♀️ Si sos víctima de bullying</h3>
+      <p><strong>1. No te quedes callado.</strong><br>
+      Contale a alguien de confianza: un docente, preceptor, familiar o amigo. No es “acusarte”, es pedir ayuda.</p>
+
+      <p><strong>2. Guardá pruebas si podés.</strong><br>
+      Si el bullying es por redes o mensajes, sacá capturas de pantalla o guardá conversaciones. Pueden servir para demostrar lo que está pasando.</p>
+
+      <p><strong>3. No respondas con agresión.</strong><br>
+      Aunque tengas ganas, responder con insultos o violencia puede empeorar la situación. Buscá apoyo antes de actuar.</p>
+
+      <p><strong>4. Usá los canales de ayuda.</strong><br>
+      En Argentina podés llamar gratis al <strong>102</strong>, una línea de atención para chicas y chicos que necesitan hablar o pedir orientación.</p>
+
+      <button class="back-btn" onclick="volver()">Volver</button>
+    </div>
+
+    <div id="info-testigo" class="info-box">
+      <h3>👀 Si sos testigo de bullying</h3>
+      <p><strong>1. No lo ignores.</strong><br>
+      Aunque no te pase a vos, el silencio también lastima. Contale a un adulto o reportalo mediante el formulario de la página.</p>
+
+      <p><strong>2. Apoyá a la víctima.</strong><br>
+      A veces un simple “¿estás bien?” puede marcar la diferencia. Mostrale que no está solo/a.</p>
+
+      <p><strong>3. No compartas ni te rías de contenido ofensivo.</strong><br>
+      Si el bullying es por redes, no difundas publicaciones que humillan a alguien. Eliminá o reportá ese contenido.</p>
+
+      <button class="back-btn" onclick="volver()">Volver</button>
+    </div>
+
+    <div id="info-agresor" class="info-box">
+      <h3>🧩 Si sos parte del grupo que hace bullying</h3>
+      <p><strong>1. Detenete y pensá.</strong><br>
+      Las burlas o humillaciones pueden parecer “chistes”, pero causan daño real. Reflexioná sobre por qué lo hacés.</p>
+
+      <p><strong>2. Buscá orientación.</strong><br>
+      Si te cuesta manejar la bronca o la presión del grupo, hablá con un adulto, docente o profesional.</p>
+
+      <p><strong>3. Pedí disculpas y repará.</strong><br>
+      Reconocer el error es el primer paso para cambiar. Todos pueden aprender a relacionarse mejor.</p>
+
+      <button class="back-btn" onclick="volver()">Volver</button>
+    </div>
+  </main>
+
+  <script>
+    function mostrarInfo(tipo) {
+      document.querySelectorAll('.info-box').forEach(div => div.style.display = 'none');
+      document.getElementById('info-' + tipo).style.display = 'block';
+      document.querySelectorAll('.tool-btn').forEach(btn => btn.style.display = 'none');
+    }
+
+    function volver() {
+      document.querySelectorAll('.info-box').forEach(div => div.style.display = 'none');
+      document.querySelectorAll('.tool-btn').forEach(btn => btn.style.display = 'block');
+    }
+  </script>
+</body>
+</html>

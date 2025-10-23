@@ -158,3 +158,39 @@ if (psicoBtn) {
   });
 }
 
+firebase.auth().onAuthStateChanged((user) => {
+  const sessionEl = document.getElementById("userSession");
+
+  if (!sessionEl) return;
+  sessionEl.innerHTML = ""; 
+
+  if (user && user.email) {
+
+    const spanEmail = document.createElement("span");
+    spanEmail.textContent = `Estás en la sesión de: ${user.email}`;
+    spanEmail.style.marginRight = "10px";
+    spanEmail.style.color = "#332239ff";
+
+    const btnLogout = document.createElement("button");
+    btnLogout.textContent = "Cerrar sesión";
+    btnLogout.style.background = "#e7d7f6";
+    btnLogout.style.border = "none";
+    btnLogout.style.padding = "5px 10px";
+    btnLogout.style.borderRadius = "8px";
+    btnLogout.style.cursor = "pointer";
+    btnLogout.style.fontWeight = "500";
+    btnLogout.style.color = "#332239ff";
+
+    btnLogout.addEventListener("click", () => {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+
+    sessionEl.appendChild(spanEmail);
+    sessionEl.appendChild(btnLogout);
+  } else {
+    sessionEl.textContent = ""; 
+  }
+});
+

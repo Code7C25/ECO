@@ -12,11 +12,11 @@
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
-
   </ul>
 
   <main>
     <h1>Bienvenido, no estás solo💜</h1>
+  
     <button onclick="window.location.href='https://docs.google.com/forms/d/FORM_ID_ANONIMO'">
       Ingresar como anónimo
     </button>
@@ -26,6 +26,39 @@
     <button onclick="window.location.href='psicologo.html'">
       Soy un psicólogo
     </button>
+
+   
+    <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
+    <button id="logoutBtn" style="display:none; margin:auto; background:#e7d7f6; border:none; border-radius:8px; padding:6px 12px; cursor:pointer; font-weight:500; color:#332239ff;">Cerrar sesión</button>
   </main>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    firebase.auth().onAuthStateChanged((user) => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      const userSession = document.getElementById("userSession");
+
+      if (user) {
+        userSession.textContent = `Estás en la sesión de: ${user.email}`;
+        logoutBtn.style.display = "inline-block";
+      } else {
+        userSession.textContent = "";
+        logoutBtn.style.display = "none";
+      }
+    });
+
+    function cerrarSesion() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+
+    document.getElementById("logoutBtn")?.addEventListener("click", cerrarSesion);
+  </script>
 </body>
 </html>
+
