@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Mi diario personal</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <ul id="menu" class="menu-hidden">
+    <li><a href="herramientas.html">Herramientas propias</a></li>
+    <li><a href="diario.html">Mi diario personal</a></li>
+  </ul>
+
+  <main style="text-align:center; max-width:600px; margin:auto;">
+    <h2>Mi diario personal 🕯️</h2>
+    <p>Este espacio es solo para vos. Nadie más podrá verlo ni acceder a lo que escribas.</p>
+
+    <div id="diario-usuario" style="display:none;">
+      <label for="fechaEntrada">Seleccioná una fecha:</label><br />
+      <input type="date" id="fechaEntrada" />
+      <textarea id="textoEntrada" placeholder="Escribí tus pensamientos..." rows="10" style="width:100%;margin-top:10px;"></textarea>
+      <button id="guardarBtn">Guardar entrada</button>
+      <p id="msgDiario"></p>
+    </div>
+
+    <div id="diario-anonimo" style="display:none;">
+      <textarea placeholder="Podés escribir lo que sientas. No se guardará." rows="10" style="width:100%;margin-top:10px;"></textarea>
+    </div>
+  </main>
+
+  <script src="menu.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(async (user) => {
+      const userDiv = document.getElementById("diario-usuario");
+      const anonDiv = document.getElementById("diario-anonimo");
+      const msg = document.getElementById("msgDiario");
+      const textarea = document.getElementById("textoEntrada");
+      const fechaInput = document.getElementById("fechaEntrada");
+
+      if (user) {
+        userDiv.style.display = "block";
+        anonDiv.style.display = "none";
+
+        const uid = user.uid;
+        const db = firebase.firestore();
+
+        fechaInput.addEventListener("change", async () => {
+          const fecha = fechaInput.value;
+          if (!fecha) return;
+          const doc = await db.collection("diarios").doc(uid).collection("entradas").doc(fecha).get();
+          textarea.value = doc.exists ? doc.data().texto : "";
+          msg.textContent = doc.exists ? "Entrada cargada." : "Sin notas para este día.";
+        });
+
+    
+        document.getElementById("guardarBtn").addEventListener("click", async () => {
+          const fecha = fechaInput.value;
+          const texto = textarea.value.trim();
+          if (!fecha) {
+            msg.textContent = "Elegí una fecha.";
+            msg.style.color = "red";
+            return;
+          }
+
+          await db.collection("diarios").doc(uid).collection("entradas").doc(fecha).set({
+            texto,
+            guardado: new Date().toISOString()
+          });
+
+          msg.textContent = "Entrada guardada ✅";
+          msg.style.color = "green";
+        });
+
+      } else {
+        anonDiv.style.display = "block";
+        userDiv.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
