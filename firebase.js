@@ -43,7 +43,7 @@ if (loginBtn) {
     try {
       await auth.signInWithEmailAndPassword(email, pass);
       mostrarMensaje(mensajeEl, "Inicio de sesión correcto ✅", "green");
-      setTimeout(() => (window.location.href = "index.html"), 1000);
+      setTimeout(() => (window.location.href = "denuncia.html"), 1000);
     } catch (e) {
       console.error("Error al iniciar sesión:", e.code);
 

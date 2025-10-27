@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Formularios Públicos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <ul id="menu" class="menu-hidden">
+    <li><a href="psicologo_panel.html">Volver al panel</a></li>
+  </ul>
+
+  <main style="text-align:center; max-width:600px; margin:auto;">
+    <h2>Formularios Públicos</h2>
+    <h3>Lista de formularios</h3>
+    <ul id="lista" style="list-style:none; padding:0;"></ul>
+  </main>
+
+  <script src="menu.js"></script>
+  <script>
+    const lista = document.getElementById("lista");
+    const dbRef = firebase.firestore()
+      .collection("formularios")
+      .doc("publicos")
+      .collection("items");
+
+ 
+    dbRef.orderBy("creado", "desc").onSnapshot(snapshot => {
+      lista.innerHTML = "";
+      if (snapshot.empty) {
+        lista.innerHTML = "<p>No hay formularios cargados aún.</p>";
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.style.margin = "12px 0";
+        li.innerHTML = `
+          <a href="${data.link}" target="_blank" 
+             style="display:inline-block; background-color:#906d93; color:white; 
+                    padding:10px 20px; border-radius:8px; text-decoration:none; 
+                    font-size:16px;">
+            ${data.titulo}
+          </a>`;
+        lista.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
