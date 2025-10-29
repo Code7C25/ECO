@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
@@ -8,7 +9,7 @@
 }
 
 body {
-  background-color: #E6E6FA;
+  background-color: #E6E6FA; 
   color: #4B0082;            
   text-align: center;
   min-height: 100vh;
@@ -26,7 +27,7 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
@@ -90,7 +91,6 @@ input:focus {
   box-shadow: 0 0 6px rgba(157,137,163,0.4);
 }
 
-
 .menu-icon {
   position: fixed;
   top: 15px;
@@ -149,7 +149,6 @@ main {
   box-shadow: 0 6px 12px rgba(0,0,0,0.1);
   backdrop-filter: blur(4px);
 }
-
 
 @media (max-width: 600px) {
   body {
