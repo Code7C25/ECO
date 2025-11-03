@@ -1,92 +1,27 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Pinyon+Script&family=Cardo&display=swap');
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background-image: url("fondo-eco.jpg"); 
-  background-size: cover;          
-  background-position: center;    
-  background-repeat: no-repeat;    
-  background-attachment: fixed;    
+  font-family: 'Poppins', sans-serif;
+  color: #4B0082;
+  text-align: center;
   min-height: 100vh;
-}
-
-
-h1, h2, h3 {
-  color: #4B0082;
-  margin-bottom: 1rem;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-h2 {
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #6a4d74;
-}
-
-
-button {
-  display: block;
-  width: 80%;
-  max-width: 280px;
-  margin: 0.6rem auto;
-  padding: 0.9rem 1rem;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #9d89a3ff; /* Lila */
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: all 0.25s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
-  background-color: #8b74a0;
-}
-
-button.alt {
-  background-color: #fff;
-  color: #4B0082;
-  border: 1.5px solid #83608eff;
-}
-
-
-input {
-  width: 80%;
-  max-width: 280px;
-  padding: 0.8rem 1rem;
-  margin: 0.4rem 0;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  outline: none;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus {
-  border-color: #9d89a3ff;
-  box-shadow: 0 0 6px rgba(157,137,163,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-image: url("fondo-eco.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden; 
+  padding-top: 1rem;
 }
 
 .menu-icon {
@@ -101,6 +36,7 @@ input:focus {
   border: 1px solid #83608eff;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 
 #menu {
@@ -114,6 +50,7 @@ input:focus {
   padding: 0.5rem 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
+  z-index: 9;
 }
 
 #menu li {
@@ -139,35 +76,226 @@ input:focus {
 }
 
 
-main {
-  width: 100%;
-  max-width: 400px;
-  background-color: rgba(255,255,255,0.85);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-  backdrop-filter: blur(4px);
-}
-main {
-  background-color: rgba(255,255,255,0.85); 
-  backdrop-filter: blur(6px);                
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);   
+.welcome-container {
+  margin-top: 1.5rem;
+  margin-bottom: 1.8rem;
+  animation: fadeUp 1.2s ease-out;
 }
 
+.welcome-text {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 4.4rem;   
+  font-weight: 400;    
+  color: #000;         
+  margin-bottom: 0.2rem;
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.eco-logo {
+  width: 150px;
+  height: auto;
+  margin-top: 0.4rem;
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+.subtext {
+  font-family: 'Cardo', serif;
+  font-size: 1.15rem;
+  color: #333;
+  margin-top: 0.8rem;
+  opacity: 0;
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.8s;
+}
+
+main {
+  width: 80%;
+  max-width: 380px;
+  height: calc(100vh - 330px); 
+  background: rgba(204, 198, 236, 0.5);
+  border-radius: 45px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeUp 1.2s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1s;
+  margin-top: 1.2rem;
+}
+
+
+button {
+  display: block;
+  width: 85%;
+  max-width: 320px;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: none;
+  border-radius: 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #95C3B8;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  background-color: #8bb9ad;
+}
+
+#logoutBtn {
+  background-color: #e7d7f6;
+  color: #332239;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+  background-color: #d7c1eb;
+}
+
+#userSession {
+  font-weight: 500;
+  color: #4B0082;
+  margin-top: 10px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @media (max-width: 600px) {
-  body {
-    padding: 1rem;
+  .welcome-text {
+    font-size: 3.2rem;
   }
   main {
-    padding: 1.5rem 1rem;
-  }
-  h1 {
-    font-size: 1.7rem;
+    width: 88%;
+    max-width: 340px;
+    min-height: 420px;
+    padding: 1.8rem 1.2rem;
+    border-radius: 32px;
   }
   button {
     font-size: 0.95rem;
   }
+
+.pagina-login,
+.pagina-psicologo {
+  background-color: #EDECF8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-container,
+.psicologo-container {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border-radius: 35px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+  width: 90%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: fadeUp 1.2s ease-out;
+}
+
+.login-container h2,
+.psicologo-container h2 {
+  font-family: 'Cardo', serif;
+  color: #3a2264;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  margin: 0.7rem 0;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  font-size: 1rem;
+  color: #3a2264;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: #9c8ab4;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(149, 195, 184, 0.5);
+  background: rgba(255,255,255,0.95);
+}
+
+button.login-btn {
+  background-color: #95C3B8;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 14px;
+  margin-top: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+button.login-btn:hover {
+  background-color: #8abfb0;
+  transform: translateY(-2px);
+}
+
+/* texto tipo “¿No tenés cuenta?” */
+.switch-link {
+  margin-top: 1rem;
+  color: #4B0082;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 }

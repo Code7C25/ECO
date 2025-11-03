@@ -6,30 +6,36 @@
   <title>ECO - Bienvenido</title>
   <link rel="stylesheet" href="style.css" />
   <script defer src="menu.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Vladimir+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body class="pagina-index">
+
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
   </ul>
 
-  <main>
-    <h1>Bienvenido, no estás solo💜</h1>
-  
-    <button onclick="window.location.href='https://forms.gle/FPhbHisi7Esf8w1d9'">
-      Ingresar como anónimo
+  <div class="welcome-container">
+    <h1 class="welcome-text">Bienvenidos a</h1>
+    <img src="logo-eco.png" alt="Logo ECO" class="eco-logo">
+    <p class="subtext">Tu lugar seguro, estamos para ayudarte</p>
+  </div>
+
+  <main class="rectangulo-botones">
+    <button class="eco-btn" onclick="window.location.href='https://forms.gle/FPhbHisi7Esf8w1d9'">
+      <span>Ingresar como anónimo</span>
     </button>
-    <button onclick="window.location.href='login.html'">
-      Iniciar sesión
+    <button class="eco-btn" onclick="window.location.href='login.html'">
+      <span>Iniciar sesión</span>
     </button>
-    <button onclick="window.location.href='psicologo.html'">
-      Soy un psicólogo
+    <button class="eco-btn" onclick="window.location.href='psicologo.html'">
+      <span>Soy un psicólogo</span>
     </button>
 
-   
-    <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
-    <button id="logoutBtn" style="display:none; margin:auto; background:#e7d7f6; border:none; border-radius:8px; padding:6px 12px; cursor:pointer; font-weight:500; color:#332239ff;">Cerrar sesión</button>
+    <p id="userSession"></p>
+    <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -59,6 +65,6 @@
 
     document.getElementById("logoutBtn")?.addEventListener("click", cerrarSesion);
   </script>
+
 </body>
 </html>
-
