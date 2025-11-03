@@ -7,19 +7,16 @@
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
+
 body {
-  background-image: url("fondo-eco.png"); 
+  background-image: url("fondo-eco.jpg"); 
   background-size: cover;          
-  background-position: center;     
+  background-position: center;    
   background-repeat: no-repeat;    
   background-attachment: fixed;    
   min-height: 100vh;
-   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
 }
+
 
 h1, h2, h3 {
   color: #4B0082;
@@ -42,6 +39,7 @@ h3 {
   color: #6a4d74;
 }
 
+
 button {
   display: block;
   width: 80%;
@@ -52,7 +50,7 @@ button {
   border-radius: 14px;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #9d89a3ff; 
+  background-color: #9d89a3ff; /* Lila */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -70,6 +68,7 @@ button.alt {
   color: #4B0082;
   border: 1.5px solid #83608eff;
 }
+
 
 input {
   width: 80%;
@@ -139,6 +138,7 @@ input:focus {
   display: none;
 }
 
+
 main {
   width: 100%;
   max-width: 400px;
@@ -148,6 +148,14 @@ main {
   box-shadow: 0 6px 12px rgba(0,0,0,0.1);
   backdrop-filter: blur(4px);
 }
+main {
+  background-color: rgba(255,255,255,0.85); 
+  backdrop-filter: blur(6px);                
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);   
+}
+
 
 @media (max-width: 600px) {
   body {
