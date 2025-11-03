@@ -7,19 +7,19 @@
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
-
 body {
-  background-color: #E6E6FA; 
-  color: #4B0082;            
-  text-align: center;
+  background-image: url("fondo-eco.png"); 
+  background-size: cover;          
+  background-position: center;     
+  background-repeat: no-repeat;    
+  background-attachment: fixed;    
   min-height: 100vh;
-  display: flex;
+   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
 }
-
 
 h1, h2, h3 {
   color: #4B0082;
@@ -41,7 +41,6 @@ h3 {
   font-weight: 500;
   color: #6a4d74;
 }
-
 
 button {
   display: block;
