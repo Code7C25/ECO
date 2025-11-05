@@ -33,5 +33,44 @@
   </button>
   <script src="menu.js"></script>
   <script src="firebase.js"></script>
+ <script>
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    alert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
+    return;
+  }
+
+  if (pass.length < 6) {
+    alert("La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
+
+  try {
+
+    const snapshot = await firebase.firestore()
+      .collection("usuarios")
+      .where("email", "==", email)
+      .where("password", "==", pass)
+      .get();
+
+    if (!snapshot.empty) {
+      alert("Inicio de sesión exitoso ✅");
+      localStorage.setItem("usuarioEmail", email);
+      window.location.href = "index.html";
+    } else {
+      alert("Correo o contraseña incorrectos. Verificá los datos e intentá nuevamente.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Ocurrió un error al conectar con la base de datos.");
+  }
+});
+</script>
+
+
 </body>
 </html>

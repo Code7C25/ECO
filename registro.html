@@ -40,5 +40,52 @@
   <button onclick="window.location.href='index.html'">
       🏠 Página principal
   </button>
+  <script>
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const email = document.getElementById("regEmail").value.trim();
+  const pass = document.getElementById("regPass").value.trim();
+  const curso = document.getElementById("regCurso").value.trim();
+
+  // --- Validaciones básicas ---
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    alert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
+    return;
+  }
+
+  if (pass.length < 6) {
+    alert("La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
+
+  if (curso === "") {
+    alert("Por favor, completá el campo de curso.");
+    return;
+  }
+
+  try {
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+    const user = userCredential.user;
+
+    await firebase.firestore().collection("usuarios").doc(user.uid).set({
+      email: email,
+      curso: curso,
+      fechaRegistro: new Date()
+    });
+
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("gracias").style.display = "block";
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      alert("Este correo ya está registrado.");
+    } else if (error.code === "auth/invalid-email") {
+      alert("Correo no válido.");
+    } else {
+      alert("Ocurrió un error: " + error.message);
+    }
+  }
+});
+</script>
+
 </body>
 </html>

@@ -39,5 +39,54 @@
   <button onclick="window.location.href='index.html'">
       🏠 Página principal
   </button>
+  <script>
+document.getElementById("psicoBtn").addEventListener("click", async () => {
+  const dni = document.getElementById("psicoDNI").value.trim();
+  const clave = document.getElementById("psicoClave").value.trim();
+  const msg = document.getElementById("psicoMsg");
+  const denied = document.getElementById("psicoDenied");
+  const form = document.getElementById("psicoForm");
+
+  msg.textContent = "";
+  msg.style.color = "red";
+
+ 
+  if (!/^\d{7,8}$/.test(dni)) {
+    msg.textContent = "El DNI debe tener solo números (7 u 8 dígitos).";
+    return;
+  }
+
+  if (clave.length < 6) {
+    msg.textContent = "La contraseña debe tener al menos 6 caracteres.";
+    return;
+  }
+
+  try {
+    
+    const query = await firebase.firestore()
+      .collection("psicologos")
+      .where("dni", "==", dni)
+      .where("clave", "==", clave)
+      .get();
+
+    if (!query.empty) {
+      msg.style.color = "green";
+      msg.textContent = "Acceso concedido ✅";
+    
+      localStorage.setItem("psicoDNI", dni);
+
+      setTimeout(() => {
+        window.location.href = "psicologo_panel.html"; 
+      }, 1000);
+    } else {
+      form.style.display = "none";
+      denied.style.display = "block";
+    }
+  } catch (error) {
+    msg.textContent = "Error al conectar con la base de datos.";
+  }
+});
+</script>
+
 </body>
 </html>
