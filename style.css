@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Pinyon+Script&family=Cardo&display=swap');
 
 * {
@@ -24,6 +23,7 @@ body {
   padding-top: 1rem;
 }
 
+/* ====== MENÚ ====== */
 .menu-icon {
   position: fixed;
   top: 15px;
@@ -75,7 +75,7 @@ body {
   display: none;
 }
 
-
+/* ====== INDEX ====== */
 .welcome-container {
   margin-top: 1.5rem;
   margin-bottom: 1.8rem;
@@ -94,7 +94,7 @@ body {
 }
 
 .eco-logo {
-  width: 150px;
+  width: 140px;
   height: auto;
   margin-top: 0.4rem;
   opacity: 0;
@@ -132,7 +132,7 @@ main {
   margin-top: 1.2rem;
 }
 
-
+/* ====== BOTONES ====== */
 button {
   display: block;
   width: 85%;
@@ -143,7 +143,7 @@ button {
   border-radius: 18px;
   font-size: 1rem;
   font-weight: 600;
-  background-color: #95C3B8;
+  background-color: #ab9ad2;
   color: #fff;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -153,11 +153,11 @@ button {
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  background-color: #8bb9ad;
+  background-color: #5e2c60;
 }
 
 #logoutBtn {
-  background-color: #e7d7f6;
+  background-color: #5e2c60;
   color: #332239;
   border: none;
   border-radius: 10px;
@@ -178,6 +178,7 @@ button:hover {
   margin-top: 10px;
 }
 
+/* ====== ANIMACIÓN ====== */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -189,6 +190,7 @@ button:hover {
   }
 }
 
+/* ====== RESPONSIVE GENERAL ====== */
 @media (max-width: 600px) {
   .welcome-text {
     font-size: 3.2rem;
@@ -203,7 +205,9 @@ button:hover {
   button {
     font-size: 0.95rem;
   }
+}
 
+/* ====== LOGIN Y PSICÓLOGO BASE ====== */
 .pagina-login,
 .pagina-psicologo {
   background-color: #EDECF8;
@@ -234,6 +238,7 @@ button:hover {
   margin-bottom: 1.5rem;
 }
 
+/* ====== INPUTS ====== */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
@@ -260,7 +265,7 @@ input:focus {
 }
 
 button.login-btn {
-  background-color: #95C3B8;
+  background-color: #5e2c60;
   color: #fff;
   font-weight: 600;
   border: none;
@@ -273,7 +278,7 @@ button.login-btn {
 }
 
 button.login-btn:hover {
-  background-color: #8abfb0;
+  background-color: #5e2c60;
   transform: translateY(-2px);
 }
 
@@ -287,15 +292,131 @@ button.login-btn:hover {
   display: inline-block;
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
+/* ====== AJUSTES VISUALES PARA INDEX ====== */
+.pagina-index .welcome-container {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.pagina-index .eco-logo {
+  width: 150px;
+  height: auto;
+  position: relative;
+  z-index: 3;
+  margin-bottom: -60px; /* un poco menos encimado */
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.25));
+}
+
+.pagina-index .rectangulo-botones {
+  width: 80%;
+  max-width: 380px;
+  height: 410px; /* más alargado verticalmente */
+  background: rgba(204, 198, 236, 0.5);
+  border-radius: 45px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeUp 1.2s ease-out forwards;
+  opacity: 0;
+  animation-delay: 1s;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .pagina-index .eco-logo {
+    width: 120px;
+    margin-bottom: -48px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .pagina-index .rectangulo-botones {
+    height: 370px;
   }
 }
 
+/* ====== LOGIN PAGE ====== */
+.pagina-login {
+  background-color: #E8E3F6; /* fondo pastel lila claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.pagina-login main {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  border-radius: 40px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  width: 90%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: fadeUp 1.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 480px; /* más alargado verticalmente */
+}
+
+.pagina-login input[type="email"],
+.pagina-login input[type="password"] {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  margin: 0.7rem 0;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  font-size: 1rem;
+  color: #3a2264;
+  transition: all 0.3s ease;
+}
+
+.pagina-login input::placeholder {
+  color: #9c8ab4;
+  font-size: 0.95rem;
+}
+
+.pagina-login input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(149, 195, 184, 0.5);
+  background: rgba(255,255,255,0.98);
+}
+
+.pagina-login button {
+  background-color: #5e2c60;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 14px;
+  margin-top: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.pagina-login button:hover {
+  transform: translateY(-2px);
+  background-color: #4b1450;
+}
+/* ==== CORRECCIÓN FONDO Y VISIBILIDAD LOGIN ==== */
+.pagina-login {
+  background-image: none !important; /* quita la imagen */
+  background-color: #E8E3F6 !important; /* muestra el color pastel */
+}
+
+.pagina-login main {
+  opacity: 1 !important; /* evita que desaparezca el contenedor */
+  animation: none !important; /* quita la animación heredada del index */
 }
