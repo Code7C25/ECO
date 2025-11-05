@@ -1,33 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html> <!-- → Define que es un documento HTML5 -->
+<html lang="es"> <!-- → Indica que el idioma principal es español -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECO - Formularios Anónimos</title>
+  <meta charset="UTF-8"> <!-- → Codificación de caracteres (acentos, ñ, etc.) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- → Adaptación a pantallas móviles -->
+  <title>ECO - Formularios Anónimos</title> <!-- → Título que aparece en la pestaña -->
 
+  <!-- → Fuente moderna desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: "Quicksand", sans-serif;
-      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%);
-      margin: 0;
+      font-family: "Quicksand", sans-serif; /* → Aplica la fuente Quicksand */
+      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%); /* → Fondo con degradado verde claro */
+      margin: 0; /* → Quita los márgenes por defecto */
       padding: 0;
       color: #000000;
-      min-height: 100vh;
-      display: flex;
+      min-height: 100vh; /* → Ocupa todo el alto de la pantalla */
+      display: flex; /* → Usa flexbox para centrar el contenido */
       flex-direction: column;
       align-items: center;
-      animation: fadeIn 0.8s ease-in-out;
+      animation: fadeIn 0.8s ease-in-out; /* → Animación suave al cargar */
     }
 
+    /* → Animación de aparición */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     header {
-      background: transparent;
+      background: transparent; /* → Fondo transparente */
       padding: 40px 20px 20px;
       text-align: center;
     }
@@ -47,24 +49,24 @@
     }
 
     #lista {
-      width: 90%;
-      max-width: 750px;
+      width: 90%; /* → Ocupa el 90% del ancho disponible */
+      max-width: 750px; /* → No más de 750px de ancho */
       margin: 25px 0 60px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 18px; /* → Espacio entre elementos */
       padding: 0;
-      list-style: none;
+      list-style: none; /* → Quita los puntos de la lista */
     }
 
     li {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(5px);
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.85); /* → Fondo blanco translúcido */
+      backdrop-filter: blur(5px); /* → Efecto de desenfoque detrás */
+      border-radius: 18px; /* → Bordes redondeados */
       padding: 22px 24px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      transition: all 0.25s ease;
-      border-left: 6px solid #c368d1;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); /* → Sombra suave */
+      transition: all 0.25s ease; /* → Transición suave */
+      border-left: 6px solid #c368d1; /* → Línea violeta decorativa */
       position: relative;
       overflow: hidden;
     }
@@ -76,14 +78,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to right, rgba(129,199,132,0.1), transparent);
+      background: linear-gradient(to right, rgba(129,199,132,0.1), transparent); /* → Brillo sutil al pasar el mouse */
       opacity: 0;
       transition: opacity 0.3s ease;
     }
 
     li:hover {
-      transform: scale(1.01);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transform: scale(1.01); /* → Efecto de agrandar ligeramente */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* → Sombra más intensa al pasar el mouse */
     }
 
     li:hover::before {
@@ -91,7 +93,7 @@
     }
 
     li strong {
-      color: #c368d1;
+      color: #c368d1; /* → Color violeta para los títulos */
     }
 
     li em {
@@ -109,16 +111,16 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-   footer {
-  background: transparent;
-  text-align: center;
-  color: #c368d1;
-  font-size: 0.9rem;
-  position: fixed;
-  bottom: 15px;
-  left: 0;
-  width: 100%;
-}
+    footer {
+      background: transparent;
+      text-align: center;
+      color: #c368d1;
+      font-size: 0.9rem;
+      position: fixed; /* → Siempre visible al fondo */
+      bottom: 15px;
+      left: 0;
+      width: 100%;
+    }
 
     footer span {
       opacity: 0.8;
@@ -128,39 +130,41 @@
 
 <body>
   <header>
-    <h2>Formularios Anónimos</h2>
-    <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p>
+    <h2>Formularios Anónimos</h2> <!-- → Título principal -->
+    <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p> <!-- → Subtítulo informativo -->
   </header>
 
-  <ul id="lista"></ul>
+  <ul id="lista"></ul> <!-- → Lista vacía donde se mostrarán las denuncias -->
 
   <footer>
-    <span>ECO - Proyecto Escolar</span>
+    <span>ECO - Proyecto Escolar</span> <!-- → Pie de página con el nombre del proyecto -->
   </footer>
 
+  <!-- → Conexión a Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <script src="firebase.js"></script> <!-- → Archivo donde está la configuración del proyecto Firebase -->
 
   <script>
-    const lista = document.getElementById("lista");
+    const lista = document.getElementById("lista"); // → Selecciona la lista donde se insertarán los datos
 
+    // → Se conecta a la colección "formularios/anonimo/items" en Firestore
     db.collection("formularios")
       .doc("anonimo")
       .collection("items")
-      .orderBy("creado", "desc")
-      .onSnapshot(snapshot => {
-        lista.innerHTML = "";
+      .orderBy("creado", "desc") // → Ordena por fecha, de más reciente a más viejo
+      .onSnapshot(snapshot => { // → Escucha los cambios en tiempo real
+        lista.innerHTML = ""; // → Limpia la lista antes de volver a llenarla
 
-        if (snapshot.empty) {
-          lista.innerHTML = "<p>No hay denuncias aún.</p>";
+        if (snapshot.empty) { // → Si no hay denuncias
+          lista.innerHTML = "<p>No hay denuncias aún.</p>"; // → Muestra mensaje vacío
           return;
         }
 
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const li = document.createElement("li");
+        snapshot.forEach(doc => { // → Recorre cada denuncia del snapshot
+          const data = doc.data(); // → Obtiene los datos del documento
+          const li = document.createElement("li"); // → Crea un elemento <li> para mostrarlo
           li.innerHTML = `
             <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
             <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
@@ -168,7 +172,7 @@
             <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
             <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
           `;
-          lista.appendChild(li);
+          lista.appendChild(li); // → Agrega el elemento a la lista en el HTML
         });
       });
   </script>
