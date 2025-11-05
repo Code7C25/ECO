@@ -1,60 +1,169 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html> <!-- → Indica que es un documento HTML5 -->
+<html lang="es"> <!-- → Página en idioma español -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECO - Denuncia Anónima</title>
+  <meta charset="UTF-8"> <!-- → Soporte para acentos y caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- → Diseño adaptable a celulares -->
+  <title>ECO - Denuncia Anónima</title> <!-- → Título que aparece en la pestaña -->
 
+  <!-- → Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <script src="firebase.js"></script> <!-- → Archivo con la configuración de Firebase -->
+
+  <!-- → Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* → ESTILOS GENERALES */
+    body {
+      font-family: "Quicksand", sans-serif; /* → Aplica la fuente Quicksand */
+      background: linear-gradient(160deg, #bc92b8 0%, #bc92b9 100%); /* → Fondo verde pastel */
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.8s ease-in-out; /* → Animación suave al aparecer */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #2c2b2b;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #333;
+      max-width: 400px;
+      text-align: center;
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.9); /* → Fondo translúcido */
+      border-radius: 18px; /* → Bordes redondeados */
+      padding: 30px 35px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); /* → Sombra suave */
+      width: 90%;
+      max-width: 500px;
+      backdrop-filter: blur(5px); /* → Efecto vidrio */
+    }
+
+    label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-family: inherit;
+      resize: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #c368d1; /* → Violeta al enfocar */
+    }
+
+    button {
+      background-color: #c368d1; /* → Botón violeta */
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+
+    button:hover {
+      background-color: #a84ab3; /* → Violeta más intenso al pasar el mouse */
+    }
+
+    #mensaje {
+      margin-top: 20px;
+      font-weight: 500;
+      color: #333;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: #c368d1;
+      opacity: 0.8;
+    }
+  </style>
 </head>
 
 <body>
-  <h2>Denuncia Anónima</h2>
-  <p>Este formulario es 100% anónimo y confidencial. Contanos qué pasó.</p>
+  <h2>Denuncia Anónima</h2> <!-- → Título principal -->
+  <p>Este formulario es 100% anónimo y confidencial. Contanos qué pasó.</p> <!-- → Texto informativo -->
 
-  <form id="denunciaForm">
-    <label for="curso">Curso (opcional):</label><br>
-    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B"><br><br>
+  <form id="denunciaForm"> <!-- → Formulario principal -->
 
-    <label for="tipo">Tipo de situación:</label><br>
-    <select id="tipo" required>
+    <label for="curso">Curso (opcional):</label> <!-- → Campo opcional -->
+    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B"> <!-- → Entrada de texto -->
+
+    <label for="tipo">Tipo de situación:</label> <!-- → Selección obligatoria -->
+    <select id="tipo" required> <!-- → Lista desplegable -->
       <option value="">Seleccionar...</option>
       <option value="Sufrí bullying">Sufrí bullying</option>
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
-    </select><br><br>
+    </select>
 
-    <label for="descripcion">Descripción de la situación:</label><br>
-    <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea><br><br>
+    <label for="descripcion">Descripción de la situación:</label> <!-- → Campo de texto largo -->
+    <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea>
 
-    <label for="participantes">Participantes (opcional):</label><br>
-    <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo"><br><br>
+    <label for="participantes">Participantes (opcional):</label> <!-- → Campo opcional -->
+    <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo">
 
-    <button type="submit">Enviar denuncia</button>
+    <button type="submit">Enviar denuncia</button> <!-- → Botón para enviar -->
   </form>
 
-  <p id="mensaje"></p>
+  <p id="mensaje"></p> <!-- → Mensaje de confirmación o error -->
+
+  <footer>ECO - Proyecto Escolar</footer> <!-- → Pie de página -->
 
   <script>
-    const form = document.getElementById("denunciaForm");
-    const mensaje = document.getElementById("mensaje");
+    const form = document.getElementById("denunciaForm"); // → Selecciona el formulario
+    const mensaje = document.getElementById("mensaje"); // → Selecciona el texto de mensajes
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    form.addEventListener("submit", async (e) => { // → Escucha el envío del formulario
+      e.preventDefault(); // → Evita que la página se recargue
 
+      // → Obtiene los valores de los campos
       const curso = document.getElementById("curso").value.trim();
       const tipo = document.getElementById("tipo").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
+      // → Valida los campos obligatorios
       if (!tipo || !descripcion) {
-        mensaje.textContent = "Por favor, completá los campos obligatorios.";
+        mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
         return;
       }
 
       try {
+        // → Envía los datos a Firebase Firestore
         await db.collection("formularios")
           .doc("anonimo")
           .collection("items")
@@ -66,17 +175,18 @@
             creado: new Date()
           });
 
+        // → Mensaje de éxito
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         form.reset();
 
-        
+        // → Redirige a la página principal después de 2 segundos
         setTimeout(() => {
           window.location.href = "index.html";
         }, 2000);
 
       } catch (error) {
-        console.error("Error al enviar denuncia:", error);
-        mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
+        console.error("Error al enviar denuncia:", error); // → Muestra el error en consola
+        mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente."; // → Mensaje de error
       }
     });
   </script>
