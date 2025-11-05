@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- configuración general y conexión a Firebase -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECO - Formularios Públicos</title>
 
+  <!-- Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -12,11 +14,12 @@
 </head>
 
 <body>
+  <!-- Título principal y descripción -->
   <h2>Formularios Públicos</h2>
   <div id="userInfo"></div>
   <p>Denuncias enviadas por los alumnos con sesión iniciada (actualización en tiempo real)</p>
 
- 
+  <!-- Filtro por curso -->
   <div id="filtros">
     <label for="cursoFiltro">Filtrar por curso:</label>
     <select id="cursoFiltro">
@@ -24,8 +27,10 @@
     </select>
   </div>
 
+  <!-- Lista donde se muestran las denuncias -->
   <ul id="lista"></ul>
 
+  <!-- conexión con Firestore y filtrado de denuncias -->
   <script>
     const lista = document.getElementById("lista");
     const userInfo = document.getElementById("userInfo");
@@ -33,6 +38,7 @@
 
     let denuncias = [];
 
+    // Muestra si hay una sesión activa de usuario
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.email) {
         userInfo.textContent = "Sesión activa: " + user.email;
@@ -41,6 +47,7 @@
       }
     });
 
+    // Escucha en tiempo real las denuncias públicas desde Firestore
     db.collection("formularios")
       .doc("publicos")
       .collection("items")
@@ -61,6 +68,7 @@
           if (data.curso) cursosSet.add(data.curso);
         });
 
+        // Actualiza el filtro con los cursos disponibles
         selectFiltro.innerHTML = '<option value="todos">Todos los cursos</option>';
         cursosSet.forEach(curso => {
           const option = document.createElement("option");
@@ -72,6 +80,7 @@
         mostrarDenuncias("todos");
       });
 
+    // Muestra las denuncias según el filtro seleccionado
     function mostrarDenuncias(filtro) {
       lista.innerHTML = "";
 
@@ -98,7 +107,7 @@
       });
     }
 
-    
+    // Actualiza la lista cuando cambia el filtro
     selectFiltro.addEventListener("change", e => {
       mostrarDenuncias(e.target.value);
     });

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Cabecera con configuración básica y conexión a Firebase -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECO - Formularios Anónimos</title>
 
+  <!-- Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
@@ -14,6 +16,7 @@
   <h2>Formularios Anónimos</h2>
   <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p>
 
+  <!-- Filtro de cursos -->
   <div id="filtros">
     <label for="cursoFiltro">Filtrar por curso:</label>
     <select id="cursoFiltro">
@@ -21,15 +24,17 @@
     </select>
   </div>
 
+  <!-- Lista donde se muestran las denuncias -->
   <ul id="lista"></ul>
 
+  <!-- Script principal con la lógica de filtrado y conexión a Firestore -->
   <script>
     const lista = document.getElementById("lista");
     const selectFiltro = document.getElementById("cursoFiltro");
 
     let denuncias = []; 
 
-   
+    // Escucha en tiempo real los formularios anónimos desde Firestore
     db.collection("formularios")
       .doc("anonimo")
       .collection("items")
@@ -47,11 +52,10 @@
         snapshot.forEach(doc => {
           const data = doc.data();
           denuncias.push(data);
-
           if (data.curso) cursosSet.add(data.curso);
         });
 
-        // Actualizar opciones de filtro (una vez por carga)
+        // Actualiza las opciones del filtro con los cursos encontrados
         selectFiltro.innerHTML = '<option value="todos">Todos los cursos</option>';
         cursosSet.forEach(curso => {
           const option = document.createElement("option");
@@ -63,7 +67,7 @@
         mostrarDenuncias("todos");
       });
 
-    // Mostrar denuncias filtradas
+    // Muestra las denuncias filtradas según el curso seleccionado
     function mostrarDenuncias(filtro) {
       lista.innerHTML = "";
 
@@ -89,6 +93,7 @@
       });
     }
 
+    // Escucha los cambios en el filtro y actualiza la lista
     selectFiltro.addEventListener("change", e => {
       mostrarDenuncias(e.target.value);
     });

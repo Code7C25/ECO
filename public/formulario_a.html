@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!--configuración básica y conexión a Firebase -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECO - Denuncia Anónima</title>
 
+  <!-- Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -15,6 +17,7 @@
   <h2>Denuncia Anónima</h2>
   <p>Este formulario es 100% anónimo y confidencial. Contanos qué pasó.</p>
 
+  <!-- Formulario de denuncia anónima -->
   <form id="denunciaForm">
     <label for="curso">Curso (opcional):</label><br>
     <input type="text" id="curso" name="curso" placeholder="Ej: 4°B"><br><br>
@@ -35,12 +38,15 @@
     <button type="submit">Enviar denuncia</button>
   </form>
 
+  <!-- Mensaje de confirmación o error -->
   <p id="mensaje"></p>
 
+  <!-- Script principal para enviar datos a Firestore -->
   <script>
     const form = document.getElementById("denunciaForm");
     const mensaje = document.getElementById("mensaje");
 
+    // Maneja el envío del formulario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -49,12 +55,14 @@
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
+      // Valida los campos obligatorios
       if (!tipo || !descripcion) {
         mensaje.textContent = "Por favor, completá los campos obligatorios.";
         return;
       }
 
       try {
+        // Envía la denuncia a Firestore en la colección "formularios/anonimo/items"
         await db.collection("formularios")
           .doc("anonimo")
           .collection("items")
@@ -66,15 +74,17 @@
             creado: new Date()
           });
 
+        // Muestra mensaje de éxito y limpia el formulario
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         form.reset();
 
-        
+        // Redirige al inicio después de 2 segundos
         setTimeout(() => {
           window.location.href = "index.html";
         }, 2000);
 
       } catch (error) {
+        // Muestra error si algo falla al guardar
         console.error("Error al enviar denuncia:", error);
         mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
       }

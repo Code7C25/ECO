@@ -5,21 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Mi diario personal</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!--- LIBRERÍAS DE FIREBASE --->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
+  <!--- MENÚ SUPERIOR --->
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
   </ul>
+
   <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
+
+  <!--- CONTENIDO PRINCIPAL DEL DIARIO --->
   <main style="text-align:center; max-width:600px; margin:auto;">
     <h2>Mi diario personal 🕯️</h2>
     <p>Este espacio es solo para vos. Nadie más podrá verlo ni acceder a lo que escribas.</p>
 
+    <!--  Permite seleccionar una fecha, escribir un texto y guardarlo en Firestore.-->
     <div id="diario-usuario" style="display:none;">
       <label for="fechaEntrada">Seleccioná una fecha:</label><br />
       <input type="date" id="fechaEntrada" />
@@ -27,14 +35,18 @@
       <button id="guardarBtn">Guardar entrada</button>
       <p id="msgDiario"></p>
     </div>
-
+    <!-- calendario para anonimos -->
     <div id="diario-anonimo" style="display:none;">
       <textarea placeholder="Podés escribir lo que sientas. No se guardará." rows="10" style="width:100%;margin-top:10px;"></textarea>
     </div>
   </main>
 
+
   <script src="menu.js"></script>
   <script src="firebase.js"></script>
+
+  
+  <!-- Controla la autenticación del usuario y el guardado de entradas en Firestore.-->
   <script>
     firebase.auth().onAuthStateChanged(async (user) => {
       const userDiv = document.getElementById("diario-usuario");
@@ -44,12 +56,14 @@
       const fechaInput = document.getElementById("fechaEntrada");
 
       if (user) {
+        // Si el usuario está autenticado, se muestra su diario personal.
         userDiv.style.display = "block";
         anonDiv.style.display = "none";
 
         const uid = user.uid;
         const db = firebase.firestore();
 
+        // Al cambiar la fecha, se busca la entrada guardada para ese día.
         fechaInput.addEventListener("change", async () => {
           const fecha = fechaInput.value;
           if (!fecha) return;
@@ -58,7 +72,7 @@
           msg.textContent = doc.exists ? "Entrada cargada." : "Sin notas para este día.";
         });
 
-    
+        // Guarda o actualiza la entrada del día seleccionado.
         document.getElementById("guardarBtn").addEventListener("click", async () => {
           const fecha = fechaInput.value;
           const texto = textarea.value.trim();
@@ -78,11 +92,14 @@
         });
 
       } else {
+        // Si el usuario NO está autenticado, se muestra el modo anónimo.
         anonDiv.style.display = "block";
         userDiv.style.display = "none";
       }
     });
   </script>
+
+  
   <button onclick="window.location.href='index.html'">
       🏠 Página principal
   </button>

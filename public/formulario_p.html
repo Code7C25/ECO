@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- configuración básica y conexión a Firebase -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECO - Formulario Público</title>
 
-
+  <!-- Librerías de Firebase  -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -13,9 +14,11 @@
 </head>
 
 <body>
+  <!-- Título y descripción del formulario -->
   <h2>Formulario Público</h2>
   <p>Podés contarnos lo que está pasando. Tus datos estarán vinculados a tu usuario.</p>
 
+  <!-- Formulario de denuncia pública -->
   <form id="denunciaForm">
     <label for="curso">Curso:</label><br>
     <input type="text" id="curso" name="curso" placeholder="Ej: 4°B" required><br><br>
@@ -38,30 +41,36 @@
 
   <p id="mensaje"></p>
 
+  <!-- Script principal para enviar la denuncia a Firestore -->
   <script>
     const form = document.getElementById("denunciaForm");
     const mensaje = document.getElementById("mensaje");
 
+    // Evento para manejar el envío del formulario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Verifica si el usuario tiene sesión iniciada
       const user = firebase.auth().currentUser;
       if (!user || !user.email) {
         mensaje.textContent = "Debés iniciar sesión para enviar una denuncia pública.";
         return;
       }
 
+      // Obtiene los datos del formulario
       const curso = document.getElementById("curso").value.trim();
       const tipo = document.getElementById("tipo").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
+      // Valida campos obligatorios
       if (!tipo || !descripcion) {
         mensaje.textContent = "Por favor, completá los campos obligatorios.";
         return;
       }
 
       try {
+        // Guarda los datos en Firestore (colección 'formularios/publicos/items')
         await db.collection("formularios")
           .doc("publicos")
           .collection("items")
@@ -74,14 +83,17 @@
             creado: new Date()
           });
 
+        // Muestra mensaje de éxito y limpia el formulario
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         form.reset();
 
+        // Redirige al inicio después de 2 segundos
         setTimeout(() => {
           window.location.href = "index.html";
         }, 2000);
 
       } catch (error) {
+        // Muestra mensaje de error si la operación falla
         console.error("Error al enviar denuncia:", error);
         mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
       }
