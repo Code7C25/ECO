@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Formulario Público</title>
+
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h2>Formulario Público</h2>
+  <p>Podés contarnos lo que está pasando. Tus datos estarán vinculados a tu usuario.</p>
+
+  <form id="denunciaForm">
+    <label for="curso">Curso:</label><br>
+    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B" required><br><br>
+
+    <label for="tipo">Tipo de situación:</label><br>
+    <select id="tipo" required>
+      <option value="">Seleccionar...</option>
+      <option value="Sufrí bullying">Sufrí bullying</option>
+      <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
+    </select><br><br>
+
+    <label for="descripcion">Descripción de la situación:</label><br>
+    <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea><br><br>
+
+    <label for="participantes">Participantes (opcional):</label><br>
+    <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo"><br><br>
+
+    <button type="submit">Enviar denuncia</button>
+  </form>
+
+  <p id="mensaje"></p>
+
+  <script>
+    const form = document.getElementById("denunciaForm");
+    const mensaje = document.getElementById("mensaje");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = firebase.auth().currentUser;
+      if (!user || !user.email) {
+        mensaje.textContent = "Debés iniciar sesión para enviar una denuncia pública.";
+        return;
+      }
+
+      const curso = document.getElementById("curso").value.trim();
+      const tipo = document.getElementById("tipo").value;
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const participantes = document.getElementById("participantes").value.trim();
+
+      if (!tipo || !descripcion) {
+        mensaje.textContent = "Por favor, completá los campos obligatorios.";
+        return;
+      }
+
+      try {
+        await db.collection("formularios")
+          .doc("publicos")
+          .collection("items")
+          .add({
+            usuario: user.email, 
+            curso,
+            tipo,
+            descripcion,
+            participantes: participantes || null,
+            creado: new Date()
+          });
+
+        mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
+        form.reset();
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+
+      } catch (error) {
+        console.error("Error al enviar denuncia:", error);
+        mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
+      }
+    });
+  </script>
+</body>
+</html>

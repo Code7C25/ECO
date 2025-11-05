@@ -10,9 +10,11 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
-<body>
+<body class="pagina-registro">
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
   <ul id="menu" class="menu-hidden">
+    <li><a href="index.html">🏠 Inicio</a></li>
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
 
@@ -37,8 +39,5 @@
 
   <script src="menu.js"></script>
   <script src="firebase.js"></script>
-  <button onclick="window.location.href='index.html'">
-      🏠 Página principal
-  </button>
 </body>
 </html>

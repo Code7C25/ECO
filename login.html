@@ -11,11 +11,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body  class="pagina-login">
+  <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
+    <li><a href="index.html">🏠 Inicio</a></li>
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
-
   </ul>
   <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
 
@@ -32,8 +33,5 @@
   <script src="menu.js"></script>
   <script src="firebase.js"></script>
 
-  <button onclick="window.location.href='index.html'">
-      🏠 Página principal
-  </button>
 </body>
 </html>
