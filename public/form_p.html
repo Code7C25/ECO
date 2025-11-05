@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8"> <!-- Define el tipo de caracteres (permite usar tildes y eñes) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajuste para que se vea bien en celulares -->
   <title>ECO - Formularios Públicos</title> <!-- Título que aparece en la pestaña del navegador -->
@@ -9,6 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Scripts de Firebase (para conectar con base de datos y autenticación) -->
+=======
+  <!-- configuración general y conexión a Firebase -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Formularios Públicos</title>
+
+  <!-- Librerías de Firebase -->
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -140,6 +149,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
   <!-- ---------- CABECERA ---------- -->
   <header>
     <h2>Formularios Públicos</h2> <!-- Título principal -->
@@ -158,11 +168,34 @@
   </footer>
 
   <!-- ---------- LÓGICA DE FIREBASE ---------- -->
+=======
+  <!-- Título principal y descripción -->
+  <h2>Formularios Públicos</h2>
+  <div id="userInfo"></div>
+  <p>Denuncias enviadas por los alumnos con sesión iniciada (actualización en tiempo real)</p>
+
+  <!-- Filtro por curso -->
+  <div id="filtros">
+    <label for="cursoFiltro">Filtrar por curso:</label>
+    <select id="cursoFiltro">
+      <option value="todos">Todos los cursos</option>
+    </select>
+  </div>
+
+  <!-- Lista donde se muestran las denuncias -->
+  <ul id="lista"></ul>
+
+  <!-- conexión con Firestore y filtrado de denuncias -->
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
   <script>
     const lista = document.getElementById("lista");
     const userInfo = document.getElementById("userInfo");
 
+<<<<<<< HEAD
     // Detecta si hay un usuario con sesión iniciada
+=======
+    // Muestra si hay una sesión activa de usuario
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
     firebase.auth().onAuthStateChanged((user) => {
       if (user && user.email) {
         userInfo.textContent = "Sesión activa: " + user.email; // Muestra el mail
@@ -171,6 +204,7 @@
       }
     });
 
+<<<<<<< HEAD
     // Se conecta a la base de datos Firestore
     db.collection("formularios") // Colección principal
       .doc("publicos") // Documento "publicos"
@@ -178,6 +212,17 @@
       .orderBy("creado", "desc") // Ordena de más nuevo a más viejo
       .onSnapshot(snapshot => { // Se ejecuta cada vez que hay un cambio en tiempo real
         lista.innerHTML = ""; // Limpia la lista antes de volver a renderizar
+=======
+    // Escucha en tiempo real las denuncias públicas desde Firestore
+    db.collection("formularios")
+      .doc("publicos")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        lista.innerHTML = "";
+        denuncias = [];
+        const cursosSet = new Set();
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
 
         if (snapshot.empty) {
           // Si no hay denuncias, muestra este mensaje
@@ -199,7 +244,54 @@
           `;
           lista.appendChild(li); // Agrega la denuncia al listado
         });
+<<<<<<< HEAD
       });
+=======
+
+        // Actualiza el filtro con los cursos disponibles
+        selectFiltro.innerHTML = '<option value="todos">Todos los cursos</option>';
+        cursosSet.forEach(curso => {
+          const option = document.createElement("option");
+          option.value = curso;
+          option.textContent = curso;
+          selectFiltro.appendChild(option);
+        });
+
+        mostrarDenuncias("todos");
+      });
+
+    // Muestra las denuncias según el filtro seleccionado
+    function mostrarDenuncias(filtro) {
+      lista.innerHTML = "";
+
+      const filtradas = filtro === "todos"
+        ? denuncias
+        : denuncias.filter(d => d.curso === filtro);
+
+      if (filtradas.length === 0) {
+        lista.innerHTML = "<p>No hay denuncias para este curso.</p>";
+        return;
+      }
+
+      filtradas.forEach(data => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>Usuario:</strong> ${data.usuario || "(sin usuario)"}<br>
+          <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
+          <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
+          <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
+          <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
+          <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    // Actualiza la lista cuando cambia el filtro
+    selectFiltro.addEventListener("change", e => {
+      mostrarDenuncias(e.target.value);
+    });
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
   </script>
 </body>
 </html>

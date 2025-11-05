@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- configuración general y conexión a Firebase -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Iniciar sesión</title>
   <link rel="stylesheet" href="style.css" />
 
+  <!-- Librerías de Firebase (app, auth y firestore) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
-<body  class="pagina-login">
+
+<body class="pagina-login">
+  <!-- Menú desplegable -->
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
-
   </ul>
+
+  <!-- Información del usuario logueado -->
   <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
 
+  <!-- Formulario de inicio de sesión -->
   <main>
     <h2>Iniciar sesión</h2>
     <input id="loginEmail" type="email" placeholder="Correo electrónico" />
@@ -28,49 +34,57 @@
     <h3>¿No tenés cuenta?</h3>
     <button onclick="window.location.href='registro.html'">Registrarse</button>
   </main>
+
+  <!-- Botón para volver al inicio -->
   <button onclick="window.location.href='index.html'">
       🏠 Página principal
   </button>
+
+  <!-- Scripts del menú y Firebase -->
   <script src="menu.js"></script>
   <script src="firebase.js"></script>
- <script>
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const email = document.getElementById("loginEmail").value.trim();
-  const pass = document.getElementById("loginPass").value.trim();
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(email)) {
-    alert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
-    return;
-  }
+  <!--  validación e inicio de sesión -->
+  <script>
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("loginEmail").value.trim();
+      const pass = document.getElementById("loginPass").value.trim();
 
-  if (pass.length < 6) {
-    alert("La contraseña debe tener al menos 6 caracteres.");
-    return;
-  }
+      // Verifica formato de correo
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
+        return;
+      }
 
-  try {
+      // Verifica longitud mínima de contraseña
+      if (pass.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
 
-    const snapshot = await firebase.firestore()
-      .collection("usuarios")
-      .where("email", "==", email)
-      .where("password", "==", pass)
-      .get();
+      try {
+        // Consulta en Firestore si existe el usuario con ese correo y contraseña
+        const snapshot = await firebase.firestore()
+          .collection("usuarios")
+          .where("email", "==", email)
+          .where("password", "==", pass)
+          .get();
 
-    if (!snapshot.empty) {
-      alert("Inicio de sesión exitoso ✅");
-      localStorage.setItem("usuarioEmail", email);
-      window.location.href = "index.html";
-    } else {
-      alert("Correo o contraseña incorrectos. Verificá los datos e intentá nuevamente.");
-    }
-  } catch (error) {
-    console.error(error);
-    alert("Ocurrió un error al conectar con la base de datos.");
-  }
-});
-</script>
-
-
+        // Si encuentra coincidencia, inicia sesión
+        if (!snapshot.empty) {
+          alert("Inicio de sesión exitoso ✅");
+          localStorage.setItem("usuarioEmail", email);
+          window.location.href = "index.html";
+        } else {
+          alert("Correo o contraseña incorrectos. Verificá los datos e intentá nuevamente.");
+        }
+      } catch (error) {
+        // Muestra mensaje de error si falla la conexión
+        console.error(error);
+        alert("Ocurrió un error al conectar con la base de datos.");
+      }
+    });
+  </script>
 </body>
 </html>

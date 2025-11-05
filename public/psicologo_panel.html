@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- onfiguración básica y enlace al CSS -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Panel Psicólogo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
 
+<body>
+  <!-- Contenido principal del panel -->
   <main style="text-align:center;">
     <h2>Panel de Psicólogo</h2>
     <p>Acceso permitido</p>
 
+    <!-- Botones para acceder a los formularios -->
     <div style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
       <button onclick="window.location.href='form_a.html'">Formularios anónimos</button>
       <button onclick="window.location.href='form_p.html'">Formularios públicos</button>
     </div>
   </main>
-    <button onclick="window.location.href='index.html'">
+
+  <!-- Botón para volver a la página principal -->
+  <button onclick="window.location.href='index.html'">
       🏠 Página principal
   </button>
+
+  <!-- Script del menú -->
   <script src="menu.js"></script>
 </body>
 </html>

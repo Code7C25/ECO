@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Cabecera con configuración general, estilos, fuentes y scripts -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Bienvenido</title>
@@ -9,30 +10,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Vladimir+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#906d93">
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js")
-      .then(() => console.log("Service Worker registrado correctamente"))
-      .catch(err => console.log("Error al registrar Service Worker:", err));
-  }
-</script>
 
+  <!-- Registro del Service Worker para funcionamiento offline -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registrado correctamente"))
+        .catch(err => console.log("Error al registrar Service Worker:", err));
+    }
+  </script>
 </head>
 
 <body class="pagina-index">
-
+  <!-- Menú desplegable -->
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
     <li><a href="diario.html">Mi diario personal</a></li>
   </ul>
 
+  <!-- Sección de bienvenida -->
   <div class="welcome-container">
     <h1 class="welcome-text">Bienvenidos a</h1>
     <img src="logo-eco.png" alt="Logo ECO" class="eco-logo">
     <p class="subtext">Tu lugar seguro, estamos para ayudarte</p>
   </div>
 
+  <!-- Botones principales de acceso -->
   <main class="rectangulo-botones">
     <button class="eco-btn" onclick="window.location.href='formulario_a.html'">
       <span>Ingresar como anónimo</span>
@@ -44,15 +48,18 @@
       <span>Soy un psicólogo</span>
     </button>
 
+    <!-- Información de sesión y botón de cierre -->
     <p id="userSession"></p>
     <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
   </main>
 
+  <!-- Librerías de Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
 
+  <!-- Script de control de sesión Firebase -->
   <script>
     firebase.auth().onAuthStateChanged((user) => {
       const logoutBtn = document.getElementById("logoutBtn");
@@ -67,12 +74,14 @@
       }
     });
 
+    // Cierra la sesión y redirige al inicio
     function cerrarSesion() {
       firebase.auth().signOut().then(() => {
         window.location.href = "index.html";
       });
     }
 
+    // Asigna el evento al botón de cerrar sesión
     document.getElementById("logoutBtn")?.addEventListener("click", cerrarSesion);
   </script>
 </body>

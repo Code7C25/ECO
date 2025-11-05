@@ -1,11 +1,20 @@
 <!DOCTYPE html> <!-- → Indica que es un documento HTML5 -->
 <html lang="es"> <!-- → Página en idioma español -->
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8"> <!-- → Soporte para acentos y caracteres especiales -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- → Diseño adaptable a celulares -->
   <title>ECO - Denuncia Anónima</title> <!-- → Título que aparece en la pestaña -->
 
   <!-- → Librerías de Firebase -->
+=======
+  <!--configuración básica y conexión a Firebase -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Denuncia Anónima</title>
+
+  <!-- Librerías de Firebase -->
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -118,7 +127,14 @@
   <h2>Denuncia Anónima</h2> <!-- → Título principal -->
   <p>Este formulario es 100% anónimo y confidencial. Contanos qué pasó.</p> <!-- → Texto informativo -->
 
+<<<<<<< HEAD
   <form id="denunciaForm"> <!-- → Formulario principal -->
+=======
+  <!-- Formulario de denuncia anónima -->
+  <form id="denunciaForm">
+    <label for="curso">Curso (opcional):</label><br>
+    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B"><br><br>
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
 
     <label for="curso">Curso (opcional):</label> <!-- → Campo opcional -->
     <input type="text" id="curso" name="curso" placeholder="Ej: 4°B"> <!-- → Entrada de texto -->
@@ -139,16 +155,28 @@
     <button type="submit">Enviar denuncia</button> <!-- → Botón para enviar -->
   </form>
 
+<<<<<<< HEAD
   <p id="mensaje"></p> <!-- → Mensaje de confirmación o error -->
 
   <footer>ECO - Proyecto Escolar</footer> <!-- → Pie de página -->
+=======
+  <!-- Mensaje de confirmación o error -->
+  <p id="mensaje"></p>
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
 
+  <!-- Script principal para enviar datos a Firestore -->
   <script>
     const form = document.getElementById("denunciaForm"); // → Selecciona el formulario
     const mensaje = document.getElementById("mensaje"); // → Selecciona el texto de mensajes
 
+<<<<<<< HEAD
     form.addEventListener("submit", async (e) => { // → Escucha el envío del formulario
       e.preventDefault(); // → Evita que la página se recargue
+=======
+    // Maneja el envío del formulario
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
 
       // → Obtiene los valores de los campos
       const curso = document.getElementById("curso").value.trim();
@@ -156,14 +184,22 @@
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
+<<<<<<< HEAD
       // → Valida los campos obligatorios
+=======
+      // Valida los campos obligatorios
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
       if (!tipo || !descripcion) {
         mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
         return;
       }
 
       try {
+<<<<<<< HEAD
         // → Envía los datos a Firebase Firestore
+=======
+        // Envía la denuncia a Firestore en la colección "formularios/anonimo/items"
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
         await db.collection("formularios")
           .doc("anonimo")
           .collection("items")
@@ -175,18 +211,32 @@
             creado: new Date()
           });
 
+<<<<<<< HEAD
         // → Mensaje de éxito
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         form.reset();
 
         // → Redirige a la página principal después de 2 segundos
+=======
+        // Muestra mensaje de éxito y limpia el formulario
+        mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
+        form.reset();
+
+        // Redirige al inicio después de 2 segundos
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
         setTimeout(() => {
           window.location.href = "index.html";
         }, 2000);
 
       } catch (error) {
+<<<<<<< HEAD
         console.error("Error al enviar denuncia:", error); // → Muestra el error en consola
         mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente."; // → Mensaje de error
+=======
+        // Muestra error si algo falla al guardar
+        console.error("Error al enviar denuncia:", error);
+        mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
       }
     });
   </script>

@@ -1,4 +1,8 @@
-
+/* --------------------------------------------------
+   CONFIGURACIÓN INICIAL DE FIREBASE
+   Define el proyecto con sus claves y activa los
+   servicios principales: autenticación y base de datos.
+-------------------------------------------------- */
 const firebaseConfig = {
   apiKey: "AIzaSyD076ItytBwa4zqwmD6R20MzYN9XlkZojI",
   authDomain: "eco-web-ddfaa.firebaseapp.com",
@@ -8,13 +12,18 @@ const firebaseConfig = {
   appId: "1:646679745661:web:f71abe54b6a271d7524d14"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 console.log("Firebase inicializado correctamente ✅");
 
+
+/* --------------------------------------------------
+   FUNCIÓN AUXILIAR PARA MOSTRAR MENSAJES
+   Muestra mensajes (errores o confirmaciones) en
+   elementos HTML específicos con estilo personalizado.
+-------------------------------------------------- */
 function mostrarMensaje(idElemento, mensaje, color = "red") {
   const el = document.getElementById(idElemento);
   if (el) {
@@ -26,6 +35,13 @@ function mostrarMensaje(idElemento, mensaje, color = "red") {
   }
 }
 
+
+/* --------------------------------------------------
+   SECCIÓN DE LOGIN (INICIO DE SESIÓN)
+   Valida los campos de correo y contraseña, inicia
+   sesión con Firebase Auth y redirige a denuncia.html
+   si el login es exitoso.
+-------------------------------------------------- */
 const loginBtn = document.getElementById("loginBtn");
 if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
@@ -33,7 +49,7 @@ if (loginBtn) {
     const pass = document.getElementById("loginPass").value;
     const mensajeEl = "loginMsg";
 
-    mostrarMensaje(mensajeEl, ""); 
+    mostrarMensaje(mensajeEl, "");
 
     if (!email || !pass) {
       mostrarMensaje(mensajeEl, "Ingresá correo y contraseña.");
@@ -59,6 +75,12 @@ if (loginBtn) {
 }
 
 
+/* --------------------------------------------------
+   SECCIÓN DE REGISTRO DE USUARIO
+   Permite crear una nueva cuenta con email, contraseña
+   y curso. Guarda los datos en la colección “usuarios”
+   de Firestore.
+-------------------------------------------------- */
 const registerBtn = document.getElementById("registerBtn");
 if (registerBtn) {
   registerBtn.addEventListener("click", async () => {
@@ -67,7 +89,7 @@ if (registerBtn) {
     const curso = document.getElementById("regCurso").value.trim();
     const mensajeEl = "registerMsg";
 
-    mostrarMensaje(mensajeEl, ""); 
+    mostrarMensaje(mensajeEl, "");
 
     if (!email || !pass || !curso) {
       mostrarMensaje(mensajeEl, "Por favor completá todos los campos.");
@@ -102,6 +124,12 @@ if (registerBtn) {
   });
 }
 
+
+/* --------------------------------------------------
+   SECCIÓN DE ACCESO PARA PSICÓLOGOS
+   Comprueba DNI y clave contra los datos guardados en
+   Firestore. Si coinciden, redirige al panel del psicólogo.
+-------------------------------------------------- */
 const psicoBtn = document.getElementById("psicoBtn");
 if (psicoBtn) {
   psicoBtn.addEventListener("click", async () => {
@@ -109,6 +137,7 @@ if (psicoBtn) {
     const clave = document.getElementById("psicoClave").value;
     const msgId = "psicoMsg";
 
+    /* Función local para mostrar mensajes en esta sección */
     function mostrarMensajeLocal(idElemento, mensaje, color = "red") {
       const el = document.getElementById(idElemento);
       if (el) {
@@ -135,7 +164,7 @@ if (psicoBtn) {
         return;
       }
 
-      
+      /* Recorre los resultados para verificar si la clave coincide */
       let accesoPermitido = false;
       snapshot.forEach(doc => {
         const data = doc.data();
@@ -158,11 +187,17 @@ if (psicoBtn) {
   });
 }
 
+
+/* --------------------------------------------------
+   GESTIÓN DE SESIÓN DEL USUARIO
+   Muestra el correo del usuario activo y un botón para
+   cerrar sesión. Si no hay usuario logueado, no muestra nada.
+-------------------------------------------------- */
 firebase.auth().onAuthStateChanged((user) => {
   const sessionEl = document.getElementById("userSession");
 
   if (!sessionEl) return;
-  sessionEl.innerHTML = ""; 
+  sessionEl.innerHTML = "";
 
   if (user && user.email) {
 
@@ -190,7 +225,6 @@ firebase.auth().onAuthStateChanged((user) => {
     sessionEl.appendChild(spanEmail);
     sessionEl.appendChild(btnLogout);
   } else {
-    sessionEl.textContent = ""; 
+    sessionEl.textContent = "";
   }
 });
-
