@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Formularios Públicos</title>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+
+<body>
+  <h2>Formularios Públicos</h2>
+  <div id="userInfo"></div>
+  <p>Denuncias enviadas por los alumnos con sesión iniciada (actualización en tiempo real)</p>
+
+ 
+  <div id="filtros">
+    <label for="cursoFiltro">Filtrar por curso:</label>
+    <select id="cursoFiltro">
+      <option value="todos">Todos los cursos</option>
+    </select>
+  </div>
+
+  <ul id="lista"></ul>
+
+  <script>
+    const lista = document.getElementById("lista");
+    const userInfo = document.getElementById("userInfo");
+    const selectFiltro = document.getElementById("cursoFiltro");
+
+    let denuncias = [];
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && user.email) {
+        userInfo.textContent = "Sesión activa: " + user.email;
+      } else {
+        userInfo.textContent = "No hay sesión iniciada.";
+      }
+    });
+
+    db.collection("formularios")
+      .doc("publicos")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        lista.innerHTML = "";
+        denuncias = [];
+        const cursosSet = new Set();
+
+        if (snapshot.empty) {
+          lista.innerHTML = "<p>No hay denuncias públicas aún.</p>";
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          denuncias.push(data);
+          if (data.curso) cursosSet.add(data.curso);
+        });
+
+        selectFiltro.innerHTML = '<option value="todos">Todos los cursos</option>';
+        cursosSet.forEach(curso => {
+          const option = document.createElement("option");
+          option.value = curso;
+          option.textContent = curso;
+          selectFiltro.appendChild(option);
+        });
+
+        mostrarDenuncias("todos");
+      });
+
+    function mostrarDenuncias(filtro) {
+      lista.innerHTML = "";
+
+      const filtradas = filtro === "todos"
+        ? denuncias
+        : denuncias.filter(d => d.curso === filtro);
+
+      if (filtradas.length === 0) {
+        lista.innerHTML = "<p>No hay denuncias para este curso.</p>";
+        return;
+      }
+
+      filtradas.forEach(data => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>Usuario:</strong> ${data.usuario || "(sin usuario)"}<br>
+          <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
+          <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
+          <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
+          <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
+          <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    
+    selectFiltro.addEventListener("change", e => {
+      mostrarDenuncias(e.target.value);
+    });
+  </script>
+</body>
+</html>

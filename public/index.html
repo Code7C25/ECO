@@ -7,6 +7,16 @@
   <link rel="stylesheet" href="style.css" />
   <script defer src="menu.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Vladimir+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#906d93">
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service Worker registrado correctamente"))
+      .catch(err => console.log("Error al registrar Service Worker:", err));
+  }
+</script>
+
 </head>
 
 <body class="pagina-index">
