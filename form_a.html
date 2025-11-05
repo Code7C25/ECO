@@ -4,44 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ECO - Formularios Anónimos</title>
-  <link rel="stylesheet" href="style.css">
+
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
 </head>
+
 <body>
-  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
-  <ul id="menu" class="menu-hidden">
-    <li><a href="psicologo_panel.html">Volver al panel</a></li>
-  </ul>
+  <h2>Formularios Anónimos</h2>
+  <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p>
 
-  <main style="text-align:center; max-width:600px; margin:auto;">
-    <h2>Formularios Anónimos</h2>
-    <h3>Lista de formularios</h3>
-    <ul id="lista"></ul>
-  </main>
+  <ul id="lista" style="list-style:none; padding:0;"></ul>
 
-  <script src="menu.js"></script>
   <script>
     const lista = document.getElementById("lista");
-    const dbRef = firebase.firestore()
-      .collection("formularios")
-      .doc("anonimo")
-      .collection("items");
 
-    dbRef.orderBy("creado", "desc").onSnapshot(snapshot => {
-      lista.innerHTML = "";
-      if (snapshot.empty) {
-        lista.innerHTML = "<p>No hay formularios cargados aún.</p>";
-        return;
-      }
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="${data.link}" target="_blank">${data.titulo}</a>`;
-        lista.appendChild(li);
+    // Escuchar los formularios en tiempo real
+    db.collection("formularios")
+      .doc("anonimo")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        lista.innerHTML = ""; // limpiar lista
+
+        if (snapshot.empty) {
+          lista.innerHTML = "<p>No hay denuncias aún.</p>";
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const li = document.createElement("li");
+          li.style.border = "1px solid #ccc";
+          li.style.borderRadius = "8px";
+          li.style.margin = "10px 0";
+          li.style.padding = "10px";
+          li.style.textAlign = "left";
+
+          li.innerHTML = `
+            <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
+            <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
+            <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
+            <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
+            <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
+          `;
+          lista.appendChild(li);
+        });
       });
-    });
   </script>
 </body>
 </html>
