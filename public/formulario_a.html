@@ -1,21 +1,20 @@
-<!DOCTYPE html> <!-- Documento HTML5 -->
-<html lang="es"> <!-- Idioma del sitio: español -->
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8"> <!-- Soporte para acentos y caracteres especiales -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Diseño adaptable a celulares -->
-  <title>ECO - Denuncia Anónima</title> <!-- Título que aparece en la pestaña -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Denuncia Anónima</title>
 
-  <!-- Conexión a las librerías de Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script> <!-- Inicializa Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script> <!-- Permite autenticación -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script> <!-- Permite usar la base de datos Firestore -->
-  <script src="firebase.js"></script> <!-- Archivo local con la configuración de Firebase -->
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
 
-  <!-- Fuente moderna desde Google Fonts -->
+  <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* 🌿 ESTILOS GENERALES */
     body {
       font-family: "Quicksand", sans-serif;
       background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%);
@@ -110,6 +109,31 @@
       transform: scale(1.02);
     }
 
+    /* 🌸 Botón volver — versión más compacta */
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #b35dc1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      z-index: 1000;
+      width: auto; /* 👉 solo ocupa lo necesario */
+    }
+
+    .volver-btn:hover {
+      background-color: #9f4cad;
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
     #mensaje {
       margin-top: 20px;
       font-weight: 500;
@@ -130,35 +154,23 @@
 </head>
 
 <body>
+  <!-- 🌸 Botón Volver -->
+  <button class="volver-btn" onclick="volver()">← Volver</button>
+
   <h2>Denuncia Anónima</h2>
   <p>Este formulario es completamente confidencial. Contanos de forma anónima qué sucedió.</p>
 
   <form id="denunciaForm">
-    <!-- 🔽 CAMPO MODIFICADO -->
     <label for="curso">Curso donde ocurrió la situación (opcional):</label>
     <select id="curso" name="curso">
       <option value="">Seleccionar...</option>
-      <option value="1°A">1°A</option>
-      <option value="1°B">1°B</option>
-      <option value="1°C">1°C</option>
-      <option value="2°A">2°A</option>
-      <option value="2°B">2°B</option>
-      <option value="2°C">2°C</option>
-      <option value="3°A">3°A</option>
-      <option value="3°B">3°B</option>
-      <option value="3°C">3°C</option>
-      <option value="4°A">4°A</option>
-      <option value="4°B">4°B</option>
-      <option value="4°C">4°C</option>
-      <option value="5°A">5°A</option>
-      <option value="5°B">5°B</option>
-      <option value="5°C">5°C</option>
-      <option value="6°A">6°A</option>
-      <option value="6°B">6°B</option>
-      <option value="6°C">6°C</option>
-      <option value="7°A">7°A</option>
-      <option value="7°B">7°B</option>
-      <option value="7°C">7°C</option>
+      <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
+      <option value="2°A">2°A</option><option value="2°B">2°B</option><option value="2°C">2°C</option>
+      <option value="3°A">3°A</option><option value="3°B">3°B</option><option value="3°C">3°C</option>
+      <option value="4°A">4°A</option><option value="4°B">4°B</option><option value="4°C">4°C</option>
+      <option value="5°A">5°A</option><option value="5°B">5°B</option><option value="5°C">5°C</option>
+      <option value="6°A">6°A</option><option value="6°B">6°B</option><option value="6°C">6°C</option>
+      <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
     </select>
 
     <label for="tipo">Tipo de situación:</label>
@@ -224,6 +236,14 @@
         mensaje.style.color = "red";
       }
     });
+
+    function volver() {
+      if (document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    }
   </script>
 </body>
 </html>
