@@ -12,7 +12,7 @@
     body {
       font-family: "Quicksand", sans-serif; /* → Aplica la fuente Quicksand */
       background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%); /* → Fondo con degradado verde claro */
-      margin: 0; /* → Quita los márgenes por defecto */
+      margin: 0;
       padding: 0;
       color: #000000;
       min-height: 100vh; /* → Ocupa todo el alto de la pantalla */
@@ -26,6 +26,30 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 🌸 Botón Volver */
+    .volver-btn {
+      position: fixed; /* → Fijo en la pantalla */
+      top: 20px;
+      left: 20px;
+      background-color: #b35dc1; /* → Color violeta */
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      z-index: 1000;
+    }
+
+    .volver-btn:hover {
+      background-color: #9f4cad;
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     header {
@@ -129,6 +153,9 @@
 </head>
 
 <body>
+  <!-- 🌸 Botón Volver -->
+  <button class="volver-btn" onclick="volver()">← Volver</button>
+
   <header>
     <h2>Formularios Anónimos</h2> <!-- → Título principal -->
     <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p> <!-- → Subtítulo informativo -->
@@ -148,6 +175,11 @@
 
   <script>
     const lista = document.getElementById("lista"); // → Selecciona la lista donde se insertarán los datos
+
+    // → Función para el botón "Volver"
+    function volver() {
+      window.location.href = "psicologo_panel.html"; // 🔁 Redirige al panel del psicólogo
+    }
 
     // → Se conecta a la colección "formularios/anonimo/items" en Firestore
     db.collection("formularios")
