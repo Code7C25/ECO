@@ -1,24 +1,23 @@
-<!DOCTYPE html> <!-- Documento HTML5 -->
-<html lang="es"> <!-- Idioma del sitio -->
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8"> <!-- Permite el uso de acentos y caracteres especiales -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Diseño adaptable a celulares -->
-  <title>ECO - Denuncia Pública</title> <!-- Título de la pestaña -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Denuncia Pública</title>
 
-  <!-- Conexión a Firebase -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
 
-  <!-- Fuente moderna -->
+  <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* 🌿 ESTILOS GENERALES */
     body {
       font-family: "Quicksand", sans-serif;
-      background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%); /* Fondo violeta suave */
+      background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%);
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -51,7 +50,6 @@
       line-height: 1.4;
     }
 
-    /* 🌸 FORMULARIO DE DENUNCIA */
     form {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 18px;
@@ -127,19 +125,59 @@
       opacity: 0.8;
       letter-spacing: 0.5px;
     }
+
+    /* 🌀 Pantalla de carga */
+    #cargandoSesion {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #6a3c75;
+      font-weight: 600;
+      z-index: 999;
+    }
   </style>
 </head>
 
 <body>
-  <!-- 🟣 ENCABEZADO -->
-  <h2>Denuncia Pública</h2> <!-- Título principal -->
-  <p>Podés contarnos lo que está pasando. Tus datos estarán vinculados a tu usuario.</p> <!-- Descripción -->
+  <div id="cargandoSesion">Cargando sesión...</div> <!-- 🟣 Pantalla de carga -->
 
-  <!-- 🟢 FORMULARIO PRINCIPAL -->
+  <h2>Denuncia Pública</h2>
+  <p>Podés contarnos lo que está pasando. Tus datos estarán vinculados a tu usuario.</p>
+
   <form id="denunciaForm">
-    <label for="curso">Curso:</label>
-    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B" required>
-    <!-- Campo para ingresar el curso -->
+    <!-- 🏫 Curso donde ocurrió -->
+    <label for="curso">Curso donde ocurrió:</label>
+    <select id="curso" name="curso" required>
+      <option value="">Seleccionar curso...</option>
+      <option value="1°A">1°A</option>
+      <option value="1°B">1°B</option>
+      <option value="1°C">1°C</option>
+      <option value="2°A">2°A</option>
+      <option value="2°B">2°B</option>
+      <option value="2°C">2°C</option>
+      <option value="3°A">3°A</option>
+      <option value="3°B">3°B</option>
+      <option value="3°C">3°C</option>
+      <option value="4°A">4°A</option>
+      <option value="4°B">4°B</option>
+      <option value="4°C">4°C</option>
+      <option value="5°A">5°A</option>
+      <option value="5°B">5°B</option>
+      <option value="5°C">5°C</option>
+      <option value="6°A">6°A</option>
+      <option value="6°B">6°B</option>
+      <option value="6°C">6°C</option>
+      <option value="7°A">7°A</option>
+      <option value="7°B">7°B</option>
+      <option value="7°C">7°C</option>
+    </select>
 
     <label for="tipo">Tipo de situación:</label>
     <select id="tipo" required>
@@ -147,34 +185,37 @@
       <option value="Sufrí bullying">Sufrí bullying</option>
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
     </select>
-    <!-- Menú para elegir el tipo de situación -->
 
     <label for="descripcion">Descripción de la situación:</label>
     <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea>
-    <!-- Campo para escribir lo que sucedió -->
 
     <label for="participantes">Participantes (opcional):</label>
     <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo">
-    <!-- Campo opcional para nombrar involucrados -->
 
     <button type="submit">Enviar denuncia</button>
-    <!-- Botón para enviar -->
   </form>
 
-  <p id="mensaje"></p> <!-- Muestra mensajes de error o éxito -->
+  <p id="mensaje"></p>
 
-  <footer>ECO - Proyecto Escolar</footer> <!-- Pie de página -->
+  <footer>ECO - Proyecto Escolar</footer>
 
-  <!-- 🧩 SCRIPT PRINCIPAL -->
   <script>
     const form = document.getElementById("denunciaForm");
     const mensaje = document.getElementById("mensaje");
+    const cargandoSesion = document.getElementById("cargandoSesion");
 
-    // Evento que se ejecuta cuando el usuario envía el formulario
+    // 🔄 Espera a que Firebase confirme el usuario antes de mostrar el formulario
+    firebase.auth().onAuthStateChanged((user) => {
+      cargandoSesion.style.display = "none";
+      if (!user) {
+        mensaje.textContent = "⚠️ Debés iniciar sesión para enviar una denuncia pública.";
+        mensaje.style.color = "#b35dc1";
+      }
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Verifica si el usuario tiene sesión iniciada
       const user = firebase.auth().currentUser;
       if (!user || !user.email) {
         mensaje.textContent = "⚠️ Debés iniciar sesión para enviar una denuncia pública.";
@@ -182,21 +223,18 @@
         return;
       }
 
-      // Obtiene los datos del formulario
-      const curso = document.getElementById("curso").value.trim();
+      const curso = document.getElementById("curso").value;
       const tipo = document.getElementById("tipo").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
-      // Valida los campos obligatorios
-      if (!tipo || !descripcion) {
+      if (!curso || !tipo || !descripcion) {
         mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
         mensaje.style.color = "#b35dc1";
         return;
       }
 
       try {
-        // Guarda los datos en Firestore dentro de la colección 'publicos'
         await db.collection("formularios")
           .doc("publicos")
           .collection("items")
@@ -209,12 +247,10 @@
             creado: new Date()
           });
 
-        // Muestra mensaje de éxito
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         mensaje.style.color = "green";
         form.reset();
 
-        // Redirige a la página principal
         setTimeout(() => {
           window.location.href = "index.html";
         }, 2000);
@@ -228,3 +264,4 @@
   </script>
 </body>
 </html>
+
