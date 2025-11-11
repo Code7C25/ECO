@@ -1,107 +1,230 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECO - Mi diario personal</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!--- LIBRERÍAS DE FIREBASE --->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ECO - Diario</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* estilos puntuales para calendario */
+    .calendar-wrap { max-width:900px; margin:40px auto; background:rgba(255,255,255,0.9); padding:18px; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+    .calendar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .month-title { font-weight:600; color:#4B0082; }
+    .grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+    .day { padding:12px; min-height:90px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6)); border:1px solid rgba(0,0,0,0.04); cursor:pointer; position:relative; }
+    .day .date-num { position:absolute; top:8px; left:10px; font-size:0.9rem; color:#666; }
+    .entry-dot { width:10px; height:10px; border-radius:50%; position:absolute; right:8px; bottom:8px; }
+    .mood-legend { display:flex; gap:10px; justify-content:center; margin-top:12px; }
+    .mood-pill { padding:6px 10px; border-radius:16px; background:#f2f0f8; font-weight:600; color:#4B0082; }
+    /* modal */
+    .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); z-index:1000; }
+    .modal-card { background:white; padding:18px; border-radius:12px; width:90%; max-width:420px; }
+    .mood-btn { padding:10px 14px; margin-right:8px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
+  </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-</head>
-
-<body>
-  <!--- MENÚ SUPERIOR --->
-  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
-  <ul id="menu" class="menu-hidden">
-    <li><a href="index.html">🏠 Inicio</a></li>
-    <li><a href="herramientas.html">Herramientas propias</a></li>
-    <li><a href="diario.html">Mi diario personal</a></li>
-  </ul>
-
-  <p id="userSession" style="text-align:center; font-weight:500; margin-top:10px; color:#906d93;"></p>
-
-  <!--- CONTENIDO PRINCIPAL DEL DIARIO --->
-  <main style="text-align:center; max-width:600px; margin:auto;">
-    <h2>Mi diario personal 🕯️</h2>
-    <p>Este espacio es solo para vos. Nadie más podrá verlo ni acceder a lo que escribas.</p>
-
-    <!--  Permite seleccionar una fecha, escribir un texto y guardarlo en Firestore.-->
-    <div id="diario-usuario" style="display:none;">
-      <label for="fechaEntrada">Seleccioná una fecha:</label><br />
-      <input type="date" id="fechaEntrada" />
-      <textarea id="textoEntrada" placeholder="Escribí tus pensamientos..." rows="10" style="width:100%;margin-top:10px;"></textarea>
-      <button id="guardarBtn">Guardar entrada</button>
-      <p id="msgDiario"></p>
-    </div>
-    <!-- calendario para anonimos -->
-    <div id="diario-anonimo" style="display:none;">
-      <textarea placeholder="Podés escribir lo que sientas. No se guardará." rows="10" style="width:100%;margin-top:10px;"></textarea>
-    </div>
-  </main>
-
-
-  <script src="menu.js"></script>
   <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="menu-icon" style="display:none"></div>
+  <button class="home-btn" onclick="location.href='menu.html'">🏠</button>
 
-  
-  <!-- Controla la autenticación del usuario y el guardado de entradas en Firestore.-->
-  <script>
-    firebase.auth().onAuthStateChanged(async (user) => {
-      const userDiv = document.getElementById("diario-usuario");
-      const anonDiv = document.getElementById("diario-anonimo");
-      const msg = document.getElementById("msgDiario");
-      const textarea = document.getElementById("textoEntrada");
-      const fechaInput = document.getElementById("fechaEntrada");
+  <div style="max-width:1100px; margin:24px auto 0; padding:0 14px;">
+    <h2 style="text-align:center; color:#4B0082;">Mi diario emocional</h2>
+    <p style="text-align:center; color:#6b5a78;">Guardá cómo te sentiste cada día. Si estás logueado se guarda en tu cuenta; si no, queda en el dispositivo.</p>
 
-      if (user) {
-        // Si el usuario está autenticado, se muestra su diario personal.
-        userDiv.style.display = "block";
-        anonDiv.style.display = "none";
+    <div class="calendar-wrap" id="calendarWrap">
+      <div class="calendar-header">
+        <div>
+          <button id="prevMonth">◀</button>
+          <button id="nextMonth">▶</button>
+        </div>
+        <div class="month-title" id="monthTitle"></div>
+        <div><button onclick="location.href='index.html'">Volver</button></div>
+      </div>
 
-        const uid = user.uid;
-        const db = firebase.firestore();
+      <div class="grid" id="weekdayNames">
+        <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+      </div>
 
-        // Al cambiar la fecha, se busca la entrada guardada para ese día.
-        fechaInput.addEventListener("change", async () => {
-          const fecha = fechaInput.value;
-          if (!fecha) return;
-          const doc = await db.collection("diarios").doc(uid).collection("entradas").doc(fecha).get();
-          textarea.value = doc.exists ? doc.data().texto : "";
-          msg.textContent = doc.exists ? "Entrada cargada." : "Sin notas para este día.";
+      <div class="grid" id="daysGrid"></div>
+
+      <div class="mood-legend">
+        <span class="mood-pill">😢 Triste</span>
+        <span class="mood-pill">😐 Neutral</span>
+        <span class="mood-pill">🙂 Bien</span>
+        <span class="mood-pill">😄 Muy Bien</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" style="display:none;">
+    <div class="modal">
+      <div class="modal-card">
+        <h3 id="modalDateTitle">Fecha</h3>
+        <p>¿Cómo te sentiste hoy?</p>
+        <div style="margin-bottom:10px;">
+          <button class="mood-btn" style="background:#7fb3d5;color:white" data-mood="Muy bien">😄 Muy Bien</button>
+          <button class="mood-btn" style="background:#b2d8b2;color:#1b3d1b" data-mood="Bien">🙂 Bien</button>
+          <button class="mood-btn" style="background:#f2e08e;color:#6b5b00" data-mood="Neutral">😐 Neutral</button>
+          <button class="mood-btn" style="background:#f1a6a6;color:#5b1a1a" data-mood="Triste">😢 Triste</button>
+        </div>
+        <textarea id="entryText" placeholder="Escribí una nota (opcional)" rows="4" style="width:100%;"></textarea>
+        <div style="text-align:right; margin-top:10px;">
+          <button id="saveEntry" style="padding:8px 14px; border-radius:8px;">Guardar</button>
+          <button id="cancelEntry" style="padding:8px 14px; margin-left:8px;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // calendario básico
+  const daysGrid = document.getElementById('daysGrid');
+  const monthTitle = document.getElementById('monthTitle');
+  const prevBtn = document.getElementById('prevMonth');
+  const nextBtn = document.getElementById('nextMonth');
+  let current = new Date();
+
+  // data storage helpers
+  function getStorageKey() {
+    const user = firebase.auth().currentUser;
+    return user ? `diario_${user.uid}` : 'diario_local';
+  }
+
+  async function saveEntry(dateISO, mood, text) {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      // guardo en Firestore (colección diarios -> doc uid -> entradas -> doc fecha)
+      await firebase.firestore().collection('diarios').doc(user.uid).collection('entradas').doc(dateISO).set({
+        mood, text, guardado: new Date()
+      });
+    } else {
+      // localStorage
+      const key = getStorageKey();
+      const store = JSON.parse(localStorage.getItem(key) || '{}');
+      store[dateISO] = { mood, text, guardado: new Date().toISOString() };
+      localStorage.setItem(key, JSON.stringify(store));
+    }
+  }
+
+  async function loadEntry(dateISO) {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const doc = await firebase.firestore().collection('diarios').doc(user.uid).collection('entradas').doc(dateISO).get();
+      return doc.exists ? doc.data() : null;
+    } else {
+      const key = getStorageKey();
+      const store = JSON.parse(localStorage.getItem(key) || '{}');
+      return store[dateISO] || null;
+    }
+  }
+
+  function renderCalendar(date) {
+    daysGrid.innerHTML = '';
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    monthTitle.textContent = date.toLocaleString('es-AR', { month:'long', year:'numeric' });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+
+    // blank days
+    for (let i=0;i<firstDay;i++) {
+      const blank = document.createElement('div');
+      blank.className='day';
+      blank.style.background='transparent';
+      blank.style.border='none';
+      blank.style.cursor='default';
+      daysGrid.appendChild(blank);
+    }
+
+    for (let d=1; d<=daysInMonth; d++) {
+      const day = document.createElement('div');
+      day.className='day';
+      day.innerHTML = `<div class="date-num">${d}</div>`;
+      const dt = new Date(year, month, d);
+      const iso = dt.toISOString().slice(0,10);
+
+      // cargar entrada y si existe mostrar punto de color
+      loadEntry(iso).then(entry => {
+        if (entry && entry.mood) {
+          const dot = document.createElement('div');
+          dot.className='entry-dot';
+          // map mood to color
+          const color = entry.mood.includes('Muy') ? '#3EC300' :
+                        entry.mood.includes('Bien') ? '#7bbf61' :
+                        entry.mood.includes('Neutral') ? '#f2c94c' : '#f06262';
+          dot.style.background = color;
+          day.appendChild(dot);
+        }
+      });
+
+      // click para modal
+      day.addEventListener('click', () => openModal(iso, dt));
+      daysGrid.appendChild(day);
+    }
+  }
+
+  // modal logic
+  const modal = document.getElementById('modal');
+  const modalDateTitle = document.getElementById('modalDateTitle');
+  const entryText = document.getElementById('entryText');
+  let selectedDateISO = null;
+  document.getElementById('cancelEntry').addEventListener('click', closeModal);
+  document.getElementById('saveEntry').addEventListener('click', async () => {
+    const moodBtn = document.querySelector('.mood-btn[aria-pressed="true"]');
+    const mood = moodBtn ? moodBtn.dataset.mood : null;
+    const text = entryText.value.trim();
+    if (!mood) {
+      alert('Elegí cómo te sentiste.');
+      return;
+    }
+    await saveEntry(selectedDateISO, mood, text);
+    closeModal();
+    // re-render
+    renderCalendar(current);
+  });
+
+  // mood button toggle
+  document.querySelectorAll('.mood-btn').forEach(btn=>{
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mood-btn').forEach(b=> b.removeAttribute('aria-pressed'));
+      btn.setAttribute('aria-pressed','true');
+    });
+  });
+
+  function openModal(iso, dt) {
+    selectedDateISO = iso;
+    modalDateTitle.textContent = dt.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    entryText.value = '';
+    document.querySelectorAll('.mood-btn').forEach(b=> b.removeAttribute('aria-pressed'));
+    loadEntry(iso).then(e=>{
+      if (e) {
+        // preselect mood
+        document.querySelectorAll('.mood-btn').forEach(b=>{
+          if (b.dataset.mood === e.mood) b.setAttribute('aria-pressed','true');
         });
-
-        // Guarda o actualiza la entrada del día seleccionado.
-        document.getElementById("guardarBtn").addEventListener("click", async () => {
-          const fecha = fechaInput.value;
-          const texto = textarea.value.trim();
-          if (!fecha) {
-            msg.textContent = "Elegí una fecha.";
-            msg.style.color = "red";
-            return;
-          }
-
-          await db.collection("diarios").doc(uid).collection("entradas").doc(fecha).set({
-            texto,
-            guardado: new Date().toISOString()
-          });
-
-          msg.textContent = "Entrada guardada ✅";
-          msg.style.color = "green";
-        });
-
-      } else {
-        // Si el usuario NO está autenticado, se muestra el modo anónimo.
-        anonDiv.style.display = "block";
-        userDiv.style.display = "none";
+        entryText.value = e.text || '';
       }
     });
-  </script>
+    modal.style.display = 'block';
+  }
 
-  <button onclick="window.location.href='index.html'">
-      🏠 Página principal
-  </button>
+  function closeModal() { modal.style.display='none'; selectedDateISO=null; }
+
+  // month navigation
+  prevBtn.addEventListener('click', ()=> { current = new Date(current.getFullYear(), current.getMonth()-1,1); renderCalendar(current); });
+  nextBtn.addEventListener('click', ()=> { current = new Date(current.getFullYear(), current.getMonth()+1,1); renderCalendar(current); });
+
+  // initial
+  renderCalendar(current);
+
+  // si cambia auth (pasa de anónimo a logueado mientras se queda en la página) re-render
+  firebase.auth().onAuthStateChanged(()=> renderCalendar(current));
+</script>
 </body>
 </html>
+

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Registrarse</title>
@@ -13,16 +12,10 @@
 </head>
 
 <body class="pagina-registro">
-
-  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
-  <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
-
-  <ul id="menu" class="menu-hidden">
-    <li><a href="index.html">🏠 Inicio</a></li>
-    <li><a href="herramientas.html">Herramientas propias</a></li>
-    <li><a href="diario.html">Mi diario personal</a></li>
-  </ul>
-
+  <!-- Botón de inicio reemplazando los tres puntos -->
+  <div class="home-btn" onclick="window.location.href='index.html'">
+    <img src="icon-home.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8; cursor:pointer;">
+  </div>
 
   <main>
     <h2>Crear una cuenta</h2>
@@ -34,56 +27,69 @@
       <button id="registerBtn">Registrarse</button>
     </div>
 
-
     <div id="gracias" style="display:none; text-align:center;">
       <h2>💜 Gracias por confiar en nosotros 💜</h2>
       <p>Tu cuenta fue creada con éxito.</p>
-      <button onclick="window.location.href='login.html'">Ir al inicio de sesión</button>
+      <p>Redirigiendo al menú...</p>
     </div>
   </main>
-  <script src="menu.js"></script>
+
   <script src="firebase.js"></script>
   <script>
-  document.getElementById("registerBtn").addEventListener("click", async () => {
-    const email = document.getElementById("regEmail").value.trim();
-    const pass = document.getElementById("regPass").value.trim();
-    const curso = document.getElementById("regCurso").value.trim();
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      alert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
-      return;
-    }
-
-    if (pass.length < 6) {
-      alert("La contraseña debe tener al menos 6 caracteres.");
-      return;
-    }
-
-    if (curso === "") {
-      alert("Por favor, completá el campo de curso.");
-      return;
-    }
-
-    try {
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, pass);
-      const user = userCredential.user;
-      await firebase.firestore().collection("usuarios").doc(user.uid).set({
-        email: email,
-        curso: curso,
-        fechaRegistro: new Date()
-      });
-      document.getElementById("registerForm").style.display = "none";
-      document.getElementById("gracias").style.display = "block";
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("Este correo ya está registrado.");
-      } else if (error.code === "auth/invalid-email") {
-        alert("Correo no válido.");
-      } else {
-        alert("Ocurrió un error: " + error.message);
+    // 🚀 Si ya está logueado, entra directo
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("ecoUserLogged") === "true") {
+        window.location.href = "menu.html";
       }
-    }
-  });
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const email = document.getElementById("regEmail").value.trim();
+      const pass = document.getElementById("regPass").value.trim();
+      const curso = document.getElementById("regCurso").value.trim();
+
+      const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Por favor, ingresá un correo válido.");
+        return;
+      }
+      if (pass.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+      if (curso === "") {
+        alert("Por favor, completá el campo de curso.");
+        return;
+      }
+
+      try {
+        document.getElementById("registerBtn").innerText = "Registrando...";
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+        const user = userCredential.user;
+
+        await firebase.firestore().collection("usuarios").doc(user.uid).set({
+          email: email,
+          curso: curso,
+          fechaRegistro: new Date(),
+        });
+
+        localStorage.setItem("usuarioEmail", email);
+        localStorage.setItem("ecoUserLogged", "true");
+
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("gracias").style.display = "block";
+
+        setTimeout(() => {
+          window.location.href = "menu.html";
+        }, 1500);
+      } catch (error) {
+        if (error.code === "auth/email-already-in-use") {
+          alert("Este correo ya está registrado.");
+        } else {
+          alert("Error: " + error.message);
+        }
+      }
+    });
   </script>
 </body>
 </html>
