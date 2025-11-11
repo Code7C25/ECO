@@ -7,12 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cardo&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ======== RESET ======== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -26,35 +21,33 @@
     .navbar {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
       height: 70px;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 70px 1fr 180px; /* logo | centrado | usuario */
       align-items: center;
       padding: 0 40px;
       z-index: 100;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      gap: 10px;
     }
 
     .nav-logo {
       width: 70px;
-      height: auto;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-
-    .nav-logo:hover {
-      transform: scale(1.08);
-    }
+    .nav-logo:hover { transform: scale(1.08); }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
-      align-items: center;
       justify-content: center;
-      flex: 1;
+      align-items: center;
+      gap: 2rem;
+      text-align: center;
     }
 
     .nav-links a,
@@ -83,34 +76,23 @@
     }
 
     .nav-links a:hover,
-    .dropdown-btn:hover {
-      color: #8b5bd1;
-    }
-
+    .dropdown-btn:hover { color: #8b5bd1; }
     .nav-links a:hover::after,
-    .dropdown-btn:hover::after {
-      width: 100%;
-    }
+    .dropdown-btn:hover::after { width: 100%; }
 
-    /* ======== DROPDOWN ======== */
-    .dropdown {
-      position: relative;
-    }
-
+    .dropdown { position: relative; }
     .dropdown-content {
       display: none;
       position: absolute;
-      top: 35px;
-      left: 0;
-      background: rgba(255, 255, 255, 0.95);
+      top: 35px; left: 0;
+      background: rgba(255,255,255,0.95);
       backdrop-filter: blur(6px);
       border-radius: 10px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
       overflow: hidden;
       min-width: 160px;
       animation: fadeIn 0.3s ease;
     }
-
     .dropdown-content a {
       display: block;
       padding: 10px 15px;
@@ -118,32 +100,31 @@
       text-decoration: none;
       transition: background 0.2s ease;
     }
-
     .dropdown-content a:hover {
       background: #e7dbff;
       color: #4c195d;
     }
+    .dropdown:hover .dropdown-content { display: block; }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
+    /* ======== USUARIO ======== */
+    #userSection {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 180px;
     }
-
-    /* ======== USUARIO / LOGIN ======== */
     .user-icon {
       width: 38px;
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-
-    .user-icon:hover {
-      transform: scale(1.1);
-    }
+    .user-icon:hover { transform: scale(1.1); }
 
     .auth-buttons {
       display: flex;
       gap: 10px;
+      justify-content: flex-end;
     }
-
     .auth-buttons button {
       background-color: #d96fc0;
       border: none;
@@ -155,7 +136,6 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-
     .auth-buttons button:hover {
       background-color: #b94fa3;
       transform: translateY(-2px);
@@ -173,9 +153,7 @@
       padding: 0 20px;
     }
 
-    .hero-content {
-      animation: fadeUp 1.2s ease-out;
-    }
+    .hero-content { animation: fadeUp 1.2s ease-out; }
 
     .welcome-text {
       font-family: 'Pinyon Script', cursive;
@@ -221,7 +199,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: rgba(217, 111, 192, 0.9);
+      background-color: rgba(217,111,192,0.9);
       border: none;
       color: white;
       font-weight: 600;
@@ -233,13 +211,11 @@
       font-size: 0.9rem;
       display: none;
     }
-
     .logout-btn:hover {
       background-color: #b94fa3;
       transform: translateY(-3px);
     }
 
-    /* ======== ANIMACIONES ======== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(25px); }
       to { opacity: 1; transform: translateY(0); }
@@ -256,25 +232,24 @@
       .slogan { font-size: 1rem; }
       .btn-report { font-size: 1rem; padding: 12px 32px; }
       .nav-links { gap: 1rem; }
+      .navbar { grid-template-columns: 60px 1fr 120px; padding: 0 18px; }
     }
   </style>
 </head>
 
 <body>
-
-  <!-- Barra superior -->
   <header class="navbar">
     <img src="logo-eco.png" alt="ECO Logo" class="nav-logo" onclick="window.location.href='menu.html'">
 
-    <nav class="nav-links">
-      <a href="formulario_p.html">Formulario</a>
+    <nav class="nav-links" id="navLinks">
+      <a id="formularioLink" href="#">Formulario</a>
       <div class="dropdown">
         <button class="dropdown-btn">Herramientas</button>
         <div class="dropdown-content">
           <a href="respiracion.html">Respiración guiada</a>
           <a href="diario.html">Diario emocional</a>
-          <a href="meditacion.html">Meditación breve</a>
-          <a href="recursos.html">Recursos útiles</a>
+          <a href="consejos.html">Consejos</a>
+          <a href="afirmaciones.html">Afirmaciones</a>
         </div>
       </div>
       <a href="sobre.html">Sobre ECO</a>
@@ -283,30 +258,39 @@
     <div id="userSection"></div>
   </header>
 
-  <!-- Contenido principal -->
   <section class="hero">
     <div class="hero-content">
       <h1 class="welcome-text">Bienvenido a</h1>
       <img src="eco-logo.svg" alt="ECO Logo" class="eco-logo">
       <p class="slogan">Tu voz importa, estamos para ayudarte y acompañarte</p>
-      <button class="btn-report" onclick="window.location.href='formulario_a.html'">Reportar caso</button>
+      <button class="btn-report" id="reportarBtn">Reportar caso</button>
     </div>
   </section>
 
-  <!-- Botón cerrar sesión -->
   <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
 
   <script>
-    // === CONTROL DE SESIÓN ===
+    // --- CONTROL DE SESIÓN ---
     const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
+    const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
     const userSection = document.getElementById('userSection');
     const logoutBtn = document.getElementById('logoutBtn');
+    const formularioLink = document.getElementById('formularioLink');
+    const reportarBtn = document.getElementById('reportarBtn');
 
-    if (userLoggedIn) {
-      userSection.innerHTML = `
-        <img src="user-icon.png" alt="Usuario" class="user-icon" onclick="window.location.href='perfil.html'">
-      `;
+    // CENTRADO PERFECTO de botones del menú
+    const nav = document.querySelector('.nav-links');
+    nav.style.margin = '0 auto';
+    nav.style.justifyContent = 'center';
+    nav.style.alignItems = 'center';
+    nav.style.textAlign = 'center';
+
+    // --- CONFIG SEGÚN ESTADO ---
+    if (userLoggedIn && !anonimo) {
+      userSection.innerHTML = `<img src="user-icon.png" alt="Usuario" class="user-icon" onclick="window.location.href='perfil.html'">`;
       logoutBtn.style.display = 'block';
+      formularioLink.href = 'formulario_p.html';
+      reportarBtn.onclick = () => window.location.href = 'formulario_p.html';
     } else {
       userSection.innerHTML = `
         <div class="auth-buttons">
@@ -315,15 +299,17 @@
         </div>
       `;
       logoutBtn.style.display = 'none';
+      formularioLink.href = 'formulario_a.html';
+      reportarBtn.onclick = () => window.location.href = 'formulario_a.html';
     }
 
-    // Cerrar sesión
+    // --- CERRAR SESIÓN ---
     logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
+      localStorage.removeItem('ecoUserLogged');
+      localStorage.removeItem('ecoAnonimo');
       alert('Sesión cerrada correctamente.');
       window.location.href = 'index.html';
     });
   </script>
-
 </body>
 </html>

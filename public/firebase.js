@@ -39,8 +39,7 @@ function mostrarMensaje(idElemento, mensaje, color = "red") {
 /* --------------------------------------------------
    SECCIÓN DE LOGIN (INICIO DE SESIÓN)
    Valida los campos de correo y contraseña, inicia
-   sesión con Firebase Auth y redirige a denuncia.html
-   si el login es exitoso.
+   sesión con Firebase Auth y redirige al menú.
 -------------------------------------------------- */
 const loginBtn = document.getElementById("loginBtn");
 if (loginBtn) {
@@ -59,7 +58,14 @@ if (loginBtn) {
     try {
       await auth.signInWithEmailAndPassword(email, pass);
       mostrarMensaje(mensajeEl, "Inicio de sesión correcto ✅", "green");
-      setTimeout(() => (window.location.href = "denuncia.html"), 1000);
+
+      // 🔹 Guardar sesión local para que menu.html lo detecte
+      localStorage.setItem("ecoUserLogged", "true");
+      localStorage.setItem("ecoAnonimo", "false");
+      localStorage.setItem("usuarioEmail", email);
+
+      // 🔹 Redirección rápida al menú
+      window.location.href = "menu.html";
     } catch (e) {
       console.error("Error al iniciar sesión:", e.code);
 
@@ -79,7 +85,7 @@ if (loginBtn) {
    SECCIÓN DE REGISTRO DE USUARIO
    Permite crear una nueva cuenta con email, contraseña
    y curso. Guarda los datos en la colección “usuarios”
-   de Firestore.
+   de Firestore y redirige al menú.
 -------------------------------------------------- */
 const registerBtn = document.getElementById("registerBtn");
 if (registerBtn) {
@@ -106,8 +112,20 @@ if (registerBtn) {
         creado: new Date().toISOString()
       });
 
+      // 🔹 Guardar sesión inmediatamente para el menú
+      localStorage.setItem("ecoUserLogged", "true");
+      localStorage.setItem("ecoAnonimo", "false");
+      localStorage.setItem("usuarioEmail", email);
+
+      // Mostrar mensaje de agradecimiento
       document.getElementById("registerForm").style.display = "none";
       document.getElementById("gracias").style.display = "block";
+
+      // 🔹 Redirigir rápido al menú
+      setTimeout(() => {
+        window.location.href = "menu.html";
+      }, 400);
+
     } catch (e) {
       console.error("Error al registrar:", e.code);
 
@@ -137,7 +155,6 @@ if (psicoBtn) {
     const clave = document.getElementById("psicoClave").value;
     const msgId = "psicoMsg";
 
-    /* Función local para mostrar mensajes en esta sección */
     function mostrarMensajeLocal(idElemento, mensaje, color = "red") {
       const el = document.getElementById(idElemento);
       if (el) {
@@ -164,7 +181,6 @@ if (psicoBtn) {
         return;
       }
 
-      /* Recorre los resultados para verificar si la clave coincide */
       let accesoPermitido = false;
       snapshot.forEach(doc => {
         const data = doc.data();
@@ -200,7 +216,6 @@ firebase.auth().onAuthStateChanged((user) => {
   sessionEl.innerHTML = "";
 
   if (user && user.email) {
-
     const spanEmail = document.createElement("span");
     spanEmail.textContent = `Estás en la sesión de: ${user.email}`;
     spanEmail.style.marginRight = "10px";
@@ -218,6 +233,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
     btnLogout.addEventListener("click", () => {
       firebase.auth().signOut().then(() => {
+        localStorage.clear();
         window.location.href = "index.html";
       });
     });

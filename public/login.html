@@ -12,7 +12,7 @@
 </head>
 
 <body class="pagina-login">
-  <!-- Botón de inicio reemplazando los tres puntos -->
+  <!-- Botón de inicio -->
   <div class="home-btn" onclick="window.location.href='index.html'">
     <img src="icon-home.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8; cursor:pointer;">
   </div>
@@ -29,14 +29,13 @@
 
   <script src="firebase.js"></script>
   <script>
-    // 🚀 Si el usuario ya está logueado, entra directo
+    // 🚀 Si ya está logueado, entra directo
     window.addEventListener("load", () => {
       if (localStorage.getItem("ecoUserLogged") === "true") {
         window.location.href = "menu.html";
       }
     });
 
-    // 🔐 Inicio de sesión real
     document.getElementById("loginBtn").addEventListener("click", async () => {
       const email = document.getElementById("loginEmail").value.trim();
       const pass = document.getElementById("loginPass").value.trim();
@@ -54,33 +53,41 @@
       try {
         document.getElementById("loginBtn").innerText = "Verificando...";
 
-        // 🔍 Verificar si existe en la base de datos
         const snapshot = await firebase.firestore()
           .collection("usuarios")
           .where("email", "==", email)
-          .where("password", "==", pass)
           .get();
 
-        if (!snapshot.empty) {
-          alert("Inicio de sesión exitoso ✅");
+        let usuarioValido = false;
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.password === pass) {
+            usuarioValido = true;
+          }
+        });
+
+        if (usuarioValido) {
+          // Guardar sesión antes de redirigir
           localStorage.setItem("usuarioEmail", email);
           localStorage.setItem("ecoUserLogged", "true");
-          // Pequeño delay para una transición agradable
-          setTimeout(() => {
-            window.location.href = "menu.html";
-          }, 600);
+          localStorage.setItem("ecoAnonimo", "false");
+
+          alert("Inicio de sesión exitoso ✅");
+
+          // 🔥 Redirección inmediata al menú
+          window.location.href = "menu.html";
         } else {
-          alert("Correo o contraseña incorrectos. Verificá los datos e intentá nuevamente.");
-          document.getElementById("loginBtn").innerText = "Ingresar";
+          alert("Correo o contraseña incorrectos.");
         }
+
+        document.getElementById("loginBtn").innerText = "Ingresar";
       } catch (error) {
         console.error(error);
-        alert("Ocurrió un error al conectar con la base de datos.");
+        alert("Error al conectar con la base de datos.");
         document.getElementById("loginBtn").innerText = "Ingresar";
       }
     });
   </script>
 </body>
 </html>
-
-
