@@ -1,0 +1,229 @@
+<!DOCTYPE html> <!-- Documento HTML5 -->
+<html lang="es"> <!-- Idioma del sitio: español -->
+<head>
+  <meta charset="UTF-8"> <!-- Soporte para acentos y caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Diseño adaptable a celulares -->
+  <title>ECO - Denuncia Anónima</title> <!-- Título que aparece en la pestaña -->
+
+  <!-- Conexión a las librerías de Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script> <!-- Inicializa Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script> <!-- Permite autenticación -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script> <!-- Permite usar la base de datos Firestore -->
+  <script src="firebase.js"></script> <!-- Archivo local con la configuración de Firebase -->
+
+  <!-- Fuente moderna desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* 🌿 ESTILOS GENERALES */
+    body {
+      font-family: "Quicksand", sans-serif; /* Tipo de letra */
+      background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%); /* Fondo con degradado violeta-rosado */
+      margin: 0;
+      padding: 0;
+      min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.8s ease-in-out; /* Animación de aparición */
+    }
+
+    /* Efecto suave al cargar */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Título principal */
+    h2 {
+      color: #3a2f3b;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Texto explicativo debajo del título */
+    p {
+      color: #4a4a4a;
+      max-width: 400px;
+      text-align: center;
+      font-size: 1rem;
+      margin-bottom: 25px;
+      line-height: 1.4;
+    }
+
+    /* 🌸 FORMULARIO DE DENUNCIA */
+    form {
+      background: rgba(255, 255, 255, 0.95); /* Fondo blanco con transparencia */
+      border-radius: 18px; /* Bordes redondeados */
+      padding: 35px 40px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      width: 90%;
+      max-width: 480px;
+      backdrop-filter: blur(6px); /* Efecto vidrio */
+      transition: transform 0.2s ease; /* Animación al pasar el mouse */
+    }
+
+    form:hover {
+      transform: translateY(-3px); /* Se eleva ligeramente */
+    }
+
+    /* Etiquetas de cada campo */
+    label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    /* Campos de texto, menú desplegable y área de texto */
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-family: inherit;
+      resize: none;
+      transition: all 0.2s ease;
+      background-color: #fafafa;
+    }
+
+    /* Efecto cuando el campo está activo */
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #b35dc1; /* Borde violeta */
+      background-color: #fff;
+      box-shadow: 0 0 0 2px rgba(179, 93, 193, 0.2);
+    }
+
+    /* Botón de envío */
+    button {
+      background-color: #b35dc1;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.1s ease;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #9f4cad; /* Más oscuro al pasar el mouse */
+      transform: scale(1.02);
+    }
+
+    /* Mensaje de confirmación o error */
+    #mensaje {
+      margin-top: 20px;
+      font-weight: 500;
+      color: #333;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    /* Pie de página fijo abajo */
+    footer {
+      position: fixed;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: #844e91;
+      opacity: 0.8;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🟣 ENCABEZADO -->
+  <h2>Denuncia Anónima</h2> <!-- Título principal -->
+  <p>Este formulario es completamente confidencial. Contanos de forma anónima qué sucedió.</p> <!-- Texto informativo -->
+
+  <!-- 🟢 FORMULARIO PRINCIPAL -->
+  <form id="denunciaForm">
+    <label for="curso">Curso (opcional):</label> <!-- Campo opcional -->
+    <input type="text" id="curso" name="curso" placeholder="Ej: 4°B">
+
+    <label for="tipo">Tipo de situación:</label> <!-- Campo obligatorio -->
+    <select id="tipo" required>
+      <option value="">Seleccionar...</option>
+      <option value="Sufrí bullying">Sufrí bullying</option>
+      <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
+    </select>
+
+    <label for="descripcion">Descripción de la situación:</label> <!-- Campo obligatorio -->
+    <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea>
+
+    <label for="participantes">Participantes (opcional):</label> <!-- Campo opcional -->
+    <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo">
+
+    <button type="submit">Enviar denuncia</button> <!-- Botón para enviar los datos -->
+  </form>
+
+  <!-- Texto donde se mostrará el mensaje de éxito o error -->
+  <p id="mensaje"></p>
+
+  <!-- Pie de página -->
+  <footer>ECO - Proyecto Escolar</footer>
+
+  <!-- 🧩 SCRIPT PRINCIPAL -->
+  <script>
+    // Referencias a elementos del formulario
+    const form = document.getElementById("denunciaForm");
+    const mensaje = document.getElementById("mensaje");
+
+    // Escucha el evento de "enviar" del formulario
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Evita que se recargue la página al enviar
+
+      // Obtiene los valores de cada campo
+      const curso = document.getElementById("curso").value.trim();
+      const tipo = document.getElementById("tipo").value;
+      const descripcion = document.getElementById("descripcion").value.trim();
+      const participantes = document.getElementById("participantes").value.trim();
+
+      // Verifica que los campos obligatorios no estén vacíos
+      if (!tipo || !descripcion) {
+        mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
+        mensaje.style.color = "#b35dc1";
+        return;
+      }
+
+      try {
+        // Envía los datos a la base de datos de Firestore
+        await db.collection("formularios")
+          .doc("anonimo")
+          .collection("items")
+          .add({
+            curso: curso || null,            // Guarda el curso si fue ingresado
+            tipo,                            // Tipo de denuncia
+            descripcion,                     // Texto de la denuncia
+            participantes: participantes || null, // Personas involucradas (opcional)
+            creado: new Date()               // Fecha y hora del envío
+          });
+
+        // Muestra mensaje de éxito
+        mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
+        mensaje.style.color = "green";
+        form.reset(); // Limpia el formulario
+
+        // Redirige automáticamente al inicio después de 2 segundos
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+
+      } catch (error) {
+        // Si ocurre un error al enviar los datos
+        console.error("Error al enviar denuncia:", error);
+        mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
+        mensaje.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>

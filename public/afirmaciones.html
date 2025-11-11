@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Afirmaciones — ECO</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body{font-family:'Poppins',sans-serif; background:linear-gradient(160deg,#f9f6ff,#fff7fb); color:#3c2a4d; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+    .card{background:white;padding:24px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.06); max-width:560px; text-align:center;}
+    .affirmation{font-size:1.6rem;color:#4B0082;margin-bottom:12px;}
+    button{padding:10px 14px;border-radius:10px;border:none;background:#c368d1;color:white;font-weight:600;cursor:pointer;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Afirmaciones</h2>
+    <div id="affirmation" class="affirmation">Estoy a salvo y puedo pedir ayuda.</div>
+    <p id="explain" style="color:#555">Repetir afirmaciones puede ayudarte a calmar la mente y centrarte en recursos positivos.</p>
+    <div style="margin-top:12px;">
+      <button id="nextBtn">Siguiente</button>
+      <button onclick="location.href='menu.html'">Volver</button>
+    </div>
+  </div>
+
+  <script>
+    const affirmations = [
+      { text:'Estoy a salvo y puedo pedir ayuda.', explain:'Frase para centrar y recordar que pedir apoyo está bien.'},
+      { text:'Mi voz importa.', explain:'Recordatorio de que tu experiencia es válida.'},
+      { text:'Puedo controlar mi respiración y calmarme.', explain:'Enfoca en la regulación corporal.'},
+      { text:'No estoy solo/a — puedo hablar con alguien.', explain:'Invita a la conexión con otros.'}
+    ];
+    let idx = 0;
+    const el = document.getElementById('affirmation');
+    const ex = document.getElementById('explain');
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      idx = (idx+1) % affirmations.length;
+      el.textContent = affirmations[idx].text;
+      ex.textContent = affirmations[idx].explain;
+    });
+  </script>
+</body>
+</html>
+

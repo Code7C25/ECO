@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Respiración guiada — ECO</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background: linear-gradient(160deg,#f4eefd,#f7f3ff); display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:'Poppins',sans-serif; color:#3c2a4d; }
+    .card { background:white; padding:28px; border-radius:18px; box-shadow:0 12px 30px rgba(0,0,0,0.08); width:92%; max-width:520px; text-align:center;}
+    .circle { width:180px; height:180px; border-radius:50%; margin:18px auto; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff; background: linear-gradient(135deg,#c368d1,#9d5acb);}
+    .controls { display:flex; gap:12px; justify-content:center; margin-top:12px; }
+    button { padding:10px 14px; border-radius:12px; border:none; cursor:pointer; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Respiración 4 — 4 — 4</h2>
+    <p>Inhalá 4s — retené 4s — exhalá 4s. Técnica para bajar la activación y volver al presente.</p>
+
+    <div class="circle" id="circle">4</div>
+
+    <div class="controls">
+      <button id="startBtn" style="background:#c368d1;color:white;">Iniciar</button>
+      <button id="stopBtn" style="background:#eee;color:#333;">Detener</button>
+    </div>
+
+    <p style="margin-top:14px; color:#555;">Beneficios: regula la respiración, calma la ansiedad momentánea y mejora la atención.</p>
+    <button onclick="location.href='menu.html'">Volver</button>
+  </div>
+
+<script>
+  let timer=null;
+  const circle = document.getElementById('circle');
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const phases = ['Inhalá','Retené','Exhalá'];
+  let phaseIndex = 0;
+  let counter = 4;
+
+  function tick() {
+    circle.textContent = counter;
+    // simple scale animation:
+    circle.style.transform = `scale(${1 + (4-counter)/12})`;
+    if (counter === 0) {
+      phaseIndex = (phaseIndex+1) % 3;
+      counter = 4;
+      // small color switch
+      if (phaseIndex===0) circle.style.background = 'linear-gradient(135deg,#c368d1,#9d5acb)';
+      else if (phaseIndex===1) circle.style.background = 'linear-gradient(135deg,#9dd1c3,#6fbf9f)';
+      else circle.style.background = 'linear-gradient(135deg,#f1b2b2,#f08a8a)';
+    } else {
+      counter--;
+    }
+  }
+
+  startBtn.addEventListener('click', () => {
+    clearInterval(timer);
+    // reset
+    phaseIndex = 0; counter = 4;
+    circle.style.background = 'linear-gradient(135deg,#c368d1,#9d5acb)';
+    tick();
+    timer = setInterval(tick, 1000);
+  });
+  stopBtn.addEventListener('click', () => { clearInterval(timer); circle.style.transform='scale(1)'; circle.textContent='4'; });
+</script>
+</body>
+</html>

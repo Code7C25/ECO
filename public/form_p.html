@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"> <!-- Define el tipo de caracteres (permite usar tildes y eñes) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajuste para que se vea bien en celulares -->
+  <title>ECO - Formularios Públicos</title> <!-- Título que aparece en la pestaña del navegador -->
+
+  <!-- Fuente externa de Google (Quicksand) -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Scripts de Firebase (para conectar con base de datos y autenticación) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script> <!-- Archivo donde está la configuración de Firebase -->
+
+  <style>
+    /* ---------- ESTILOS GENERALES ---------- */
+    body {
+      font-family: "Quicksand", sans-serif; /* Aplica la fuente */
+      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%); /* Fondo degradado */
+      margin: 0;
+      padding: 0;
+      color: #2c2b2b; /* Color del texto principal */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh; /* Ocupa toda la pantalla */
+      animation: fadeIn 0.8s ease-in-out; /* Efecto de entrada */
+    }
+
+    /* Animación suave al cargar */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- ENCABEZADO ---------- */
+    header {
+      background: transparent;
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    header h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2c2b2b;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      color: #2c2b2b;
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+
+    /* ---------- INFO DE USUARIO ---------- */
+     #userInfo {
+  background: transparent; /* Sin fondo */
+  padding: 0;
+  border-radius: 0;
+  margin-bottom: 20px;
+  box-shadow: none; /* Sin sombra */
+  color: #555;
+  font-size: 0.95rem;
+  text-align: center;
+  font-style: italic;
+}
+
+
+    /* ---------- LISTA DE DENUNCIAS ---------- */
+    #lista {
+      width: 90%;
+      max-width: 750px;
+      margin: 25px 0 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px; /* Espacio entre denuncias */
+      padding: 0;
+      list-style: none; /* Saca los puntos de lista */
+    }
+
+    /* Cada denuncia */
+    li {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(5px);
+      border-radius: 18px;
+      padding: 22px 24px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      transition: all 0.25s ease;
+      border-left: 6px solid #c368d1; /* Borde color violeta */
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Efecto al pasar el mouse */
+    li:hover {
+      transform: scale(1.01);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    li strong {
+      color: #c368d1; /* Resalta los títulos */
+    }
+
+    li em {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Mensaje si no hay denuncias */
+    #lista p {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+      font-style: italic;
+      color: #2c2c2c;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    /* ---------- PIE DE PÁGINA ---------- */
+    footer {
+      background: transparent;
+      text-align: center;
+      color: #c368d1;
+      font-size: 0.9rem;
+      position: fixed;
+      bottom: 15px;
+      left: 0;
+      width: 100%;
+    }
+
+    footer span {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+<<<<<<< HEAD
+  <!-- ---------- CABECERA ---------- -->
+  <header>
+    <h2>Formularios Públicos</h2> <!-- Título principal -->
+    <p>Denuncias enviadas por los alumnos con sesión iniciada (se actualizan en tiempo real)</p>
+
+  <!-- Título principal y descripción -->
+  <h2>Formularios Públicos</h2>
+  <div id="userInfo"></div>
+  <p>Denuncias enviadas por los alumnos con sesión iniciada (actualización en tiempo real)</p>
+
+  <!-- Filtro por curso -->
+  <div id="filtros">
+    <label for="cursoFiltro">Filtrar por curso:</label>
+    <select id="cursoFiltro">
+      <option value="todos">Todos los cursos</option>
+    </select>
+  </div>
+
+  <!-- Lista donde se muestran las denuncias -->
+  <ul id="lista"></ul>
+
+  <!-- conexión con Firestore y filtrado de denuncias -->
+>>>>>>> 65bdc3e41b8b2846a3d9191cedd5cc7efe152a73
+  <script>
+    const lista = document.getElementById("lista");
+    const userInfo = document.getElementById("userInfo");
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && user.email) {
+        userInfo.textContent = "Sesión activa: " + user.email; // Muestra el mail
+      } else {
+        userInfo.textContent = "No hay sesión iniciada."; // Mensaje si no hay sesión
+      }
+    });
+
+    // Escucha en tiempo real las denuncias públicas desde Firestore
+    db.collection("formularios")
+      .doc("publicos")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        lista.innerHTML = "";
+        denuncias = [];
+        const cursosSet = new Set();
+
+        if (snapshot.empty) {
+          // Si no hay denuncias, muestra este mensaje
+          lista.innerHTML = "<p>No hay denuncias públicas aún.</p>";
+          return;
+        }
+
+        // Recorre cada documento y lo agrega a la lista
+        snapshot.forEach(doc => {
+          const data = doc.data(); // Obtiene los datos del formulario
+          const li = document.createElement("li"); // Crea un elemento de lista
+          li.innerHTML = `
+            <strong>Usuario:</strong> ${data.usuario || "(sin usuario)"}<br>
+            <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
+            <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
+            <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
+            <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
+            <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
+          `;
+          lista.appendChild(li); // Agrega la denuncia al listado
+        });
+      });
+
+
+        // Actualiza el filtro con los cursos disponibles
+        selectFiltro.innerHTML = '<option value="todos">Todos los cursos</option>';
+        cursosSet.forEach(curso => {
+          const option = document.createElement("option");
+          option.value = curso;
+          option.textContent = curso;
+          selectFiltro.appendChild(option);
+        });
+
+        mostrarDenuncias("todos");
+      });
+
+    // Muestra las denuncias según el filtro seleccionado
+    function mostrarDenuncias(filtro) {
+      lista.innerHTML = "";
+
+      const filtradas = filtro === "todos"
+        ? denuncias
+        : denuncias.filter(d => d.curso === filtro);
+
+      if (filtradas.length === 0) {
+        lista.innerHTML = "<p>No hay denuncias para este curso.</p>";
+        return;
+      }
+
+      filtradas.forEach(data => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>Usuario:</strong> ${data.usuario || "(sin usuario)"}<br>
+          <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
+          <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
+          <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
+          <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
+          <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    // Actualiza la lista cuando cambia el filtro
+    selectFiltro.addEventListener("change", e => {
+      mostrarDenuncias(e.target.value);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Bienvenido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cardo&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======== RESET ======== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #cec3ff;
+      color: #3c2a4d;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ======== NAVBAR ======== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 40px;
+      z-index: 100;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-logo {
+      width: 70px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      transform: scale(1.08);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .nav-links a,
+    .dropdown-btn {
+      text-decoration: none;
+      font-size: 1rem;
+      color: #3c2a4d;
+      position: relative;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    .nav-links a::after,
+    .dropdown-btn::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0%;
+      height: 2px;
+      background-color: #8b5bd1;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .dropdown-btn:hover {
+      color: #8b5bd1;
+    }
+
+    .nav-links a:hover::after,
+    .dropdown-btn:hover::after {
+      width: 100%;
+    }
+
+    /* ======== DROPDOWN ======== */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(6px);
+      border-radius: 10px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      min-width: 160px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      color: #3c2a4d;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-content a:hover {
+      background: #e7dbff;
+      color: #4c195d;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* ======== USUARIO / LOGIN ======== */
+    .user-icon {
+      width: 38px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .user-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .auth-buttons button {
+      background-color: #d96fc0;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 18px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .auth-buttons button:hover {
+      background-color: #b94fa3;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+
+    /* ======== HERO ======== */
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      flex-direction: column;
+      padding: 0 20px;
+    }
+
+    .hero-content {
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    .welcome-text {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 4.5rem;
+      color: #4c195d;
+      margin-bottom: 0.5rem;
+    }
+
+    .eco-logo {
+      width: 180px;
+      margin: 10px 0;
+    }
+
+    .slogan {
+      font-family: 'Cardo', serif;
+      font-size: 1.1rem;
+      color: #555;
+      margin-top: 5px;
+      margin-bottom: 2rem;
+    }
+
+    .btn-report {
+      background-color: #d96fc0;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 25px;
+      padding: 16px 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-report:hover {
+      background-color: #b94fa3;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+    }
+
+    /* ======== BOTÓN CERRAR SESIÓN ======== */
+    .logout-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(217, 111, 192, 0.9);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .logout-btn:hover {
+      background-color: #b94fa3;
+      transform: translateY(-3px);
+    }
+
+    /* ======== ANIMACIONES ======== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-text { font-size: 3rem; }
+      .eco-logo { width: 140px; }
+      .slogan { font-size: 1rem; }
+      .btn-report { font-size: 1rem; padding: 12px 32px; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra superior -->
+  <header class="navbar">
+    <img src="logo-eco.png" alt="ECO Logo" class="nav-logo" onclick="window.location.href='menu.html'">
+
+    <nav class="nav-links">
+      <a href="formulario_p.html">Formulario</a>
+      <div class="dropdown">
+        <button class="dropdown-btn">Herramientas</button>
+        <div class="dropdown-content">
+          <a href="respiracion.html">Respiración guiada</a>
+          <a href="diario.html">Diario emocional</a>
+          <a href="meditacion.html">Meditación breve</a>
+          <a href="recursos.html">Recursos útiles</a>
+        </div>
+      </div>
+      <a href="sobre.html">Sobre ECO</a>
+    </nav>
+
+    <div id="userSection"></div>
+  </header>
+
+  <!-- Contenido principal -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="welcome-text">Bienvenido a</h1>
+      <img src="eco-logo.svg" alt="ECO Logo" class="eco-logo">
+      <p class="slogan">Tu voz importa, estamos para ayudarte y acompañarte</p>
+      <button class="btn-report" onclick="window.location.href='formulario_a.html'">Reportar caso</button>
+    </div>
+  </section>
+
+  <!-- Botón cerrar sesión -->
+  <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+
+  <script>
+    // === CONTROL DE SESIÓN ===
+    const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
+    const userSection = document.getElementById('userSection');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (userLoggedIn) {
+      userSection.innerHTML = `
+        <img src="user-icon.png" alt="Usuario" class="user-icon" onclick="window.location.href='perfil.html'">
+      `;
+      logoutBtn.style.display = 'block';
+    } else {
+      userSection.innerHTML = `
+        <div class="auth-buttons">
+          <button onclick="window.location.href='login.html'">Iniciar sesión</button>
+          <button onclick="window.location.href='registro.html'">Registrarse</button>
+        </div>
+      `;
+      logoutBtn.style.display = 'none';
+    }
+
+    // Cerrar sesión
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear();
+      alert('Sesión cerrada correctamente.');
+      window.location.href = 'index.html';
+    });
+  </script>
+
+</body>
+</html>

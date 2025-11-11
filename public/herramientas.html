@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!--configuración general, estilos y script del menú -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Herramientas propias</title>
   <link rel="stylesheet" href="style.css" />
   <script src="menu.js" defer></script>
 </head>
+
 <body>
+  <!-- Icono y menú desplegable -->
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <ul id="menu" class="menu-hidden">
     <li><a href="herramientas.html">Herramientas propias</a></li>
@@ -18,11 +21,12 @@
     <h2>Herramientas para actuar frente al bullying</h2>
     <p>Elegí la opción que más se acerque a tu situación:</p>
 
+    <!-- Botones principales -->
     <button class="tool-btn" onclick="mostrarInfo('victima')">🧍‍♀️ Si sos víctima de bullying</button>
     <button class="tool-btn" onclick="mostrarInfo('testigo')">👀 Si sos testigo de bullying</button>
     <button class="tool-btn" onclick="mostrarInfo('agresor')">🧩 Si sos parte del grupo que hace bullying</button>
 
-    
+    <!-- Información para víctimas -->
     <div id="info-victima" class="info-box">
       <h3>🧍‍♀️ Si sos víctima de bullying</h3>
       <p><strong>1. No te quedes callado.</strong><br>
@@ -40,6 +44,7 @@
       <button class="back-btn" onclick="volver()">Volver</button>
     </div>
 
+    <!-- Información para testigos -->
     <div id="info-testigo" class="info-box">
       <h3>👀 Si sos testigo de bullying</h3>
       <p><strong>1. No lo ignores.</strong><br>
@@ -54,6 +59,7 @@
       <button class="back-btn" onclick="volver()">Volver</button>
     </div>
 
+    <!-- Información para agresores -->
     <div id="info-agresor" class="info-box">
       <h3>🧩 Si sos parte del grupo que hace bullying</h3>
       <p><strong>1. Detenete y pensá.</strong><br>
@@ -69,6 +75,7 @@
     </div>
   </main>
 
+  <!-- Script interno para mostrar y ocultar secciones -->
   <script>
     function mostrarInfo(tipo) {
       document.querySelectorAll('.info-box').forEach(div => div.style.display = 'none');
