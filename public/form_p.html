@@ -228,14 +228,9 @@
       );
       mostrarDatos(filtrados);
     }
-
-    // Función para el botón "Volver"
     function volver() {
-      if (document.referrer) {
-        window.history.back(); // Si se llegó desde otra página, vuelve atrás
-      } else {
-        window.location.href = "index.html"; // Si no, vuelve al inicio
-      }
+      window.location.href = "psicologo_panel.html";
+    
     }
 
     // Ejecuta la carga de datos al abrir la página
