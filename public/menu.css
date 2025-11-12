@@ -1,153 +1,76 @@
-/* ======== RESET ======== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #a0e6d0, #6ac4a4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    input {
+      width: 90%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    button {
+      background: #68c3a3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #5ab191;
+    }
+  </style>
+</head>
+<body>
 
-/* ======== BODY ======== */
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #cec3ff;
-  color: #3c2a4d;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+  <div class="login-container">
+    <h2>Iniciar Sesión</h2>
+    <input type="email" id="email" placeholder="Correo" required>
+    <input type="text" id="curso" placeholder="Curso" required>
+    <button id="loginBtn">Entrar</button>
+  </div>
 
-/* ======== NAVBAR SUPERIOR ======== */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 70px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
-  z-index: 100;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const curso = document.getElementById('curso').value.trim();
 
-.nav-logo {
-  width: 70px;
-  height: auto;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
+      if (email && curso) {
+        // Guardar en localStorage
+        localStorage.setItem('email', email);
+        localStorage.setItem('curso', curso);
+        // Ir al perfil
+        window.location.href = "perfil.html";
+      } else {
+        alert("Por favor, complete todos los campos.");
+      }
+    });
+  </script>
 
-.nav-logo:hover {
-  transform: scale(1.08);
-}
+</body>
+</html>
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-links a {
-  text-decoration: none;
-  font-size: 1rem;
-  color: #000;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background-color: #4B0082;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #4B0082;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-.user-icon {
-  width: 38px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.user-icon:hover {
-  transform: scale(1.1);
-}
-
-/* ======== SECCIÓN HERO ======== */
-.hero {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-  flex-direction: column;
-  padding: 0 20px;
-}
-
-.hero-content {
-  animation: fadeUp 1.2s ease-out;
-}
-
-.welcome-text {
-  font-family: 'Pinyon Script', cursive;
-  font-size: 4.5rem;
-  color: #4c195d;
-  margin-bottom: 0.5rem;
-}
-
-.eco-logo {
-  width: 180px;
-  margin: 10px 0;
-}
-
-.slogan {
-  font-family: 'Cardo', serif;
-  font-size: 1.1rem;
-  color: #555;
-  margin-top: 5px;
-  margin-bottom: 2rem;
-}
-
-.btn-report {
-  background-color: #d96fc0;
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  border-radius: 20px;
-  padding: 16px 40px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.btn-report:hover {
-  background-color: #b94fa3;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
-}
-
-/* ======== ANIMACIONES ======== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ======== RESPONSIVE ======== */
-@media (max-width: 768px) {
-  .welcome-text { font-size: 3rem; }
-  .eco-logo { width: 140px; }
-  .slogan { font-size: 1rem; }
-  .btn-report { font-size: 1rem; padding: 12px 32px; }
-  .nav-links { gap: 1rem; }
-}
