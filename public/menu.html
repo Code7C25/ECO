@@ -11,10 +11,11 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #cec3ff;
+      background: linear-gradient(180deg, #cec3ff 0%, #e5d8ff 100%);
       color: #3c2a4d;
       min-height: 100vh;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     /* ======== NAVBAR ======== */
@@ -194,6 +195,31 @@
       box-shadow: 0 12px 25px rgba(0,0,0,0.25);
     }
 
+    /* ======== SOBRE ECO ======== */
+    #sobre-eco {
+      padding: 120px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(6px);
+      border-top: 2px solid #e0caff;
+    }
+
+    #sobre-eco h2 {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 3rem;
+      color: #4c195d;
+      margin-bottom: 20px;
+    }
+
+    #sobre-eco p {
+      font-family: 'Cardo', serif;
+      font-size: 1.1rem;
+      color: #3c2a4d;
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+      line-height: 1.6;
+    }
+
     /* ======== BOTÓN CERRAR SESIÓN ======== */
     .logout-btn {
       position: fixed;
@@ -252,7 +278,7 @@
           <a href="afirmaciones.html">Afirmaciones</a>
         </div>
       </div>
-      <a href="sobre.html">Sobre ECO</a>
+      <a href="#sobre-eco" id="sobreEcoLink">Sobre ECO</a>
     </nav>
 
     <div id="userSection"></div>
@@ -265,6 +291,21 @@
       <p class="slogan">Tu voz importa, estamos para ayudarte y acompañarte</p>
       <button class="btn-report" id="reportarBtn">Reportar caso</button>
     </div>
+  </section>
+
+  <!-- NUEVA SECCIÓN SOBRE ECO -->
+  <section id="sobre-eco">
+    <h2>Sobre ECO</h2>
+    <p>
+      ECO es una herramienta creada para acompañar, escuchar y brindar apoyo emocional dentro de la comunidad educativa.  
+      Nuestro objetivo es que cada voz sea escuchada, y que los estudiantes puedan expresar sus experiencias y emociones de forma segura y confidencial.
+    </p>
+    <p>
+      Además de ofrecer un canal para reportar situaciones de acoso o malestar, ECO incluye recursos de bienestar como respiración guiada, afirmaciones positivas, consejos prácticos y un diario emocional para promover la salud mental.
+    </p>
+    <p>
+      Todo lo que compartas aquí es tratado con respeto y cuidado. ECO está diseñado para generar un espacio de contención, empatía y crecimiento personal.
+    </p>
   </section>
 
   <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
