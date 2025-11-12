@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Usuario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #c8b6ff, #e5d8ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .perfil-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 40px;
+      width: 320px;
+      text-align: center;
+    }
+    h2 {
+      color: #4c195d;
+      margin-bottom: 20px;
+    }
+    .info p {
+      margin: 10px 0;
+      font-size: 16px;
+      color: #333;
+      text-align: left;
+    }
+    button {
+      background: #d96fc0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #b94fa3;
+    }
+  </style>
+</head>
+<body>
+  <div class="perfil-container">
+    <h2>Mi perfil</h2>
+    <div class="info">
+      <p><strong>Correo:</strong> <span id="userEmail"></span></p>
+      <p><strong>Curso:</strong> <span id="userCurso"></span></p>
+    </div>
+    <button id="cerrarSesion">Cerrar sesión</button>
+  </div>
+
+  <script>
+    // Obtener datos del localStorage
+    const email = localStorage.getItem('email') || localStorage.getItem('usuarioEmail');
+    const curso = localStorage.getItem('curso');
+    const logged = localStorage.getItem('ecoUserLogged') === 'true';
+
+    if (!logged) {
+        window.location.href = "login.html";
+    }
+
+    document.getElementById('userEmail').textContent = email || "No disponible";
+    document.getElementById('userCurso').textContent = curso || "Sin curso";
+
+    // Mostrar datos
+    document.getElementById('userEmail').textContent = email;
+    document.getElementById('userCurso').textContent = curso;
+
+    // Botón para cerrar sesión
+    document.getElementById('cerrarSesion').addEventListener('click', () => {
+      localStorage.removeItem('ecoUserLogged');
+      localStorage.removeItem('email');
+      localStorage.removeItem('curso');
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
