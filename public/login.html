@@ -162,15 +162,18 @@
         });
 
         if (usuarioValido) {
-          localStorage.setItem("usuarioEmail", email);
+          const usuarioData = snapshot.docs[0].data(); // obtenemos los datos del usuario
+
           localStorage.setItem("ecoUserLogged", "true");
-          localStorage.setItem("ecoAnonimo", "false");
+          localStorage.setItem("email", email);
+          localStorage.setItem("curso", usuarioData.curso || "Sin especificar");
 
           showAlert("Inicio de sesión exitoso ✅", "¡Listo!");
           setTimeout(() => {
-            window.location.href = "menu.html";
-          }, 1500);
-        } else {
+          window.location.href = "menu.html";
+        }, 1500);
+}
+ else {
           showAlert("Correo o contraseña incorrectos.");
         }
 
