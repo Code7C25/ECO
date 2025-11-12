@@ -38,23 +38,6 @@
       text-align: center;
     }
 
-    /* === Botón de inicio (casita negra) === */
-    .home-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .home-btn img {
-      width: 28px;
-      height: 28px;
-      opacity: 0.8;
-      cursor: pointer;
-    }
-
     /* === Navegación de meses === */
     #prevMonth,
     #nextMonth {
@@ -242,14 +225,9 @@
 </head>
 
 <body>
-  <!-- Botón de inicio con icono de casita negra -->
-  <div class="home-btn" onclick="window.location.href='menu.html'">
-    <img src="icon-home.png" alt="Inicio">
-  </div>
-
   <div style="max-width:1100px; margin:24px auto 0; padding:0 14px;">
     <h2 style="text-align:center; color:#4B0082;">Mi diario emocional</h2>
-    <p style="text-align:center; color:#6b5a78;">Guardá cómo te sentiste cada día. Si estás logueado se guarda en tu cuenta; si no, queda en el dispositivo.</p>
+    <p style="text-align:center; color:#6b5a78;">Registrá como te sentís y animate al cambio. Estamos para vos!!
 
     <div class="calendar-wrap" id="calendarWrap">
       <div class="calendar-header">
@@ -259,7 +237,7 @@
         </div>
         <div class="month-title" id="monthTitle"></div>
         <div class="volver-container">
-          <button class="volver-btn" onclick="location.href='index.html'">Volver</button>
+          <button class="volver-btn" onclick="location.href='menu.html'">Volver</button>
         </div>
       </div>
 
@@ -447,4 +425,4 @@
     firebase.auth().onAuthStateChanged(()=> renderCalendar(current));
   </script>
 </body>
-</html>
+</html>  
