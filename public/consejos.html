@@ -6,20 +6,116 @@
   <title>Consejos — ECO</title>
   <link rel="stylesheet" href="style.css"/>
   <style>
-    body{font-family:'Poppins',sans-serif; background: linear-gradient(160deg,#f7f1fb,#fdf7ff); color:#3c2a4d; min-height:100vh; padding:28px;}
-    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1000px; margin:0 auto;}
-    .card{background:white;padding:18px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.06);}
-    .card h4{color:#4B0082;margin-bottom:8px;}
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(160deg, #f7f1fb, #fdf7ff);
+      color: #3c2a4d;
+      min-height: 100vh;
+      padding: 28px;
+      margin: 0;
+    }
+
+    /* Encabezado con botón a la izquierda y título centrado */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 1000px;
+      margin: 0 auto 24px auto;
+      position: relative;
+    }
+
+    .volver-btn {
+  background-color: #e9dcf7;
+  color: #4B0082;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  position: fixed;   /* <-- antes era absolute */
+  top: 20px;         /* separa del borde superior */
+  left: 20px;        /* separa del borde izquierdo */
+  z-index: 10;       /* asegura que esté por encima de todo */
+}
+
+    .volver-btn:hover {
+      background-color: #d8c2f3;
+    }
+
+    h2 {
+      color: #4B0082;
+      font-size: 1.5em;
+      margin: 0;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+/* Animación lenta con movimiento más visible */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efecto hover */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Retraso progresivo más largo (uno por uno) */
+.card:nth-child(1) { animation-delay: 0.2s; }
+.card:nth-child(2) { animation-delay: 1.2s; }
+.card:nth-child(3) { animation-delay: 2.2s; }
+.card:nth-child(4) { animation-delay: 3.2s; }
+.card:nth-child(5) { animation-delay: 4.2s; }
+.card:nth-child(6) { animation-delay: 5.2s; }
+.card:nth-child(7) { animation-delay: 6.2s; }
+.card:nth-child(8) { animation-delay: 7.2s; }
+
   </style>
 </head>
 <body>
-  <button onclick="location.href='menu.html'">Volver</button>
-  <h2 style="text-align:center;color:#4B0082;">Consejos prácticos</h2>
+  <div class="header">
+    <button class="volver-btn" onclick="location.href='menu.html'">Volver</button>
+    <h2>Consejos prácticos</h2>
+  </div>
+
   <div class="grid">
     <div class="card"><h4>Respirá consciente</h4><p>Cuando te sientas alterado, hacé 3 ciclos de respiración lenta (4-4-4).</p></div>
     <div class="card"><h4>Contale a alguien</h4><p>Buscar a una persona de confianza ayuda a validar lo que sentís y buscar soluciones.</p></div>
     <div class="card"><h4>Guardá pruebas</h4><p>Si es por redes, guardá capturas; sirven si necesitás denunciar.</p></div>
     <div class="card"><h4>Evita responder con agresión</h4><p>Respuestas impulsivas suelen agravar la situación.</p></div>
+    <div class="card"><h4>Tomate un descanso digital</h4><p>Alejate unos minutos del celular o la computadora si algo te altera. Respirá y retomá cuando te sientas más tranquilo.</p></div>
+    <div class="card"><h4>Anotá lo que sentís</h4><p>Escribir lo que te pasa ayuda a entenderte mejor y liberar tensiones.</p></div>
+    <div class="card"><h4>Recordá tus fortalezas</h4><p>Pensá en momentos donde pudiste resolver situaciones difíciles. Te va a dar confianza.</p></div>
+    <div class="card"><h4>Despejá la mente</h4><p>Hacer una caminata corta o estirarte ayuda a reducir el estrés y despejar la mente.</p></div>
   </div>
 </body>
 </html>
