@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Formularios Públicos</title>
 
-  <!-- Importamos las librerías de Firebase -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script> <!-- Archivo con la configuración del proyecto Firebase -->
+  <script src="firebase.js"></script>
 
   <style>
-    /* Estilo general del cuerpo de la página */
     body {
       font-family: "Quicksand", sans-serif;
       background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%);
@@ -24,7 +23,6 @@
       min-height: 100vh;
     }
 
-    /* Título principal */
     h1 {
       color: #3a2f3b;
       font-size: 2rem;
@@ -33,59 +31,72 @@
       text-align: center;
     }
 
-    /* Contenedor de filtros (curso y tipo) */
+    /* 🎨 Filtros sin recuadro */
     #filtros {
       margin-top: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 15px;
     }
 
-    /* Estilo de los selectores */
     select {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #c5c5c5;
+      background: white;
       font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    /* Tabla donde se muestran los formularios */
+    select:hover {
+      border-color: #b35dc1;
+      box-shadow: 0 3px 8px rgba(179, 93, 193, 0.2);
+    }
+
     table {
       width: 90%;
       max-width: 800px;
       border-collapse: collapse;
-      margin: 30px 0;
+      margin: 30px 0 60px;
       background: white;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    /* Celdas de la tabla */
     th, td {
       padding: 12px 15px;
       text-align: left;
       border-bottom: 1px solid #eee;
     }
 
-    /* Encabezado de la tabla */
     th {
       background-color: #b35dc1;
       color: white;
       font-weight: 600;
     }
 
-    /* Efecto al pasar el mouse sobre una fila */
     tr:hover {
       background-color: #f7ebf9;
     }
 
-    /* Pie de página */
+    tr {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     footer {
       margin-bottom: 15px;
       color: #844e91;
@@ -93,9 +104,8 @@
       opacity: 0.8;
     }
 
-    /* 🌸 Botón Volver (arriba a la izquierda) */
     .volver-btn {
-      position: fixed; /* Fijo en la pantalla */
+      position: fixed;
       top: 20px;
       left: 20px;
       background-color: #b35dc1;
@@ -109,10 +119,8 @@
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
       z-index: 1000;
-      width: auto;
     }
 
-    /* Efecto al pasar el mouse sobre el botón Volver */
     .volver-btn:hover {
       background-color: #9f4cad;
       transform: scale(1.03);
@@ -122,17 +130,13 @@
 </head>
 
 <body>
-  <!-- 🌸 Botón Volver que lleva a la página anterior -->
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
-  <!-- Título principal -->
   <h1>Formularios Públicos</h1>
 
-  <!-- Contenedor de filtros -->
   <div id="filtros">
-    <!-- Filtro por curso -->
     <select id="cursoFiltro">
-      <option value="">Filtrar por curso...</option>
+      <option value="">Todos los cursos...</option>
       <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
       <option value="2°A">2°A</option><option value="2°B">2°B</option><option value="2°C">2°C</option>
       <option value="3°A">3°A</option><option value="3°B">3°B</option><option value="3°C">3°C</option>
@@ -142,15 +146,13 @@
       <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
     </select>
 
-    <!-- Filtro por tipo de denuncia -->
     <select id="tipoFiltro">
-      <option value="">Filtrar por tipo...</option>
+      <option value="">Situación...</option>
       <option value="Sufrí bullying">Sufrí bullying</option>
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
     </select>
   </div>
 
-  <!-- Tabla donde se muestran los registros de la base de datos -->
   <table id="tablaFormularios">
     <thead>
       <tr>
@@ -161,80 +163,64 @@
         <th>Fecha</th>
       </tr>
     </thead>
-    <tbody></tbody> <!-- Acá se insertan las filas dinámicamente con JS -->
+    <tbody></tbody>
   </table>
 
-  <!-- Pie de página -->
   <footer>ECO - Proyecto Escolar</footer>
 
   <script>
-    // Referencias a los elementos del HTML
     const tablaBody = document.querySelector("#tablaFormularios tbody");
     const cursoFiltro = document.getElementById("cursoFiltro");
     const tipoFiltro = document.getElementById("tipoFiltro");
+    let todasLasDenuncias = [];
 
-    // Función principal que carga los datos desde Firestore
-    async function cargarDatos() {
-      // Muestra mensaje de carga mientras se obtienen los datos
-      tablaBody.innerHTML = "<tr><td colspan='5'>Cargando datos...</td></tr>";
-
-      try {
-        // Trae todos los documentos dentro de la colección "anonimo/items"
-        const snapshot = await db.collection("formularios").doc("anonimo").collection("items").get();
-        const datos = snapshot.docs.map(doc => doc.data()); // Convierte cada doc en objeto JS
-        mostrarDatos(datos); // Muestra los datos en la tabla
-
-        // Detecta cambios en los filtros y vuelve a filtrar
-        cursoFiltro.addEventListener("change", () => filtrar(datos));
-        tipoFiltro.addEventListener("change", () => filtrar(datos));
-      } catch (error) {
-        // Si algo falla, muestra error
-        tablaBody.innerHTML = "<tr><td colspan='5'>Error al cargar los datos.</td></tr>";
-        console.error(error);
-      }
+    function volver() {
+      window.location.href = "psicologo_panel.html";
     }
 
-    // Función para mostrar los datos en la tabla
-    function mostrarDatos(datos) {
-      tablaBody.innerHTML = "";
-      if (datos.length === 0) {
-        tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros disponibles.</td></tr>";
-        return;
-      }
-
-      // Crea una fila por cada registro en la base de datos
-      datos.forEach(item => {
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td>${item.curso || "-"}</td>
-          <td>${item.tipo}</td>
-          <td>${item.descripcion}</td>
-          <td>${item.participantes || "-"}</td>
-          <td>${new Date(item.creado?.seconds * 1000).toLocaleString()}</td>
-        `;
-        tablaBody.appendChild(fila);
+    // 🔁 Actualización en tiempo real desde Firestore
+    db.collection("formularios")
+      .doc("anonimo")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        todasLasDenuncias = snapshot.docs.map(doc => doc.data());
+        aplicarFiltros();
       });
-    }
 
-    // Función que aplica los filtros seleccionados
-    function filtrar(datos) {
+    cursoFiltro.addEventListener("change", aplicarFiltros);
+    tipoFiltro.addEventListener("change", aplicarFiltros);
+
+    function aplicarFiltros() {
+      tablaBody.innerHTML = "";
       const cursoSel = cursoFiltro.value;
       const tipoSel = tipoFiltro.value;
 
-      // Filtra según los valores elegidos
-      const filtrados = datos.filter(item =>
+      const filtradas = todasLasDenuncias.filter(item =>
         (!cursoSel || item.curso === cursoSel) &&
         (!tipoSel || item.tipo === tipoSel)
       );
-      mostrarDatos(filtrados);
-    }
-    function volver() {
-      window.location.href = "psicologo_panel.html";
-    
-    }
 
-    // Ejecuta la carga de datos al abrir la página
-    cargarDatos();
+      if (filtradas.length === 0) {
+        tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        return;
+      }
+
+      let delay = 0;
+      filtradas.forEach(item => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${item.curso || "-"}</td>
+          <td>${item.tipo || "-"}</td>
+          <td>${item.descripcion || "-"}</td>
+          <td>${item.participantes || "-"}</td>
+          <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
+        `;
+        fila.style.animationDelay = `${delay}s`;
+        delay += 0.6;
+        tablaBody.appendChild(fila);
+      });
+    }
   </script>
 </body>
 </html>
