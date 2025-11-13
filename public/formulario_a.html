@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECO - Denuncia Anónima</title>
+  <meta charset="UTF-8"> <!-- Define el conjunto de caracteres -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Asegura que sea responsive -->
+  <title>ECO - Denuncia Anónima</title> <!-- Título de la pestaña -->
 
-  <!-- Firebase -->
+  <!-- Firebase: librerías para conectar con la base de datos -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
+  <script src="firebase.js"></script> <!-- Archivo donde está la configuración del proyecto Firebase -->
 
-  <!-- Fuente -->
+  <!-- Fuente usada en todo el sitio -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    /* 🎨 Estilos generales de la página */
     body {
-      font-family: "Quicksand", sans-serif;
-      background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%);
+      font-family: "Quicksand", sans-serif; /* Fuente suave y legible */
+      background: linear-gradient(160deg, #cba2c8 0%, #e1c7df 100%); /* Degradado de fondo */
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      min-height: 100vh; /* Ocupa toda la pantalla */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      animation: fadeIn 0.8s ease-in-out;
+      animation: fadeIn 0.8s ease-in-out; /* Animación al cargar */
     }
 
+    /* Animación para que el contenido aparezca suavemente */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Título principal */
     h2 {
       color: #3a2f3b;
       font-size: 2.2rem;
@@ -41,6 +44,7 @@
       text-align: center;
     }
 
+    /* Descripción debajo del título */
     p {
       color: #4a4a4a;
       max-width: 400px;
@@ -50,21 +54,23 @@
       line-height: 1.4;
     }
 
+    /* Estilo del formulario */
     form {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.95); /* Fondo blanco semi-transparente */
+      border-radius: 18px; /* Bordes redondeados */
       padding: 35px 40px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Sombra suave */
       width: 90%;
       max-width: 480px;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px); /* Efecto vidrio */
       transition: transform 0.2s ease;
     }
 
     form:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px); /* Se eleva un poco al pasar el mouse */
     }
 
+    /* Etiquetas de los campos */
     label {
       display: block;
       font-weight: 600;
@@ -72,6 +78,7 @@
       margin-bottom: 6px;
     }
 
+    /* Campos de texto, selects y textarea */
     input, select, textarea {
       width: 100%;
       padding: 10px 12px;
@@ -84,6 +91,7 @@
       background-color: #fafafa;
     }
 
+    /* Efecto al hacer foco (clic) en un campo */
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #b35dc1;
@@ -91,6 +99,7 @@
       box-shadow: 0 0 0 2px rgba(179, 93, 193, 0.2);
     }
 
+    /* Botón principal de envío */
     button {
       background-color: #b35dc1;
       color: white;
@@ -104,12 +113,13 @@
       font-size: 1rem;
     }
 
+    /* Efecto hover en el botón */
     button:hover {
       background-color: #9f4cad;
       transform: scale(1.02);
     }
 
-    /* 🌸 Botón volver — versión más compacta */
+    /* 🌸 Botón volver — pequeño y fijo arriba a la izquierda */
     .volver-btn {
       position: fixed;
       top: 20px;
@@ -125,15 +135,17 @@
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
       transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
       z-index: 1000;
-      width: auto; /* 👉 solo ocupa lo necesario */
+      width: auto; /* Solo ocupa el espacio necesario */
     }
 
+    /* Efecto hover del botón volver */
     .volver-btn:hover {
       background-color: #9f4cad;
       transform: scale(1.03);
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    /* Mensaje de confirmación o error */
     #mensaje {
       margin-top: 20px;
       font-weight: 500;
@@ -142,6 +154,7 @@
       min-height: 20px;
     }
 
+    /* Pie de página */
     footer {
       position: fixed;
       bottom: 15px;
@@ -157,11 +170,16 @@
   <!-- 🌸 Botón Volver -->
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
+  <!-- Título principal -->
   <h2>Denuncia Anónima</h2>
+
+  <!-- Descripción del formulario -->
   <p>Este formulario es completamente confidencial. Contanos de forma anónima qué sucedió.</p>
 
+  <!-- 📋 Formulario para enviar denuncia -->
   <form id="denunciaForm">
-    <label for="curso">Curso donde ocurrió la situación (opcional):</label>
+    <!-- Selección del curso -->
+    <label for="curso">Curso donde ocurrió la situación:</label>
     <select id="curso" name="curso">
       <option value="">Seleccionar...</option>
       <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
@@ -173,6 +191,7 @@
       <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
     </select>
 
+    <!-- Tipo de denuncia -->
     <label for="tipo">Tipo de situación:</label>
     <select id="tipo" required>
       <option value="">Seleccionar...</option>
@@ -180,30 +199,39 @@
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
     </select>
 
+    <!-- Campo de descripción -->
     <label for="descripcion">Descripción de la situación:</label>
     <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Contanos qué pasó..."></textarea>
 
+    <!-- Campo opcional de participantes -->
     <label for="participantes">Participantes (opcional):</label>
     <input type="text" id="participantes" name="participantes" placeholder="Ej: nombre o apodo">
 
+    <!-- Botón de envío -->
     <button type="submit">Enviar denuncia</button>
   </form>
 
+  <!-- Mensaje que aparece luego de enviar -->
   <p id="mensaje"></p>
+
+  <!-- Pie de página -->
   <footer>ECO - Proyecto Escolar</footer>
 
   <script>
-    const form = document.getElementById("denunciaForm");
-    const mensaje = document.getElementById("mensaje");
+    const form = document.getElementById("denunciaForm"); // Referencia al formulario
+    const mensaje = document.getElementById("mensaje"); // Lugar donde se mostrará el mensaje
 
+    // Evento que se ejecuta al enviar el formulario
     form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Evita que la página se recargue
 
+      // Obtiene los valores ingresados por el usuario
       const curso = document.getElementById("curso").value.trim();
       const tipo = document.getElementById("tipo").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
+      // Validación básica
       if (!tipo || !descripcion) {
         mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
         mensaje.style.color = "#b35dc1";
@@ -211,6 +239,7 @@
       }
 
       try {
+        // Guarda los datos en Firestore dentro del documento "anonimo/items"
         await db.collection("formularios")
           .doc("anonimo")
           .collection("items")
@@ -219,29 +248,33 @@
             tipo,
             descripcion,
             participantes: participantes || null,
-            creado: new Date()
+            creado: new Date() // Fecha y hora actuales
           });
 
+        // Muestra mensaje de éxito
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente. Gracias por confiar.";
         mensaje.style.color = "green";
-        form.reset();
+        form.reset(); // Limpia los campos
 
+        // Redirige al menú después de 2 segundos
         setTimeout(() => {
-          window.location.href = "index.html";
+          window.location.href = "menu.html";
         }, 2000);
 
       } catch (error) {
+        // Si ocurre un error, lo muestra en consola y en pantalla
         console.error("Error al enviar denuncia:", error);
         mensaje.textContent = "❌ Ocurrió un error. Intentá nuevamente.";
         mensaje.style.color = "red";
       }
     });
 
+    // Función del botón "Volver"
     function volver() {
       if (document.referrer) {
-        window.history.back();
+        window.history.back(); // Si hay página anterior, vuelve
       } else {
-        window.location.href = "index.html";
+        window.location.href = "menu.html"; // Si no, va al menú
       }
     }
   </script>
