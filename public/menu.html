@@ -28,7 +28,7 @@
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
       display: grid;
-      grid-template-columns: 70px 1fr 180px; /* logo | centrado | usuario */
+      grid-template-columns: 70px 1fr 180px;
       align-items: center;
       padding: 0 40px;
       z-index: 100;
@@ -251,15 +251,6 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @media (max-width: 768px) {
-      .welcome-text { font-size: 3rem; }
-      .eco-logo { width: 140px; }
-      .slogan { font-size: 1rem; }
-      .btn-report { font-size: 1rem; padding: 12px 32px; }
-      .nav-links { gap: 1rem; }
-      .navbar { grid-template-columns: 60px 1fr 120px; padding: 0 18px; }
-    }
   </style>
 </head>
 
@@ -293,25 +284,20 @@
     </div>
   </section>
 
-  <!-- NUEVA SECCIÓN SOBRE ECO -->
+  <!-- SECCIÓN SOBRE ECO -->
   <section id="sobre-eco">
     <h2>Sobre ECO</h2>
     <p>
-      ECO es una herramienta creada para acompañar, escuchar y brindar apoyo emocional dentro de la comunidad educativa.  
-      Nuestro objetivo es que cada voz sea escuchada, y que los estudiantes puedan expresar sus experiencias y emociones de forma segura y confidencial.
+      ECO es una herramienta creada para acompañar, escuchar y brindar apoyo emocional dentro de la comunidad educativa.
     </p>
     <p>
-      Además de ofrecer un canal para reportar situaciones de acoso o malestar, ECO incluye recursos de bienestar como respiración guiada, afirmaciones positivas, consejos prácticos y un diario emocional para promover la salud mental.
-    </p>
-    <p>
-      Todo lo que compartas aquí es tratado con respeto y cuidado. ECO está diseñado para generar un espacio de contención, empatía y crecimiento personal.
+      Todo lo que compartas aquí es tratado con respeto y cuidado.
     </p>
   </section>
 
   <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
 
   <script>
-    // --- CONTROL DE SESIÓN ---
     const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
     const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
     const userSection = document.getElementById('userSection');
@@ -319,16 +305,8 @@
     const formularioLink = document.getElementById('formularioLink');
     const reportarBtn = document.getElementById('reportarBtn');
 
-    // CENTRADO PERFECTO de botones del menú
-    const nav = document.querySelector('.nav-links');
-    nav.style.margin = '0 auto';
-    nav.style.justifyContent = 'center';
-    nav.style.alignItems = 'center';
-    nav.style.textAlign = 'center';
-
-    // --- CONFIG SEGÚN ESTADO ---
     if (userLoggedIn && !anonimo) {
-      userSection.innerHTML = `<img src="user-icon.png" alt="Usuario" class="user-icon" onclick="window.location.href='perfil.html'">`;
+      userSection.innerHTML = `<img src="user-icon.png" class="user-icon" onclick="window.location.href='perfil.html'">`;
       logoutBtn.style.display = 'block';
       formularioLink.href = 'formulario_p.html';
       reportarBtn.onclick = () => window.location.href = 'formulario_p.html';
@@ -344,7 +322,6 @@
       reportarBtn.onclick = () => window.location.href = 'formulario_a.html';
     }
 
-    // --- CERRAR SESIÓN ---
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('ecoUserLogged');
       localStorage.removeItem('ecoAnonimo');
