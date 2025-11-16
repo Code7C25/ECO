@@ -38,7 +38,8 @@
       min-height:100vh;
     }
 
-    /* ======= NAVBAR TRANSPARENTE ======= */
+    /* ======= NAVBAR TRANSPARENTE  Y BOTONES CENTRADOS=======
+    */
     .navbar{
       position:fixed;
       top:0;left:0;
@@ -48,11 +49,29 @@
       backdrop-filter:blur(12px) saturate(160%);
       -webkit-backdrop-filter:blur(12px) saturate(160%);
       border-bottom:1px solid rgba(255,255,255,0.2);
-      display:grid;
-      grid-template-columns:70px 1fr 200px;
+      /* usar layout base: contenedor relativo para el posicionamiento absoluto del centro */
+      display:flex;
       align-items:center;
-      padding:0 40px;
+      justify-content:space-between;
+      padding:0 24px; /* mantengo espacio a los lados para logo y usuario */
       z-index:100;
+      position:fixed;
+    }
+
+    .nav-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      /* ancho mínimo para evitar solapamientos */
+      min-width:70px;
+    }
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:120px;
+      justify-content:flex-end;
     }
 
     .nav-logo{
@@ -62,12 +81,25 @@
     }
     .nav-logo:hover{transform:scale(1.08);}
 
+    /* Bloque central posicionado exactamente en el centro de la pantalla */
+    .nav-center-wrapper{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:auto; /* para que los hijos reciban clics */
+    }
+
     .nav-links{
       display:flex;
       justify-content:center;
       align-items:center;
       gap:2rem;
       text-align:center;
+      max-width:60vw;
     }
 
     .nav-links a,
@@ -117,10 +149,13 @@
       box-shadow:0 8px 20px rgba(0,0,0,0.15);
       overflow:hidden;
       animation:fadeIn .25s ease;
-      z-index:200;
+      z-index:9999; /* bien alto para que esté por encima */
+      pointer-events:auto;
     }
 
-    .dropdown:hover .dropdown-content{
+    /* mantener compatibilidad hover (original) pero también permitir la clase 'open' desde JS */
+    .dropdown:hover .dropdown-content,
+    .dropdown.open .dropdown-content{
       display:block;
     }
 
@@ -271,6 +306,21 @@
       from{opacity:0; transform:translateY(10px);}
       to{opacity:1; transform:translateY(0);}
     }
+
+    /* Media queries para evitar solapamientos en pantallas pequeñas */
+    @media (max-width:900px){
+      .nav-center-wrapper{ position:static; transform:none; padding:0 12px; }
+      .navbar{ padding:0 12px; }
+      .nav-links{ gap:1rem; max-width:100%; }
+    }
+
+    @media (max-width:600px){
+      .welcome-text{ font-size:3rem; }
+      .eco-logo{ width:140px; }
+      .nav-logo{ width:56px; }
+      .user-icon{ width:34px; }
+    }
+
   </style>
 </head>
 
@@ -281,25 +331,38 @@
   <div class="page">
 
     <header class="navbar">
-      <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
 
-      <nav class="nav-links">
-        <a id="formularioLink" href="#">Formulario</a>
+      <!-- izquierda: logo -->
+      <div class="nav-left">
+        <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
+      </div>
 
-        <div class="dropdown">
-          <button class="dropdown-btn">Herramientas</button>
-          <div class="dropdown-content">
-            <a href="respiracion.html">Respiración guiada</a>
-            <a href="diario.html">Diario emocional</a>
-            <a href="consejos.html">Consejos</a>
-            <a href="afirmaciones.html">Afirmaciones</a>
+      <!-- centro: envuelto en wrapper ABSOLUTO para centrar matemáticamente -->
+      <div class="nav-center-wrapper" aria-hidden="false">
+        <nav class="nav-links" role="navigation" aria-label="Menú principal">
+          <a id="formularioLink" href="#">Formulario</a>
+
+          <div class="dropdown" id="herramientasDropdown">
+            <button class="dropdown-btn" id="herramientasBtn" aria-haspopup="true" aria-expanded="false">Herramientas</button>
+            <div class="dropdown-content" aria-label="Lista de herramientas">
+              <a href="respiracion.html">Respiración guiada</a>
+              <a href="diario.html">Diario emocional</a>
+              <a href="consejos.html">Consejos</a>
+              <a href="afirmaciones.html">Afirmaciones</a>
+              <!-- NUEVA HERRAMIENTA -->
+              <a href="musica.html">Música y meditaciones</a>
+            </div>
           </div>
-        </div>
 
-        <a href="#sobre">Sobre ECO</a>
-      </nav>
+          <a href="#sobre">Sobre ECO</a>
+        </nav>
+      </div>
 
-      <div id="userSection"></div>
+      <!-- derecha: usuario -->
+      <div class="nav-right">
+        <div id="userSection"></div>
+      </div>
+
     </header>
 
     <section class="hero" id="hero">
@@ -323,7 +386,9 @@
   <script>
 
     /* =============================
-          LOGICA DE USUARIO
+          LOGICA DE USUARIO 
+       - dinámica: si está logueado y no es anónimo muestra perfil
+       - si no, muestra botones Iniciar sesión / Registrarse
     ============================== */
     const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
     const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
@@ -346,7 +411,7 @@
     }
 
     /* =============================
-          FONDO FADE SCROLL
+          FONDO FADE SCROLL 
     ============================== */
     const bgFixed = document.getElementById("bgFixed");
     const sobre = document.getElementById("sobre");
@@ -369,7 +434,7 @@
     updateBgOpacity();
 
     /* =============================
-       TEXTO SOBRE ECO (REVEAL FIX)
+       TEXTO SOBRE ECO (REVEAL FIX) 
     ============================== */
 
     const textoOriginal = `ECO es una plataforma creada para que cualquier estudiante pueda pedir ayuda de forma segura, clara y confidencial. Su principal objetivo es brindar un canal directo para reportar situaciones de bullying o malestar dentro del ámbito escolar, para que cada caso enviado llegue inmediatamente al equipo de psicólogos del colegio, quienes lo analizan y acompañan el proceso con respeto y profesionalismo. Además, ECO ofrece herramientas de autocuidado pensadas para acompañarte mientras atravesás el proceso: respiración guiada, diario emocional, afirmaciones y otros recursos breves que pueden ayudarte a regular emociones y entender mejor lo que sentís. Nuestro propósito es simple: crear un espacio de escucha donde puedas expresarte sin miedo y encontrar apoyo real cuando lo necesites.`;
@@ -418,8 +483,60 @@
     window.addEventListener("resize", revealText);
     revealText();
 
+    /* =============================
+       DROPDOWN: mejora para permitir selección fiable
+       - conserva el comportamiento por hover original
+       - añade toggle por click (útil en pantallas táctiles)
+       - cierra al hacer click fuera
+    ============================== */
+    (function(){
+      const dropdown = document.getElementById('herramientasDropdown');
+      const btn = document.getElementById('herramientasBtn');
+
+      if(!dropdown || !btn) return;
+
+      // Toggle open class al hacer click en el botón
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        // cerrar cualquier otro dropdown abierto en la página (si existiera)
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+        if(!isOpen){
+          dropdown.classList.add('open');
+          btn.setAttribute('aria-expanded','true');
+        } else {
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+
+      // Evitar que clicks dentro del contenido cierren inmediatamente (útil en iOS/táctil)
+      dropdown.querySelector('.dropdown-content').addEventListener('click', function(e){
+        e.stopPropagation();
+      });
+
+      // Cerrar al clicar fuera
+      document.addEventListener('click', function(){
+        if(dropdown.classList.contains('open')){
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+
+      // Conservar accesibilidad por teclado: cerrar con Escape
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && dropdown.classList.contains('open')){
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+          btn.focus();
+        }
+      });
+    })();
+
   </script>
 
 </body>
 </html>
+
+
 
