@@ -89,8 +89,8 @@
 
 <body class="pagina-registro">
   <!-- Botón de inicio -->
-  <div class="home-btn" onclick="window.location.href='index.html'">
-    <img src="icon-home.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8; cursor:pointer;">
+  <div class="home-btn" onclick="volverSegunOrigen()">
+    <img src="home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8; cursor:pointer;">
   </div>
 
   <main>
@@ -179,5 +179,19 @@
       }
     });
   </script>
+  <script>
+     /* =============================
+          Correcion si estoy en menu, cambia la direccion del boton home segun origen
+    ============================== */
+  function volverSegunOrigen() {
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    if (from === "menu") {
+      window.location.href = "menu.html";
+    } else {
+      window.location.href = "index.html";
+    }
+}
+</script>
 </body>
 </html>  

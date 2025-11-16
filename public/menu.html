@@ -395,6 +395,11 @@
     const userSection = document.getElementById("userSection");
     const formularioLink = document.getElementById("formularioLink");
     const reportarBtn = document.getElementById("reportarBtn");
+    /* =============================
+          Correcion si estoy en menu, cambia la direccion del boton home a menu y no a index
+          "window.location.href='login.html?from=menu'"
+          "window.location.href='registro.html?from=menu'"
+    ============================== */
 
     if(userLoggedIn && !anonimo){
       userSection.innerHTML = `<img src="user-icon.png" class="user-icon" onclick="window.location.href='perfil.html'">`;
@@ -403,8 +408,8 @@
     } else {
       userSection.innerHTML = `
         <div class="auth-buttons">
-          <button onclick="window.location.href='login.html'">Iniciar sesión</button>
-          <button onclick="window.location.href='registro.html'">Registrarse</button>
+          <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
+          <button onclick="window.location.href='registro.html?from=menu'">Registrarse</button>
         </div>`;
       formularioLink.href = "formulario_a.html";
       reportarBtn.onclick = () => window.location.href="formulario_a.html";
