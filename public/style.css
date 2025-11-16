@@ -14,7 +14,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-image: url("fondo-eco.png");
+  background-color: #d7bcd8;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -72,9 +72,8 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-
 .pagina-index {
-  background-image: url("fondo-eco.png");
+  background-color: #e8dded; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

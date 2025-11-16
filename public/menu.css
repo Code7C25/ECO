@@ -55,7 +55,7 @@
   </div>
 
   <script>
-    document.getElementById('loginBtn').addEventListener('click', () => {
+    document.getElementById('loginBtn').addEventListener('click'), () => {
       const email = document.getElementById('email').value.trim();
       const curso = document.getElementById('curso').value.trim();
 
