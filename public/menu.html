@@ -262,9 +262,11 @@
       opacity:1;
       color:#1a1520;
     }
-    .word.on.accent{color:#4c195d;}
 
-    /* Animación fadeIn dropdown */
+    .word.on.accent{
+      color:#4c195d;
+    }
+
     @keyframes fadeIn{
       from{opacity:0; transform:translateY(10px);}
       to{opacity:1; transform:translateY(0);}
@@ -273,11 +275,11 @@
 </head>
 
 <body>
-  <!-- Fondo blur -->
+
   <div class="bg-fixed" id="bgFixed"></div>
 
   <div class="page">
-    <!-- NAVBAR -->
+
     <header class="navbar">
       <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
 
@@ -300,7 +302,6 @@
       <div id="userSection"></div>
     </header>
 
-    <!-- HERO -->
     <section class="hero" id="hero">
       <div class="hero-content">
         <h1 class="welcome-text">Bienvenido a</h1>
@@ -313,15 +314,16 @@
       </div>
     </section>
 
-    <!-- SOBRE ECO -->
     <section class="sobre-eco" id="sobre">
       <div class="texto-wrap" id="textoWrap"></div>
     </section>
+
   </div>
 
   <script>
+
     /* =============================
-       LOGICA DE USUARIO (NO TOCADA)
+          LOGICA DE USUARIO
     ============================== */
     const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
     const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
@@ -338,14 +340,13 @@
         <div class="auth-buttons">
           <button onclick="window.location.href='login.html'">Iniciar sesión</button>
           <button onclick="window.location.href='registro.html'">Registrarse</button>
-        </div>
-      `;
+        </div>`;
       formularioLink.href = "formulario_a.html";
       reportarBtn.onclick = () => window.location.href="formulario_a.html";
     }
 
     /* =============================
-       EFECTO FADE DEL FONDO
+          FONDO FADE SCROLL
     ============================== */
     const bgFixed = document.getElementById("bgFixed");
     const sobre = document.getElementById("sobre");
@@ -368,9 +369,11 @@
     updateBgOpacity();
 
     /* =============================
-       TEXTO “SOBRE ECO” REVEAL
+       TEXTO SOBRE ECO (REVEAL FIX)
     ============================== */
-    const textoOriginal = `ECO es un espacio que conecta empatía, escucha y acción. Creemos en el poder de compartir y acompañar, en la importancia de cada historia. Nuestro propósito es brindarte un lugar seguro, humano y atento, donde puedas ser escuchado sin juicios.`;
+
+    const textoOriginal = `ECO es una plataforma creada para que cualquier estudiante pueda pedir ayuda de forma segura, clara y confidencial. Su principal objetivo es brindar un canal directo para reportar situaciones de bullying o malestar dentro del ámbito escolar, para que cada caso enviado llegue inmediatamente al equipo de psicólogos del colegio, quienes lo analizan y acompañan el proceso con respeto y profesionalismo. Además, ECO ofrece herramientas de autocuidado pensadas para acompañarte mientras atravesás el proceso: respiración guiada, diario emocional, afirmaciones y otros recursos breves que pueden ayudarte a regular emociones y entender mejor lo que sentís. Nuestro propósito es simple: crear un espacio de escucha donde puedas expresarte sin miedo y encontrar apoyo real cuando lo necesites.`;
+
     const textoWrap = document.getElementById("textoWrap");
 
     function splitWords(t){
@@ -393,27 +396,30 @@
       const rect = textoWrap.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      const start = vh * 0.9;
-      const end = vh * -0.3;
+      const start = vh * 0.75;
+      const end = vh * -0.2;
 
       const raw = (start - rect.top) / (start - end);
-      const progress = Math.min(Math.max(raw,0),1);
+      const progress = Math.min(Math.max(raw, 0), 1);
 
-      function ease(t){return 1 - Math.pow(1 - t, 3);}
+      function ease(t){ return 1 - Math.pow(1 - t, 3); }
       const eased = ease(progress);
 
-      const count = Math.floor(eased * wordSpans.length);
+      let count = Math.ceil(eased * wordSpans.length);
+      count = Math.min(count, wordSpans.length);
 
-      wordSpans.forEach((s,i)=>{
+      wordSpans.forEach((s, i)=>{
         if(i < count) s.classList.add("on");
         else s.classList.remove("on");
       });
     }
 
-    window.addEventListener("scroll", revealText, {passive:true});
+    window.addEventListener("scroll", revealText, { passive:true });
     window.addEventListener("resize", revealText);
     revealText();
+
   </script>
 
 </body>
 </html>
+
