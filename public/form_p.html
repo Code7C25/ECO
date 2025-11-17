@@ -31,7 +31,7 @@
       text-align: center;
     }
 
-    /* 🎨 Filtros sin recuadro */
+    /* Filtros */
     #filtros {
       margin-top: 20px;
       display: flex;
@@ -57,6 +57,7 @@
       box-shadow: 0 3px 8px rgba(179, 93, 193, 0.2);
     }
 
+    /* TABLA (PC) */
     table {
       width: 90%;
       max-width: 800px;
@@ -126,6 +127,69 @@
       transform: scale(1.03);
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
+
+
+    /* ============================================================
+          📱 VERSIÓN CELULAR
+       ============================================================ */
+
+    @media (max-width: 768px) {
+
+      h1 {
+        font-size: 1.7rem;
+        margin-top: 70px;
+        padding: 0 10px;
+      }
+
+      #filtros {
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      select {
+        width: 100%;
+        font-size: 1rem;
+      }
+
+      /* ❌ Ocultar tabla (muy incómoda en celus) */
+      table {
+        display: none;
+      }
+
+      /* ✅ TARJETAS (Mobile Friendly) */
+      .mobile-card {
+        width: 90%;
+        max-width: 450px;
+        background: white;
+        padding: 16px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInMobile 0.8s ease forwards;
+      }
+
+      @keyframes fadeInMobile {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card-row {
+        margin-bottom: 6px;
+        font-size: 1rem;
+      }
+
+      .card-label {
+        font-weight: 700;
+        color: #7e3f8f;
+      }
+    }
+
   </style>
 </head>
 
@@ -166,19 +230,25 @@
     <tbody></tbody>
   </table>
 
+  <div id="mobileList"></div>
+
   <footer>ECO - Proyecto Escolar</footer>
+
 
   <script>
     const tablaBody = document.querySelector("#tablaFormularios tbody");
+    const mobileList = document.getElementById("mobileList");
+
     const cursoFiltro = document.getElementById("cursoFiltro");
     const tipoFiltro = document.getElementById("tipoFiltro");
+
     let todasLasDenuncias = [];
 
     function volver() {
       window.location.href = "psicologo_panel.html";
     }
 
-    // 🔁 Actualización en tiempo real desde Firestore
+    // Firestore realtime
     db.collection("formularios")
       .doc("anonimo")
       .collection("items")
@@ -193,6 +263,8 @@
 
     function aplicarFiltros() {
       tablaBody.innerHTML = "";
+      mobileList.innerHTML = "";
+
       const cursoSel = cursoFiltro.value;
       const tipoSel = tipoFiltro.value;
 
@@ -203,11 +275,15 @@
 
       if (filtradas.length === 0) {
         tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        mobileList.innerHTML = "<p style='margin-top:20px;text-align:center;'>No hay registros con ese filtro.</p>";
         return;
       }
 
       let delay = 0;
+
       filtradas.forEach(item => {
+
+        /* PC: tabla */
         const fila = document.createElement("tr");
         fila.innerHTML = `
           <td>${item.curso || "-"}</td>
@@ -217,8 +293,24 @@
           <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
         `;
         fila.style.animationDelay = `${delay}s`;
-        delay += 0.6;
         tablaBody.appendChild(fila);
+
+        /* MÓVIL: tarjeta */
+        const card = document.createElement("div");
+        card.className = "mobile-card";
+        card.style.animationDelay = `${delay}s`;
+
+        card.innerHTML = `
+          <div class="card-row"><span class="card-label">Curso:</span> ${item.curso || "-"}</div>
+          <div class="card-row"><span class="card-label">Tipo:</span> ${item.tipo || "-"}</div>
+          <div class="card-row"><span class="card-label">Descripción:</span> ${item.descripcion || "-"}</div>
+          <div class="card-row"><span class="card-label">Participantes:</span> ${item.participantes || "-"}</div>
+          <div class="card-row"><span class="card-label">Fecha:</span> ${item.creado ? new Date(item.creado.seconds*1000).toLocaleString() : "-"}</div>
+        `;
+
+        mobileList.appendChild(card);
+
+        delay += 0.4;
       });
     }
   </script>
