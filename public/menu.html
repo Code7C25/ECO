@@ -265,24 +265,34 @@
     }
 
     /* ========= SOBRE ECO ========= */
+    /* ==== Sección SOBRE ECO corregida ==== */
     .sobre-eco{
       min-height:130vh;
       background:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:120px 10%;
+      padding:120px 10% 40px 10%; /* ↓ saco espacio debajo */
       position:relative;
       z-index:10;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      text-align:center;          /* ← CENTRAR TEXTO */
     }
+    /* Texto centrado con max-width */
+   /* TEXTO CENTRADO PERO ALINEADO A LA IZQUIERDA */
+   .texto-wrap{
+    max-width:900px;      /* ancho de la columna */
+    width:90%;
+    font-size:1.4rem;
+    line-height:1.9;
+    text-align:left;      /* ⬅ texto alineado a la izquierda */
+    margin:50px auto 0 auto;  /* centra la caja + baja un poco */
+    padding:0 10px;
+  }
 
-    .texto-wrap{
-      font-size:1.45rem;
-      line-height:1.9;
-      max-width:900px;
-      color:rgba(0,0,0,0.1);
-    }
 
+    
+    /* Palabras individuales (mantienen la animación) */
     .word{
       display:inline-block;
       opacity:.15;
@@ -292,6 +302,22 @@
       color:transparent;
       -webkit-text-fill-color:currentColor;
     }
+    /* IMAGEN DE ARRIBA */
+    .eco-cabeza{
+      display:block;
+      margin:20px auto 30px auto; 
+      width:130px;    
+      opacity:0.95;
+    }
+    /* IMAGEN DE ABAJO */
+    .eco-divisor{
+      display:block;
+      margin:40px auto 0 auto; 
+      width:100%;
+      max-width:320px;  
+      opacity:0.95;
+    }
+
 
     .word.on{
       opacity:1;
@@ -320,7 +346,20 @@
       .nav-logo{ width:56px; }
       .user-icon{ width:34px; }
     }
-
+    /* Imagen decorativa arriba del texto */
+    .eco-cabeza {
+       display:block;
+       margin: 0 auto 40px auto;
+       width: 150px; /* tamaño pequeño */
+       opacity: 0.9;
+      }
+      .eco-divisor {
+        display:block;
+        margin: 60px auto 0 auto;
+        width: 100%; 
+        max-width: 200px; /* controla CUÁNTO largo ocupa */
+        opacity: 0.9;
+      }
   </style>
 </head>
 
@@ -376,11 +415,14 @@
         <button class="btn-report" id="reportarBtn">Reportar caso</button>
       </div>
     </section>
-
     <section class="sobre-eco" id="sobre">
-      <div class="texto-wrap" id="textoWrap"></div>
+      <!-- ⭐ IMAGEN ARRIBA DEL TEXTO (cabeza) -->
+       <img src="cabeza.png" class="eco-cabeza" alt="Decoración">
+       <!-- TEXTO SOBRE ECO -->
+        <div class="texto-wrap" id="textoWrap"></div>
+        <!-- ⭐ IMAGEN AL FINAL DEL TEXTO (corazón largo) -->
+         <img src="corazon.png" class="eco-divisor" alt="Divisor decorativo">
     </section>
-
   </div>
 
   <script>
