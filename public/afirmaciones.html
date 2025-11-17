@@ -1,44 +1,178 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Afirmaciones — ECO</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Afirmaciones</title>
+
+  <!-- Fuente suave -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    body{font-family:'Poppins',sans-serif; background:linear-gradient(160deg,#f9f6ff,#fff7fb); color:#3c2a4d; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
-    .card{background:white;padding:24px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,0.06); max-width:560px; text-align:center;}
-    .affirmation{font-size:1.6rem;color:#4B0082;margin-bottom:12px;}
-    button{padding:10px 14px;border-radius:10px;border:none;background:#c368d1;color:white;font-weight:600;cursor:pointer;}
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #e8d4ff, #ffe4f0);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      animation: fadePage 0.8s ease;
+    }
+
+    @keyframes fadePage {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h2 {
+      color: #6a3a8a;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      color: #7c5d92;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.85);
+      padding: 35px 25px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+      backdrop-filter: blur(6px);
+      animation: popUp 0.7s ease;
+    }
+
+    @keyframes popUp {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* TEXTO DE AFIRMACIÓN */
+    #afirmacion {
+      font-size: 1.6rem;
+      color: #462a5c;
+      font-weight: 600;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeMove 0.6s forwards;
+    }
+
+    @keyframes fadeMove {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* BOTÓN */
+    .btn {
+      margin-top: 30px;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 14px;
+      background: #b288f5;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+
+    .btn:hover {
+      background: #9f71ee;
+      transform: translateY(-3px);
+    }
+
+    /* BOTÓN VOLVER */
+    .volver-btn {
+      margin-top: 25px;
+      background: #d673f1;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .volver-btn:hover {
+      background: #c35add;
+      transform: translateY(-2px);
+    }
+
   </style>
 </head>
 <body>
+
+  <h2>Afirmaciones para vos</h2>
+  <p class="sub">Respirá profundo… y repetí lo que necesites hoy</p>
+
   <div class="card">
-    <h2>Afirmaciones</h2>
-    <div id="affirmation" class="affirmation">Estoy a salvo y puedo pedir ayuda.</div>
-    <p id="explain" style="color:#555">Repetir afirmaciones puede ayudarte a calmar la mente y centrarte en recursos positivos.</p>
-    <div style="margin-top:12px;">
-      <button id="nextBtn">Siguiente</button>
-      <button onclick="location.href='menu.html'">Volver</button>
-    </div>
+    <div id="afirmacion">Cargando afirmación...</div>
+
+    <button class="btn" onclick="nuevaAfirmacion()">Otra afirmación</button>
+
+    <button class="volver-btn" onclick="window.location.href='menu.html'">
+      Volver al menú
+    </button>
   </div>
 
   <script>
-    const affirmations = [
-      { text:'Estoy a salvo y puedo pedir ayuda.', explain:'Frase para centrar y recordar que pedir apoyo está bien.'},
-      { text:'Mi voz importa.', explain:'Recordatorio de que tu experiencia es válida.'},
-      { text:'Puedo controlar mi respiración y calmarme.', explain:'Enfoca en la regulación corporal.'},
-      { text:'No estoy solo/a — puedo hablar con alguien.', explain:'Invita a la conexión con otros.'}
+    const afirmaciones = [
+      "Confío en que todo va a mejorar",
+      "Soy más fuerte de lo que creo.",
+      "Mi voz es valiosa y merece ser escuchada.",
+      "Mi calma está dentro mío, puedo encontrarla.",
+      "Estoy aprendiendo a acompañarme con amor, en todos los momentos",
+      "Respiro, estoy a salvo ahora.",
+      "No estoy solx en esto, estoy acompañadx",
+      "Puedo pausar, respirar y continuar.",
+      "Lo que siento es válido, está bien sentirlo.",
+      "Hoy elijo tratarme con amabilidad.",
+      "Me merezco sentir paz.",
+      "Estoy aprendiendo a entender mis emociones.",
+      "No tengo por qué cargar sola con lo que me pasa.",
+      "Mi historia importa, mi sentir importa.",
+      "Estoy haciendo mi mejor esfuerzo, y eso alcanza.",
+      "Cada día doy un paso hacia adelante.",
+      "Hoy me regalo un momento de descanso.",
+      "No estoy sola, puedo pedir ayuda cuando lo necesite.",
+      "Mi bienestar también importa.",
+      "Estoy en camino a un lugar mejor.",
+      "Confío en mi capacidad para sanar.",
+      "Soy suficiente tal como soy.",
+      "Hoy elijo seguir, aunque vaya despacio.",
+      "Puedo cambiar mi realidad con pequeños pasos.",
+      "Mi mente y mi corazón agradecen cada pausa que hago."
     ];
-    let idx = 0;
-    const el = document.getElementById('affirmation');
-    const ex = document.getElementById('explain');
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      idx = (idx+1) % affirmations.length;
-      el.textContent = affirmations[idx].text;
-      ex.textContent = affirmations[idx].explain;
-    });
+
+    function nuevaAfirmacion() {
+      const elemento = document.getElementById("afirmacion");
+      elemento.style.opacity = 0;
+      elemento.style.transform = "translateY(10px)";
+      
+      setTimeout(() => {
+        const random = Math.floor(Math.random() * afirmaciones.length);
+        elemento.textContent = afirmaciones[random];
+        elemento.style.animation = "fadeMove 0.6s forwards";
+      }, 200);
+    }
+
+    // cargar una al entrar
+    nuevaAfirmacion();
   </script>
+
 </body>
 </html>
 
