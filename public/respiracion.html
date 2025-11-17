@@ -1,68 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Respiración guiada — ECO</title>
-  <link rel="stylesheet" href="style.css"/>
-  <style>
-    body { background: linear-gradient(160deg,#f4eefd,#f7f3ff); display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:'Poppins',sans-serif; color:#3c2a4d; }
-    .card { background:white; padding:28px; border-radius:18px; box-shadow:0 12px 30px rgba(0,0,0,0.08); width:92%; max-width:520px; text-align:center;}
-    .circle { width:180px; height:180px; border-radius:50%; margin:18px auto; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff; background: linear-gradient(135deg,#c368d1,#9d5acb);}
-    .controls { display:flex; gap:12px; justify-content:center; margin-top:12px; }
-    button { padding:10px 14px; border-radius:12px; border:none; cursor:pointer; font-weight:600; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h2>Respiración 4 — 4 — 4</h2>
-    <p>Inhalá 4s — retené 4s — exhalá 4s. Técnica para bajar la activación y volver al presente.</p>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Respiración Guiada - ECO</title>
 
-    <div class="circle" id="circle">4</div>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <div class="controls">
-      <button id="startBtn" style="background:#c368d1;color:white;">Iniciar</button>
-      <button id="stopBtn" style="background:#eee;color:#333;">Detener</button>
-    </div>
-
-    <p style="margin-top:14px; color:#555;">Beneficios: regula la respiración, calma la ansiedad momentánea y mejora la atención.</p>
-    <button onclick="location.href='menu.html'">Volver</button>
-  </div>
-
-<script>
-  let timer=null;
-  const circle = document.getElementById('circle');
-  const startBtn = document.getElementById('startBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const phases = ['Inhalá','Retené','Exhalá'];
-  let phaseIndex = 0;
-  let counter = 4;
-
-  function tick() {
-    circle.textContent = counter;
-    // simple scale animation:
-    circle.style.transform = `scale(${1 + (4-counter)/12})`;
-    if (counter === 0) {
-      phaseIndex = (phaseIndex+1) % 3;
-      counter = 4;
-      // small color switch
-      if (phaseIndex===0) circle.style.background = 'linear-gradient(135deg,#c368d1,#9d5acb)';
-      else if (phaseIndex===1) circle.style.background = 'linear-gradient(135deg,#9dd1c3,#6fbf9f)';
-      else circle.style.background = 'linear-gradient(135deg,#f1b2b2,#f08a8a)';
-    } else {
-      counter--;
-    }
+<style>
+  body{
+    margin:0;
+    font-family:'Poppins', sans-serif;
+    background:linear-gradient(160deg,#f3d9ff,#d5e8ff);
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    animation:pageFade .8s ease;
   }
 
-  startBtn.addEventListener('click', () => {
-    clearInterval(timer);
-    // reset
-    phaseIndex = 0; counter = 4;
-    circle.style.background = 'linear-gradient(135deg,#c368d1,#9d5acb)';
-    tick();
-    timer = setInterval(tick, 1000);
-  });
-  stopBtn.addEventListener('click', () => { clearInterval(timer); circle.style.transform='scale(1)'; circle.textContent='4'; });
+  @keyframes pageFade {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  h2{
+    margin-bottom:10px;
+    font-weight:600;
+    color:#5a2e7a;
+    font-size:2rem;
+    animation:fadeIn 1s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
+  }
+
+  /* Texto dinámico */
+  #textoRespiracion{
+    font-size:1.6rem;
+    margin-top:10px;
+    color:#4a3b52;
+    opacity:0;
+    transition:opacity .4s ease;
+  }
+
+  /* Círculo animado moderno */
+  .circulo{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.65);
+    box-shadow:0 10px 25px rgba(0,0,0,0.10);
+    margin-top:30px;
+    transition:all 2.5s ease;
+  }
+
+  .expandir{
+    transform:scale(1.22);
+    background:rgba(255,255,255,0.85);
+  }
+
+  /* Botones — ahora MÁS ABAJO */
+  .btn{
+    padding:12px 25px;
+    font-size:1rem;
+    font-weight:600;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    margin:20px 8px 0 8px;   /* ← SUBIDO a 20px para bajarlos */
+    background:#b881f7;
+    color:white;
+    box-shadow:0 4px 15px rgba(0,0,0,0.2);
+    transition:.25s ease;
+  }
+
+  .btn:hover{
+    background:#a06ce6;
+    transform:translateY(-2px);
+  }
+
+  .btn-detener{
+    background:#ff88a6;
+  }
+
+  .btn-detener:hover{
+    background:#ff6d90;
+  }
+
+  /* Texto explicativo */
+  .info{
+    margin-top:35px;
+    font-size:.9rem;
+    color:#6d6d6d;
+    max-width:300px;
+    line-height:1.5;
+    opacity:0.75;
+  }
+</style>
+
+</head>
+<body>
+
+<h2>Respiración guiada</h2>
+
+<div id="textoRespiracion">Inhala</div>
+
+<div id="circulo" class="circulo"></div>
+
+<div>
+  <button class="btn" onclick="iniciar()">Iniciar</button>
+  <button class="btn btn-detener" onclick="detener()">Detener</button>
+</div>
+
+<p class="info">
+  Esta técnica ayuda a reducir la ansiedad y a regular la respiración.  
+  Usala cuando quieras calmarte y recuperar el equilibrio.
+</p>
+
+<script>
+let intervalo = null;
+let paso = 0;
+const texto = document.getElementById("textoRespiracion");
+const circulo = document.getElementById("circulo");
+
+/*
+  Cada paso dura EXACTAMENTE 1 segundo.
+  1 → 1s  
+  2 → 1s  
+  3 → 1s  
+  4 → 1s  
+*/
+const fases = [
+  { nombre:"Inhala", animacion:true },
+  { nombre:"1", animacion:null },
+  { nombre:"2", animacion:null },
+  { nombre:"3", animacion:null },
+  { nombre:"4", animacion:null },
+
+  { nombre:"Retén", animacion:null },
+  { nombre:"1", animacion:null },
+  { nombre:"2", animacion:null },
+  { nombre:"3", animacion:null },
+  { nombre:"4", animacion:null },
+
+  { nombre:"Exhala", animacion:false },
+  { nombre:"1", animacion:null },
+  { nombre:"2", animacion:null },
+  { nombre:"3", animacion:null },
+  { nombre:"4", animacion:null },
+];
+
+function iniciar(){
+  detener();
+  paso = 0;
+
+  texto.style.opacity = "1";
+
+  intervalo = setInterval(()=>{
+    const fase = fases[paso];
+
+    texto.textContent = fase.nombre;
+
+    if(fase.animacion === true){
+      circulo.classList.add("expandir");
+    }
+    if(fase.animacion === false){
+      circulo.classList.remove("expandir");
+    }
+
+    paso++;
+    if(paso >= fases.length){
+      paso = 0;
+    }
+
+  }, 1000);  // ← 1 segundo exacto por paso
+}
+
+function detener(){
+  clearInterval(intervalo);
+  texto.style.opacity = "0.4";
+  circulo.classList.remove("expandir");
+}
 </script>
+
 </body>
 </html>
