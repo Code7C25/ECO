@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO — Música para Relajar</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Cardo&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(160deg, #f1e6ff, #f9f4ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      color: #3c2a4d;
+    }
+
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #d7c0f7;
+      color: #4c195d;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.25s ease;
+      z-index: 100;
+    }
+
+    .volver-btn:hover {
+      background-color: #c8aaf0;
+      transform: scale(1.05);
+    }
+
+    /* CONTENEDOR */
+    .playlist-box {
+      width: 95%;
+      max-width: 620px;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 110px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.1);
+      animation: fadeUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CABECERA PLAYLIST */
+    .playlist-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .playlist-cover {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .playlist-info h2 {
+      margin: 0;
+      font-size: 1.7rem;
+      color: #4B0082;
+      font-weight: 600;
+    }
+
+    .playlist-info p {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    /* LISTA DE TEMAS (vista previa) */
+    .song {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .song img {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .song-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .song-artist {
+      font-size: 0.88rem;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* BOTONES DE SERVICIOS */
+    .service-buttons {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .icon-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: 0.25s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.12);
+    }
+
+    .icon-btn img {
+      width: 40px;
+    }
+
+    /* TEXTO INFORMATIVO */
+    .text-info {
+      margin-top: 30px;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #4b3a62;
+      line-height: 1.7rem;
+      max-width: 600px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:520px){
+      .playlist-header { flex-direction: column; text-align: center; }
+      .playlist-info h2 { font-size: 1.5rem; }
+      .playlist-cover { width: 160px; height:160px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<button class="volver-btn" onclick="location.href='menu.html'">← Volver</button>
+
+<div class="playlist-box">
+
+  <div class="playlist-header">
+    <img src="logo-eco.png" class="playlist-cover">
+
+    <div class="playlist-info">
+      <h2>Música para relajar</h2>
+      <p>Playlist por ECO</p>
+    </div>
+  </div>
+
+  <!-- Vista previa REAL basada en tu captura -->
+  <div class="song">
+    <img src="cover1.jpg">
+    <div>
+      <div class="song-title">Desafinado</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="cover1.jpg">
+    <div>
+      <div class="song-title">Só Danço Samba</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="cover1.jpg">
+    <div>
+      <div class="song-title">Para Machuchar Meu Coração</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="cover2.jpg">
+    <div>
+      <div class="song-title">Chega De Saudade</div>
+      <div class="song-artist">João Gilberto</div>
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="service-buttons">
+    <button class="icon-btn" onclick="window.open('https://open.spotify.com/playlist/7D9bhxXZ6ZP4jAXNbQesaz?si=ePXph4x7QV2dZfDZCho6LQ')">
+      <img src="spotify.png">
+    </button>
+
+    <button class="icon-btn" onclick="window.open('https://music.youtube.com/playlist?list=PLqKCzJkGfl_M_Jwef-D8UcMJuJDAJj0bF&si=tWrwmN7g3p9Yxssv')">
+      <img src="ytmusic.png">
+    </button>
+  </div>
+
+</div>
+
+<p class="text-info">
+  La música ayuda a relajar, bajar la ansiedad y acompañarte en momentos de estrés o tensión.  
+  Elegí la plataforma que uses y disfrutá un espacio de calma.
+</p>
+
+</body>
+</html>
