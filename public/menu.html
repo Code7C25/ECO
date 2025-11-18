@@ -38,7 +38,7 @@
       min-height:100vh;
     }
 
-    /* ======= NAVBAR ======= */
+    /* ======= NAVBAR TRANSPARENTE Y BOTONES CENTRADOS ======= */
     .navbar{
       position:fixed;
       top:0;left:0;
@@ -77,7 +77,7 @@
     }
     .nav-logo:hover{transform:scale(1.08);}
 
-    /* Centro con links (solo escritorio) */
+    /* CENTRO EXACTO */
     .nav-center-wrapper{
       position:absolute;
       left:50%;
@@ -129,9 +129,7 @@
     }
 
     /* ======= DROPDOWN ESCRITORIO ======= */
-    .dropdown{
-      position:relative;
-    }
+    .dropdown{ position:relative; }
 
     .dropdown-content{
       display:none;
@@ -161,7 +159,6 @@
       color:#3c2a4d;
       transition:background .2s;
     }
-
     .dropdown-content a:hover{
       background:#e8d6ff;
       color:#4c195d;
@@ -264,8 +261,6 @@
       min-height:130vh;
       background:white;
       padding:120px 10% 40px 10%;
-      position:relative;
-      z-index:10;
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
@@ -293,16 +288,6 @@
       -webkit-text-fill-color:currentColor;
     }
 
-    .word.on{
-      opacity:1;
-      color:#1a1520;
-    }
-
-    .word.on.accent{
-      color:#4c195d;
-    }
-
-    /* Imágenes decorativas */
     .eco-cabeza{
       display:block;
       margin:20px auto 30px auto;
@@ -318,211 +303,174 @@
       opacity:0.95;
     }
 
+    .word.on{
+      opacity:1;
+      color:#1a1520;
+    }
+
     @keyframes fadeIn{
       from{opacity:0; transform:translateY(10px);}
       to{opacity:1; transform:translateY(0);}
     }
 
-    /* ===== HAMBURGUESA y MENÚ MOBILE (base: ocultos en escritorio) ===== */
-    .hamburger{
-      display:none; /* solo se muestra en mobile */
+    /* 🔹 ELEMENTOS SOLO MOBILE — OCULTOS EN ESCRITORIO 🔹 */
+    .hamburger,
+    .mobile-menu,
+    .mobile-bg,
+    #mobileAuth{
+      display:none;
     }
 
-    .mobile-menu{
-      display:none; /* solo se usa en mobile, se activa en @media */
-    }
-
-    /* ====== Responsivo general escritorio-tablet ====== */
-    @media (max-width:900px){
-      .nav-center-wrapper{ position:static; transform:none; padding:0 12px; }
-      .navbar{ padding:0 12px; }
-      .nav-links{ gap:1rem; max-width:100%; }
-    }
-
+    /* ========================================================
+       📱 ESTILOS SOLO PARA CELULAR
+       ======================================================== */
     @media (max-width:600px){
-      .welcome-text{ font-size:3rem; }
-      .eco-logo{ width:140px; }
-      .nav-logo{ width:56px; }
-      .user-icon{ width:34px; }
-    }
 
-    /* ======== MOBILE MODE (solo celulares <=768px) ======== */
-    @media (max-width: 768px) {
-      /* NAVBAR MOBILE */
-      .navbar {
-        height: 65px;
-        padding: 0 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-       }
-       /* OCULTAR MENU CENTRAL COMPLETAMENTE */
-       .nav-center-wrapper {
-        display: none !important;
-      }
-      /* LOGO ECO centrado visualmente */
-      .nav-left {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-      }
-      .nav-logo {
-        width: 80px;
-        margin: 0 auto;
-      }
-      /* -------- HAMBURGUESA -------- */
-      .hamburger {
-        display: flex !important;
-        flex-direction: column;
-        gap: 5px;
-        width: 32px;
-        height: 26px;
-        cursor: pointer;
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);  /* centrado perfecto */
-        z-index: 200;
-      }
-      .hamburger span {
-        width: 100%;
-        height: 4px;
-        background: #4c195d;
-        border-radius: 2px;
-      }
-      /* -------- ÍCONO DE PERFIL O BOTONES -------- */
-      /* OCULTAR BOTONES INICIAR/REGISTRARSE EN CELULAR */
-      .auth-buttons {
-        display: none !important;
-      }
-      /* PERFIL MÁS GRANDE EN MÓVIL */
-      .user-icon {
-        width: 60px !important;    /* antes 34px */
-        height: 60px;
-        object-fit: contain;
-      }
-     .nav-right {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-      /* -------- MENÚ LATERAL -------- */
-      .mobile-menu {
-        position: fixed;
-        top: 65px;
-        left: 0;
-        width: 75%;
-        max-width: 260px;
-        height: 100vh;
-        background: rgba(255,255,255,0.95);
-        backdrop-filter: blur(14px);
-        box-shadow: 4px 0 14px rgba(0,0,0,0.2);
-        padding: 20px;
-        transform: translateX(-100%);
-        transition: transform .35s ease;
-        z-index: 999;
-      }
-      .mobile-menu.open {
-        transform: translateX(0);
-      }
-      .mobile-menu a,
-      .mobile-menu button {
-        display: block;
-        width: 100%;
-        padding: 12px 4px;
-        text-align: left;
-        border: none;
-        background: none;
-        font-size: 1.1rem;
-        color: #4c195d;
-        font-weight: 500;
-        cursor: pointer;
-      }
-       /* Submenú */
-       .mobile-submenu {
-        display: none;
-        margin-left: 14px;
-        border-left: 2px solid #d8c2f3;
-        padding-left: 10px;
-      }
-      .mobile-submenu.open {
-        display: block;
+      .nav-center-wrapper{ display:none!important; }
+      .nav-right{ display:none!important; }
+
+      .navbar{
+        padding:0 16px;
+        justify-content:flex-start;
       }
 
-      /* User derecha igual que siempre pero compacta */
-      .nav-right{
-        position:absolute;
-        right:14px;
-        top:12px;
+      .hamburger{
+        display:flex;
+        width:34px;
+        height:26px;
+        flex-direction:column;
+        justify-content:space-between;
+        cursor:pointer;
+      }
+      .hamburger div{
+        height:4px;
+        background:#4c195d;
+        border-radius:10px;
       }
 
-      .auth-buttons button{
-        padding:6px 10px;
-        border-radius:12px;
-        font-size:.8rem;
+      .nav-left{
+        flex:1;
+        justify-content:flex-end;
       }
 
-      .user-icon{
-        width:32px;
+      .nav-logo{
+        width:64px;
       }
 
-      /* Texto sobre ECO más cómodo en móvil */
-      .texto-wrap{
-        width:92%;
-        max-width:500px;
+      .mobile-menu{
+        display:flex;
+        position:fixed;
+        top:0;
+        left:-260px;
+        width:260px;
+        height:100vh;
+        background:rgba(255,255,255,0.97);
+        backdrop-filter:blur(12px);
+        box-shadow:4px 0 16px rgba(0,0,0,0.2);
+        padding:28px 22px;
+        flex-direction:column;
+        gap:14px;
+        transition:left .3s ease;
+        z-index:99999;
+      }
+
+      .mobile-menu.open{ left:0; }
+
+      .mobile-menu a{
         font-size:1.15rem;
-        line-height:2rem;
-        margin-top:20px;
+        color:#4c195d;
+        text-decoration:none;
+        padding:6px 0;
       }
 
-      .eco-cabeza{
-        width:110px;
-        margin-top:10px;
+      .mobile-dropdown-btn{
+        background:none;
+        border:none;
+        padding:6px 0;
+        font-size:1.15rem;
+        color:#4c195d;
+        text-align:left;
+        cursor:pointer;
       }
 
-      .eco-divisor{
-        max-width:180px;
+      .mobile-submenu{
+        display:none;
+        flex-direction:column;
+        margin-left:12px;
+        gap:6px;
+      }
+      .mobile-submenu.open{
+        display:flex;
+      }
+
+      #mobileAuth{ display:block; }
+
+      .mobile-auth{
         margin-top:20px;
+        padding-top:10px;
+        border-top:1px solid rgba(0,0,0,0.2);
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+      .mobile-auth button{
+        background:#d96fc0;
+        border:none;
+        padding:10px;
+        border-radius:20px;
+        font-weight:600;
+        color:white;
+      }
+
+      .mobile-bg{
+        display:block;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.35);
+        backdrop-filter:blur(2px);
+        opacity:0;
+        pointer-events:none;
+        transition:.3s;
+        z-index:9999;
+      }
+      .mobile-bg.show{
+        opacity:1;
+        pointer-events:all;
       }
     }
-
   </style>
 </head>
-<body>
 
+<body>
   <div class="bg-fixed" id="bgFixed"></div>
 
   <div class="page">
 
     <header class="navbar">
 
-      <!-- HAMBURGUESA (solo se ve en móvil por CSS) -->
-      <div class="hamburger" id="hamburgerBtn">
-        <span></span>
-        <span></span>
-        <span></span>
+      <!-- HAMBURGUESA (solo móvil) -->
+      <div class="hamburger" onclick="openMobileMenu()">
+        <div></div><div></div><div></div>
       </div>
 
-      <!-- izquierda: logo -->
+      <!-- LOGO -->
       <div class="nav-left">
         <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
       </div>
 
-      <!-- centro: menú clásico (solo escritorio/tablet) -->
-      <div class="nav-center-wrapper" aria-hidden="false">
-        <nav class="nav-links" role="navigation" aria-label="Menú principal">
+      <!-- MENÚ ESCRITORIO -->
+      <div class="nav-center-wrapper">
+        <nav class="nav-links">
           <a id="formularioLink" href="#">Formulario</a>
 
           <div class="dropdown" id="herramientasDropdown">
-            <button class="dropdown-btn" id="herramientasBtn" aria-haspopup="true" aria-expanded="false">Herramientas</button>
-            <div class="dropdown-content" aria-label="Lista de herramientas">
+            <button class="dropdown-btn" id="herramientasBtn">Herramientas</button>
+            <div class="dropdown-content">
               <a href="respiracion.html">Respiración guiada</a>
               <a href="diario.html">Diario emocional</a>
               <a href="consejos.html">Consejos</a>
               <a href="afirmaciones.html">Afirmaciones</a>
-              <!-- NUEVA HERRAMIENTA-->
-               <a href="musica.html">Música</a>
+              <a href="musica.html">Música</a>
             </div>
           </div>
 
@@ -530,32 +478,37 @@
         </nav>
       </div>
 
-      <!-- derecha: usuario -->
+      <!-- SECCIÓN USUARIO (OCULTA EN CELULAR POR CSS) -->
       <div class="nav-right">
         <div id="userSection"></div>
       </div>
 
-      <!-- MENÚ LATERAL MÓVIL -->
-      <div class="mobile-menu" id="mobileMenu">
-        <a id="mobileFormulario">Formulario</a>
-
-        <button id="mobileHerramientas">Herramientas ▼</button>
-        <div class="mobile-submenu" id="mobileHerramientasSub">
-          <a href="respiracion.html">Respiración guiada</a>
-          <a href="diario.html">Diario emocional</a>
-          <a href="consejos.html">Consejos</a>
-          <a href="afirmaciones.html">Afirmaciones</a>
-          <a href="musica.html">Música</a>
-        </div>
-
-        <a href="#sobre" onclick="document.getElementById('mobileMenu').classList.remove('open')">Sobre ECO</a>
-
-        <!-- Aquí inyecto login/registro o perfil en mobile -->
-        <div id="mobileUserHere" style="margin-top:16px;"></div>
-      </div>
-
     </header>
 
+    <!-- ⭐⭐⭐ MENÚ LATERAL MÓVIL ⭐⭐⭐ -->
+    <nav id="mobileMenu" class="mobile-menu">
+
+      <a id="mobileFormularioLink" href="#">Formulario</a>
+
+      <button type="button" class="mobile-dropdown-btn" onclick="toggleMobileSubmenu()">Herramientas ▼</button>
+
+      <div id="mobileSubmenu" class="mobile-submenu">
+        <a href="respiracion.html">Respiración guiada</a>
+        <a href="diario.html">Diario emocional</a>
+        <a href="consejos.html">Consejos</a>
+        <a href="afirmaciones.html">Afirmaciones</a>
+        <a href="musica.html">Música</a>
+      </div>
+
+      <a href="#sobre" onclick="closeMobileMenu()">Sobre ECO</a>
+
+      <div id="mobileAuth"></div>
+    </nav>
+
+    <!-- Fondo oscuro detrás del menú móvil -->
+    <div id="mobileBg" class="mobile-bg" onclick="closeMobileMenu()"></div>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <section class="hero" id="hero">
       <div class="hero-content">
         <h1 class="welcome-text">Bienvenido a</h1>
@@ -572,193 +525,195 @@
     </section>
 
   </div>
+<script>
+/* =====================================================
+      LOGICA DE USUARIO (ESCRITORIO + MÓVIL)
+===================================================== */
 
-  <script>
-    /* =============================
-       LÓGICA DE USUARIO
-    ============================== */
-    const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
-    const anonimo      = localStorage.getItem('ecoAnonimo') === 'true';
-    const userSection  = document.getElementById("userSection");
-    const formularioLink = document.getElementById("formularioLink");
-    const reportarBtn  = document.getElementById("reportarBtn");
+const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
+const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
 
-    if(userLoggedIn && !anonimo){
-      userSection.innerHTML = `<img src="user-icon.png" class="user-icon" onclick="window.location.href='perfil.html'">`;
-      formularioLink.href = "formulario_p.html";
-      reportarBtn.onclick = () => window.location.href="formulario_p.html";
+const userSection = document.getElementById("userSection");
+const formularioLink = document.getElementById("formularioLink");
+const reportarBtn = document.getElementById("reportarBtn");
+
+/* móvil */
+const mobileFormularioLink = document.getElementById("mobileFormularioLink");
+const mobileAuth = document.getElementById("mobileAuth");
+
+if(userLoggedIn && !anonimo){
+
+  /* escritorio */
+  userSection.innerHTML = `
+    <img src="user-icon.png" class="user-icon" onclick="window.location.href='perfil.html'">
+  `;
+  formularioLink.href = "formulario_p.html";
+  reportarBtn.onclick = () => window.location.href="formulario_p.html";
+
+  /* móvil */
+  mobileFormularioLink.href = "formulario_p.html";
+  mobileAuth.innerHTML = ""; // no mostrar botones
+
+} else {
+
+  /* escritorio */
+  userSection.innerHTML = `
+    <div class="auth-buttons">
+      <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
+      <button onclick="window.location.href='registro.html?from=menu'">Registrarse</button>
+    </div>
+  `;
+  formularioLink.href = "formulario_a.html";
+  reportarBtn.onclick = () => window.location.href="formulario_a.html";
+
+  /* móvil */
+  mobileFormularioLink.href = "formulario_a.html";
+  mobileAuth.innerHTML = `
+    <div class="mobile-auth">
+      <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
+      <button onclick="window.location.href='registro.html?from=menu'">Registrarse</button>
+    </div>
+  `;
+}
+
+/* =====================================================
+      MENÚ MÓVIL
+===================================================== */
+
+function openMobileMenu(){
+  document.getElementById("mobileMenu").classList.add("open");
+  document.getElementById("mobileBg").classList.add("show");
+}
+function closeMobileMenu(){
+  document.getElementById("mobileMenu").classList.remove("open");
+  document.getElementById("mobileBg").classList.remove("show");
+}
+function toggleMobileSubmenu(){
+  document.getElementById("mobileSubmenu").classList.toggle("open");
+}
+
+
+/* =====================================================
+      FONDO FADE SEGÚN SCROLL
+===================================================== */
+
+const bgFixed = document.getElementById("bgFixed");
+const sobre = document.getElementById("sobre");
+
+function updateBgOpacity(){
+  const rect = sobre.getBoundingClientRect();
+  const vh = window.innerHeight;
+  const top = rect.top;
+
+  const start = vh * 0.05;
+  const end = vh * 0.65;
+
+  const p = Math.min(Math.max((vh - top - start) / (end - start), 0), 1);
+
+  bgFixed.style.opacity = (1 - p).toFixed(3);
+}
+
+window.addEventListener("scroll", updateBgOpacity, {passive:true});
+window.addEventListener("resize", updateBgOpacity);
+updateBgOpacity();
+
+
+/* =====================================================
+      TEXTO SOBRE ECO — ANIMACIÓN ORIGINAL RESTAURADA
+===================================================== */
+
+const textoOriginal = `ECO es una plataforma creada para que cualquier estudiante pueda pedir ayuda de forma segura, clara y confidencial. Su principal objetivo es brindar un canal directo para reportar situaciones de bullying o malestar dentro del ámbito escolar, para que cada caso enviado llegue inmediatamente al equipo de psicólogos del colegio, quienes lo analizan y acompañan el proceso con respeto y profesionalismo. Además, ECO ofrece herramientas de autocuidado pensadas para acompañarte mientras atravesás el proceso: respiración guiada, diario emocional, afirmaciones y otros recursos breves que pueden ayudarte a regular emociones y entender mejor lo que sentís. Nuestro propósito es simple: crear un espacio de escucha donde puedas expresarte sin miedo y encontrar apoyo real cuando lo necesites.`;
+
+const textoWrap = document.getElementById("textoWrap");
+
+/* dividir en palabras + espacios como el archivo original */
+function splitWords(t){
+  return t.match(/\S+|\s+/g) || [];
+}
+
+const tokens = splitWords(textoOriginal);
+textoWrap.innerHTML = "";
+const wordSpans = [];
+
+tokens.forEach(tok => {
+  const span = document.createElement("span");
+  span.className = /\s+/.test(tok) ? "word space" : "word";
+  span.textContent = tok;
+  textoWrap.appendChild(span);
+  if(!/\s+/.test(tok)) wordSpans.push(span);
+});
+
+function revealText(){
+  const rect = textoWrap.getBoundingClientRect();
+  const vh = window.innerHeight;
+
+  const start = vh * 0.75;
+  const end = vh * -0.2;
+
+  const raw = (start - rect.top) / (start - end);
+  const progress = Math.min(Math.max(raw, 0), 1);
+
+  /* easing cubic */
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  const eased = ease(progress);
+
+  let count = Math.ceil(eased * wordSpans.length);
+  count = Math.min(count, wordSpans.length);
+
+  wordSpans.forEach((s, i)=>{
+    if(i < count) s.classList.add("on");
+    else s.classList.remove("on");
+  });
+}
+
+window.addEventListener("scroll", revealText, { passive:true });
+window.addEventListener("resize", revealText);
+revealText();
+
+
+/* =====================================================
+      DROPDOWN ESCRITORIO (táctil + hover)
+===================================================== */
+
+(function(){
+  const dropdown = document.getElementById('herramientasDropdown');
+  const btn = document.getElementById('herramientasBtn');
+
+  if(!dropdown || !btn) return;
+
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    const isOpen = dropdown.classList.contains('open');
+
+    document.querySelectorAll('.dropdown.open')
+      .forEach(d => d.classList.remove('open'));
+
+    if(!isOpen){
+      dropdown.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
     } else {
-      userSection.innerHTML = `
-        <div class="auth-buttons">
-          <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
-          <button onclick="window.location.href='registro.html?from=menu'">Registrarse</button>
-        </div>`;
-      formularioLink.href = "formulario_a.html";
-      reportarBtn.onclick = () => window.location.href="formulario_a.html";
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
     }
+  });
 
-    /* Usuario en menú MOBILE */
-    const mobileUserHere = document.getElementById("mobileUserHere");
-    if(userLoggedIn && !anonimo){
-      mobileUserHere.innerHTML = `<button onclick="window.location.href='perfil.html'" style="background:#d96fc0;color:#fff;border:none;border-radius:18px;padding:8px 14px;margin-top:6px;">Mi perfil</button>`;
-    } else {
-      mobileUserHere.innerHTML = `
-        <button onclick="window.location.href='login.html?from=menu'" style="background:#d96fc0;color:#fff;border:none;border-radius:18px;padding:8px 14px;margin-top:6px;display:block;width:100%;text-align:center;">Iniciar sesión</button>
-        <button onclick="window.location.href='registro.html?from=menu'" style="background:#b94fa3;color:#fff;border:none;border-radius:18px;padding:8px 14px;margin-top:8px;display:block;width:100%;text-align:center;">Registrarse</button>
-      `;
+  dropdown.querySelector('.dropdown-content').addEventListener('click', e=>{
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', function(){
+    dropdown.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && dropdown.classList.contains('open')){
+      dropdown.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      btn.focus();
     }
-
-    /* =============================
-          FONDO FADE SCROLL 
-    ============================== */
-    const bgFixed = document.getElementById("bgFixed");
-    const sobre = document.getElementById("sobre");
-
-    function updateBgOpacity(){
-      const rect = sobre.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const top = rect.top;
-
-      const start = vh * 0.05;
-      const end = vh * 0.65;
-
-      const p = Math.min(Math.max((vh - top - start) / (end - start), 0), 1);
-
-      bgFixed.style.opacity = (1 - p).toFixed(3);
-    }
-
-    window.addEventListener("scroll", updateBgOpacity, {passive:true});
-    window.addEventListener("resize", updateBgOpacity);
-    updateBgOpacity();
-
-    /* =============================
-       TEXTO SOBRE ECO (REVEAL)
-    ============================== */
-    const textoOriginal = `ECO es una plataforma creada para que cualquier estudiante pueda pedir ayuda de forma segura, clara y confidencial. Su principal objetivo es brindar un canal directo para reportar situaciones de bullying o malestar dentro del ámbito escolar, para que cada caso enviado llegue inmediatamente al equipo de psicólogos del colegio, quienes lo analizan y acompañan el proceso con respeto y profesionalismo. Además, ECO ofrece herramientas de autocuidado pensadas para acompañarte mientras atravesás el proceso: respiración guiada, diario emocional, afirmaciones y otros recursos breves que pueden ayudarte a regular emociones y entender mejor lo que sentís. Nuestro propósito es simple: crear un espacio de escucha donde puedas expresarte sin miedo y encontrar apoyo real cuando lo necesites.`;
-
-    const textoWrap = document.getElementById("textoWrap");
-
-    function splitWords(t){
-      return t.match(/\S+|\s+/g) || [];
-    }
-
-    const tokens = splitWords(textoOriginal);
-    textoWrap.innerHTML = "";
-    const wordSpans = [];
-
-    tokens.forEach(tok=>{
-      const span = document.createElement("span");
-      span.className = /\s+/.test(tok) ? "word space" : "word";
-      span.textContent = tok;
-      textoWrap.appendChild(span);
-      if(!/\s+/.test(tok)) wordSpans.push(span);
-    });
-
-    function revealText(){
-      const rect = textoWrap.getBoundingClientRect();
-      const vh = window.innerHeight;
-
-      const start = vh * 0.75;
-      const end = vh * -0.2;
-
-      const raw = (start - rect.top) / (start - end);
-      const progress = Math.min(Math.max(raw, 0), 1);
-
-      function ease(t){ return 1 - Math.pow(1 - t, 3); }
-      const eased = ease(progress);
-
-      let count = Math.ceil(eased * wordSpans.length);
-      count = Math.min(count, wordSpans.length);
-
-      wordSpans.forEach((s, i)=>{
-        if(i < count) s.classList.add("on");
-        else s.classList.remove("on");
-      });
-    }
-
-    window.addEventListener("scroll", revealText, { passive:true });
-    window.addEventListener("resize", revealText);
-    revealText();
-
-    /* =============================
-       DROPDOWN ESCRITORIO
-    ============================== */
-    (function(){
-      const dropdown = document.getElementById('herramientasDropdown');
-      const btn = document.getElementById('herramientasBtn');
-
-      if(!dropdown || !btn) return;
-
-      btn.addEventListener('click', function(e){
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
-        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
-        if(!isOpen){
-          dropdown.classList.add('open');
-          btn.setAttribute('aria-expanded','true');
-        } else {
-          dropdown.classList.remove('open');
-          btn.setAttribute('aria-expanded','false');
-        }
-      });
-
-      dropdown.querySelector('.dropdown-content').addEventListener('click', function(e){
-        e.stopPropagation();
-      });
-
-      document.addEventListener('click', function(){
-        if(dropdown.classList.contains('open')){
-          dropdown.classList.remove('open');
-          btn.setAttribute('aria-expanded','false');
-        }
-      });
-
-      document.addEventListener('keydown', function(e){
-        if(e.key === 'Escape' && dropdown.classList.contains('open')){
-          dropdown.classList.remove('open');
-          btn.setAttribute('aria-expanded','false');
-          btn.focus();
-        }
-      });
-    })();
-
-    /* =============================
-       MENÚ MOBILE
-    ============================== */
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
-    const mobileMenu   = document.getElementById("mobileMenu");
-    const mobileHerr   = document.getElementById("mobileHerramientas");
-    const mobileSub    = document.getElementById("mobileHerramientasSub");
-    const mobileForm   = document.getElementById("mobileFormulario");
-
-    if(hamburgerBtn){
-      hamburgerBtn.addEventListener("click", ()=>{
-        mobileMenu.classList.toggle("open");
-      });
-    }
-
-    if(mobileHerr){
-      mobileHerr.addEventListener("click", ()=>{
-        mobileSub.classList.toggle("open");
-      });
-    }
-
-    if(mobileForm){
-      mobileForm.onclick = ()=>{
-        if(localStorage.getItem("ecoUserLogged")==="true" && localStorage.getItem("ecoAnonimo")!=="true"){
-          window.location.href = "formulario_p.html";
-        } else {
-          window.location.href = "formulario_a.html";
-        }
-        mobileMenu.classList.remove("open");
-      };
-    }
-    /* ======== OCULTAR BOTONES EN MOBILE SI ESTOY EN CELULAR ======== */
-    if (window.innerWidth < 768) {
-      const authButtons = document.querySelector(".auth-buttons");
-      if (authButtons) authButtons.style.display = "none"; // ocultar botones arriba del logo
-    }
-  </script>
-
+  });
+})();
+</script>
 </body>
 </html>
