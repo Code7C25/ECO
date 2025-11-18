@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Panel Psicólogo</title>
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+  .condiciones-link {
+    position: fixed;
+    bottom: 8px;
+    right: 10px;
+    font-size: 15px; 
+    opacity: 0.45;   
+    text-decoration: none;
+    color: #000;
+  }
+  .condiciones-link:hover {
+    opacity: 0.8;
+  }
+</style>
+
 </head>
 
 <body class="pagina-psicologo">
@@ -18,9 +34,12 @@
 
     <div style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
       <button onclick="window.location.href='form_a.html'">Formularios anónimos</button>
-      <button onclick="window.location.href='form_p.html'">Formularios públicos</button>
+      <button onclick="window.location.href='form_p.html'">Formularios logueados</button>
     </div>
   </main>
+
+  <!-- Link discreto -->
+  <a class="condiciones-link" href="condiciones.pdf" target="_blank">condiciones</a>
 
   <script src="menu.js"></script>
 </body>
