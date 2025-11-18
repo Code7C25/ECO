@@ -236,19 +236,16 @@
 
 
   <script>
-    const tablaBody = document.querySelector("#tablaFormularios tbody");
-    const mobileList = document.getElementById("mobileList");
-
-    const cursoFiltro = document.getElementById("cursoFiltro");
-    const tipoFiltro = document.getElementById("tipoFiltro");
-
-    let todasLasDenuncias = [];
+  const tablaBody = document.querySelector("#tablaFormularios tbody");
+  const cursoFiltro = document.getElementById("cursoFiltro");
+  const tipoFiltro = document.getElementById("tipoFiltro");
+  let todasLasDenuncias = [];
 
     function volver() {
       window.location.href = "psicologo_panel.html";
     }
 
-    // Firestore realtime
+    // 🔁 Actualización en tiempo real desde Firestore
     db.collection("formularios")
       .doc("anonimo")
       .collection("items")
@@ -263,8 +260,6 @@
 
     function aplicarFiltros() {
       tablaBody.innerHTML = "";
-      mobileList.innerHTML = "";
-
       const cursoSel = cursoFiltro.value;
       const tipoSel = tipoFiltro.value;
 
@@ -275,15 +270,11 @@
 
       if (filtradas.length === 0) {
         tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
-        mobileList.innerHTML = "<p style='margin-top:20px;text-align:center;'>No hay registros con ese filtro.</p>";
         return;
       }
 
       let delay = 0;
-
       filtradas.forEach(item => {
-
-        /* PC: tabla */
         const fila = document.createElement("tr");
         fila.innerHTML = `
           <td>${item.curso || "-"}</td>
@@ -293,26 +284,11 @@
           <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
         `;
         fila.style.animationDelay = `${delay}s`;
+        delay += 0.6;
         tablaBody.appendChild(fila);
-
-        /* MÓVIL: tarjeta */
-        const card = document.createElement("div");
-        card.className = "mobile-card";
-        card.style.animationDelay = `${delay}s`;
-
-        card.innerHTML = `
-          <div class="card-row"><span class="card-label">Curso:</span> ${item.curso || "-"}</div>
-          <div class="card-row"><span class="card-label">Tipo:</span> ${item.tipo || "-"}</div>
-          <div class="card-row"><span class="card-label">Descripción:</span> ${item.descripcion || "-"}</div>
-          <div class="card-row"><span class="card-label">Participantes:</span> ${item.participantes || "-"}</div>
-          <div class="card-row"><span class="card-label">Fecha:</span> ${item.creado ? new Date(item.creado.seconds*1000).toLocaleString() : "-"}</div>
-        `;
-
-        mobileList.appendChild(card);
-
-        delay += 0.4;
       });
     }
   </script>
 </body>
 </html>
+
