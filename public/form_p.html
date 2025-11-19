@@ -31,6 +31,30 @@
       text-align: center;
     }
 
+    /* Botón volver */
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #b35dc1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      z-index: 1000;
+    }
+
+    .volver-btn:hover {
+      background-color: #9f4cad;
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
     /* Filtros */
     #filtros {
       margin-top: 20px;
@@ -105,98 +129,56 @@
       opacity: 0.8;
     }
 
-    .volver-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background-color: #b35dc1;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 8px 14px;
+    /* Vista mobile tipo tarjetas (opcional) */
+    #mobileList {
+      display: none;
+      width: 90%;
+      max-width: 800px;
+      margin: 20px 0 60px;
+    }
+
+    .mobile-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 14px 16px;
+      margin-bottom: 12px;
       font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
-      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.9s ease forwards;
     }
 
-    .volver-btn:hover {
-      background-color: #9f4cad;
-      transform: scale(1.03);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    .mobile-card strong {
+      color: #b35dc1;
     }
 
-
-    /* ============================================================
-          📱 VERSIÓN CELULAR
-       ============================================================ */
-
+    /* Responsive */
     @media (max-width: 768px) {
-
-      h1 {
-        font-size: 1.7rem;
-        margin-top: 70px;
-        padding: 0 10px;
-      }
-
-      #filtros {
-        width: 90%;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      select {
-        width: 100%;
-        font-size: 1rem;
-      }
-
-      /* ❌ Ocultar tabla (muy incómoda en celus) */
       table {
         display: none;
       }
-
-      /* ✅ TARJETAS (Mobile Friendly) */
-      .mobile-card {
+      #mobileList {
+        display: block;
+      }
+      h1 {
+        font-size: 1.6rem;
+        margin-top: 70px;
+      }
+      #filtros {
         width: 90%;
-        max-width: 450px;
-        background: white;
-        padding: 16px;
-        border-radius: 14px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 14px rgba(0,0,0,0.08);
-
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInMobile 0.8s ease forwards;
       }
-
-      @keyframes fadeInMobile {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .card-row {
-        margin-bottom: 6px;
-        font-size: 1rem;
-      }
-
-      .card-label {
-        font-weight: 700;
-        color: #7e3f8f;
+      select {
+        flex: 1 1 100%;
       }
     }
-
   </style>
 </head>
 
 <body>
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
-  <h1>Formulario </h1>
+  <h1>Formularios Loguados</h1>
 
   <div id="filtros">
     <select id="cursoFiltro">
@@ -211,12 +193,13 @@
     </select>
 
     <select id="tipoFiltro">
-      <option value="">Situación...</option>
+      <option value="">Situación.</option>
       <option value="Sufrí bullying">Sufrí bullying</option>
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
     </select>
   </div>
 
+  <!-- Tabla para escritorio -->
   <table id="tablaFormularios">
     <thead>
       <tr>
@@ -230,24 +213,25 @@
     <tbody></tbody>
   </table>
 
+  <!-- Lista para mobile -->
   <div id="mobileList"></div>
 
   <footer>ECO - Proyecto Escolar</footer>
 
-
   <script>
-  const tablaBody = document.querySelector("#tablaFormularios tbody");
-  const cursoFiltro = document.getElementById("cursoFiltro");
-  const tipoFiltro = document.getElementById("tipoFiltro");
-  let todasLasDenuncias = [];
+    const tablaBody   = document.querySelector("#tablaFormularios tbody");
+    const cursoFiltro = document.getElementById("cursoFiltro");
+    const tipoFiltro  = document.getElementById("tipoFiltro");
+    const mobileList  = document.getElementById("mobileList");
+    let todasLasDenuncias = [];
 
     function volver() {
       window.location.href = "psicologo_panel.html";
     }
 
-    // 🔁 Actualización en tiempo real desde Firestore
+    // 🔁 Actualización en tiempo real DESDE "publico"
     db.collection("formularios")
-      .doc("anonimo")
+      .doc("publico")           // ⬅⬅⬅ CORREGIDO: antes decía "anonimo"
       .collection("items")
       .orderBy("creado", "desc")
       .onSnapshot(snapshot => {
@@ -260,8 +244,10 @@
 
     function aplicarFiltros() {
       tablaBody.innerHTML = "";
+      mobileList.innerHTML = "";
+
       const cursoSel = cursoFiltro.value;
-      const tipoSel = tipoFiltro.value;
+      const tipoSel  = tipoFiltro.value;
 
       const filtradas = todasLasDenuncias.filter(item =>
         (!cursoSel || item.curso === cursoSel) &&
@@ -270,11 +256,14 @@
 
       if (filtradas.length === 0) {
         tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        mobileList.innerHTML = "<p style='text-align:center;margin-top:20px;'>No hay registros con ese filtro.</p>";
         return;
       }
 
       let delay = 0;
+
       filtradas.forEach(item => {
+        // Fila en tabla (PC)
         const fila = document.createElement("tr");
         fila.innerHTML = `
           <td>${item.curso || "-"}</td>
@@ -284,13 +273,24 @@
           <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
         `;
         fila.style.animationDelay = `${delay}s`;
-        delay += 0.6;
         tablaBody.appendChild(fila);
+
+        // Tarjeta en mobile
+        const card = document.createElement("div");
+        card.className = "mobile-card";
+        card.style.animationDelay = `${delay}s`;
+        card.innerHTML = `
+          <strong>Curso:</strong> ${item.curso || "-"}<br>
+          <strong>Tipo:</strong> ${item.tipo || "-"}<br>
+          <strong>Descripción:</strong> ${item.descripcion || "-"}<br>
+          <strong>Participantes:</strong> ${item.participantes || "-"}<br>
+          <small><em>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</em></small>
+        `;
+        mobileList.appendChild(card);
+
+        delay += 0.6;
       });
     }
   </script>
 </body>
 </html>
-
-
-
