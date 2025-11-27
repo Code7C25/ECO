@@ -6,7 +6,8 @@
   <title>ECO - Menú</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cardo&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+  <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -455,7 +456,7 @@
 
       <!-- LOGO -->
       <div class="nav-left">
-        <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
+        <img src="logo-eco.png" class="nav-logo" id="boton-menu" onclick="window.location.href='menu.html'">
       </div>
 
       <!-- MENÚ ESCRITORIO -->
@@ -481,9 +482,15 @@
       <!-- SECCIÓN USUARIO (OCULTA EN CELULAR POR CSS) -->
       <div class="nav-right">
         <div id="userSection"></div>
+        <button onclick="iniciarTour()" 
+        style="background:none; border:none; color:#4c195d; font-weight:600; cursor:pointer;">
+         ?
+        </button>
+        <button id="boton-volver" style="opacity:0; pointer-events:none; position:absolute;"></button>
       </div>
 
     </header>
+   
 
     <!-- ⭐⭐⭐ MENÚ LATERAL MÓVIL ⭐⭐⭐ -->
     <nav id="mobileMenu" class="mobile-menu">
@@ -714,6 +721,22 @@ revealText();
     }
   });
 })();
+ /* =====================================================
+      MANUAL INTERACTIVO — INTRO.JS
+===================================================== */
+
+function iniciarTour() {
+  introJs().setOptions({
+    steps: [
+      { intro: "Bienvenido al manual interactivo de ECO" },
+      { element: "#boton-menu", intro: "Desde acá abrís el menú" },
+      { element: "#boton-volver", intro: "Este es el botón para volver" }
+    ]
+  }).start();
+}
 </script>
+<!-- botones invisibles para que el tour funcione -->
+<button id="boton-menu" style="opacity:0; position:absolute; pointer-events:none;"></button>
+<button id="boton-volver" style="opacity:0; position:absolute; pointer-events:none;"></button>
 </body>
 </html>
