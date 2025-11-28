@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Formularios Públicos</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <style>
+    body {
+      font-family: "Quicksand", sans-serif;
+      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #3a2f3b;
+      font-size: 2rem;
+      margin-top: 80px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* 🎨 Filtros sin recuadro */
+    #filtros {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #c5c5c5;
+      background: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    select:hover {
+      border-color: #b35dc1;
+      box-shadow: 0 3px 8px rgba(179, 93, 193, 0.2);
+    }
+
+    table {
+      width: 90%;
+      max-width: 800px;
+      border-collapse: collapse;
+      margin: 30px 0 60px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #b35dc1;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f7ebf9;
+    }
+
+    tr {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      margin-bottom: 15px;
+      color: #844e91;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #b35dc1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      z-index: 1000;
+    }
+
+    .volver-btn:hover {
+      background-color: #9f4cad;
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+
+<body>
+  <button class="volver-btn" onclick="volver()">← Volver</button>
+
+  <h1>Formularios Públicos</h1>
+
+  <div id="filtros">
+    <select id="cursoFiltro">
+      <option value="">Todos los cursos...</option>
+      <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
+      <option value="2°A">2°A</option><option value="2°B">2°B</option><option value="2°C">2°C</option>
+      <option value="3°A">3°A</option><option value="3°B">3°B</option><option value="3°C">3°C</option>
+      <option value="4°A">4°A</option><option value="4°B">4°B</option><option value="4°C">4°C</option>
+      <option value="5°A">5°A</option><option value="5°B">5°B</option><option value="5°C">5°C</option>
+      <option value="6°A">6°A</option><option value="6°B">6°B</option><option value="6°C">6°C</option>
+      <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
+    </select>
+
+    <select id="tipoFiltro">
+      <option value="">Situación...</option>
+      <option value="Sufrí bullying">Sufrí bullying</option>
+      <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
+    </select>
+  </div>
+
+  <table id="tablaFormularios">
+    <thead>
+      <tr>
+        <th>Curso</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Participantes</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <footer>ECO - Proyecto Escolar</footer>
+
+  <script>
+    const tablaBody = document.querySelector("#tablaFormularios tbody");
+    const cursoFiltro = document.getElementById("cursoFiltro");
+    const tipoFiltro = document.getElementById("tipoFiltro");
+    let todasLasDenuncias = [];
+
+    function volver() {
+      window.location.href = "psicologo_panel.html";
+    }
+
+    // 🔁 Actualización en tiempo real desde Firestore
+    db.collection("formularios")
+      .doc("anonimo")
+      .collection("items")
+      .orderBy("creado", "desc")
+      .onSnapshot(snapshot => {
+        todasLasDenuncias = snapshot.docs.map(doc => doc.data());
+        aplicarFiltros();
+      });
+
+    cursoFiltro.addEventListener("change", aplicarFiltros);
+    tipoFiltro.addEventListener("change", aplicarFiltros);
+
+    function aplicarFiltros() {
+      tablaBody.innerHTML = "";
+      const cursoSel = cursoFiltro.value;
+      const tipoSel = tipoFiltro.value;
+
+      const filtradas = todasLasDenuncias.filter(item =>
+        (!cursoSel || item.curso === cursoSel) &&
+        (!tipoSel || item.tipo === tipoSel)
+      );
+
+      if (filtradas.length === 0) {
+        tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        return;
+      }
+
+      let delay = 0;
+      filtradas.forEach(item => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${item.curso || "-"}</td>
+          <td>${item.tipo || "-"}</td>
+          <td>${item.descripcion || "-"}</td>
+          <td>${item.participantes || "-"}</td>
+          <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
+        `;
+        fila.style.animationDelay = `${delay}s`;
+        delay += 0.6;
+        tablaBody.appendChild(fila);
+      });
+    }
+  </script>
+</body>
+</html>

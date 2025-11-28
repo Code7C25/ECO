@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO - Menú</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cardo&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      font-family:"Poppins", sans-serif;
+      background:#fff;
+      color:#3c2a4d;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ======= FONDO FIJO CON BLUR ======= */
+    .bg-fixed{
+      position:fixed;
+      inset:0;
+      background-image:url("fondo-eco.png");
+      background-size:cover;
+      background-position:center;
+      filter:blur(14px) saturate(95%);
+      transform:scale(1.03);
+      z-index:0;
+      pointer-events:none;
+      transition:opacity .12s linear;
+    }
+
+    .page{
+      position:relative;
+      z-index:10;
+      min-height:100vh;
+    }
+
+    /* ======= NAVBAR TRANSPARENTE  Y BOTONES CENTRADOS=======
+    */
+    .navbar{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:70px;
+      background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(12px) saturate(160%);
+      -webkit-backdrop-filter:blur(12px) saturate(160%);
+      border-bottom:1px solid rgba(255,255,255,0.2);
+      /* usar layout base: contenedor relativo para el posicionamiento absoluto del centro */
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 24px; /* mantengo espacio a los lados para logo y usuario */
+      z-index:100;
+      position:fixed;
+    }
+
+    .nav-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      /* ancho mínimo para evitar solapamientos */
+      min-width:70px;
+    }
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:120px;
+      justify-content:flex-end;
+    }
+
+    .nav-logo{
+      width:70px;
+      cursor:pointer;
+      transition:transform .3s;
+    }
+    .nav-logo:hover{transform:scale(1.08);}
+
+    /* Bloque central posicionado exactamente en el centro de la pantalla */
+    .nav-center-wrapper{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:auto; /* para que los hijos reciban clics */
+    }
+
+    .nav-links{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:2rem;
+      text-align:center;
+      max-width:60vw;
+    }
+
+    .nav-links a,
+    .dropdown-btn{
+      text-decoration:none;
+      font-size:1rem;
+      color:#3c2a4d;
+      background:none;
+      border:none;
+      font-family:inherit;
+      cursor:pointer;
+      position:relative;
+      transition:color .3s ease;
+    }
+
+    .nav-links a::after,
+    .dropdown-btn::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-4px;
+      width:0;
+      height:2px;
+      background:#8b5bd1;
+      transition:width .25s;
+    }
+
+    .nav-links a:hover::after,
+    .dropdown-btn:hover::after{
+      width:100%;
+    }
+
+    /* ======= DROPDOWN ======= */
+    .dropdown{
+      position:relative;
+    }
+
+    .dropdown-content{
+      display:none;
+      position:absolute;
+      top:35px;
+      left:0;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(6px);
+      border-radius:12px;
+      min-width:160px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+      overflow:hidden;
+      animation:fadeIn .25s ease;
+      z-index:9999; /* bien alto para que esté por encima */
+      pointer-events:auto;
+    }
+
+    /* mantener compatibilidad hover (original) pero también permitir la clase 'open' desde JS */
+    .dropdown:hover .dropdown-content,
+    .dropdown.open .dropdown-content{
+      display:block;
+    }
+
+    .dropdown-content a{
+      display:block;
+      padding:12px 18px;
+      text-decoration:none;
+      color:#3c2a4d;
+      transition:background .2s;
+    }
+
+    .dropdown-content a:hover{
+      background:#e8d6ff;
+      color:#4c195d;
+    }
+
+    /* ======= USER SECTION ======= */
+    #userSection{
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      align-items:center;
+    }
+
+    .user-icon{
+      width:40px;
+      cursor:pointer;
+      transition:transform .3s;
+    }
+    .user-icon:hover{transform:scale(1.12);}
+
+    .auth-buttons{
+      display:flex;
+      gap:10px;
+    }
+
+    .auth-buttons button{
+      background:#d96fc0;
+      border:none;
+      border-radius:20px;
+      padding:8px 16px;
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      transition:.25s;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
+    .auth-buttons button:hover{
+      background:#b94fa3;
+      transform:translateY(-2px);
+    }
+
+    /* ============ HERO ============ */
+    .hero{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:0 24px;
+    }
+
+    .hero-content{
+      animation:fadeUp 900ms ease-out both;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(18px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .welcome-text{
+      font-family:"Pinyon Script", cursive;
+      font-size:4.5rem;
+      color:#4c195d;
+      margin-bottom:8px;
+    }
+
+    .eco-logo{
+      width:170px;
+      margin:10px 0;
+    }
+
+    .slogan{
+      font-family:"Cardo", serif;
+      font-size:1.2rem;
+      color:#444;
+      margin-bottom:20px;
+    }
+
+    .btn-report{
+      background:#d96fc0;
+      color:white;
+      border:none;
+      border-radius:26px;
+      padding:14px 36px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,0.15);
+      transition:.25s;
+    }
+
+    .btn-report:hover{
+      background:#b94fa3;
+      transform:translateY(-4px);
+    }
+
+    /* ========= SOBRE ECO ========= */
+    /* ==== Sección SOBRE ECO corregida ==== */
+    .sobre-eco{
+      min-height:130vh;
+      background:white;
+      padding:120px 10% 40px 10%; /* ↓ saco espacio debajo */
+      position:relative;
+      z-index:10;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:center;
+      text-align:center;          /* ← CENTRAR TEXTO */
+    }
+    /* Texto centrado con max-width */
+   /* TEXTO CENTRADO PERO ALINEADO A LA IZQUIERDA */
+   .texto-wrap{
+    max-width:900px;      /* ancho de la columna */
+    width:90%;
+    font-size:1.4rem;
+    line-height:1.9;
+    text-align:left;      /* ⬅ texto alineado a la izquierda */
+    margin:50px auto 0 auto;  /* centra la caja + baja un poco */
+    padding:0 10px;
+  }
+
+
+    
+    /* Palabras individuales (mantienen la animación) */
+    .word{
+      display:inline-block;
+      opacity:.15;
+      transition:.25s ease;
+      margin-right:4px;
+      white-space:pre;
+      color:transparent;
+      -webkit-text-fill-color:currentColor;
+    }
+    /* IMAGEN DE ARRIBA */
+    .eco-cabeza{
+      display:block;
+      margin:20px auto 30px auto; 
+      width:130px;    
+      opacity:0.95;
+    }
+    /* IMAGEN DE ABAJO */
+    .eco-divisor{
+      display:block;
+      margin:40px auto 0 auto; 
+      width:100%;
+      max-width:320px;  
+      opacity:0.95;
+    }
+
+
+    .word.on{
+      opacity:1;
+      color:#1a1520;
+    }
+
+    .word.on.accent{
+      color:#4c195d;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(10px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    /* Media queries para evitar solapamientos en pantallas pequeñas */
+    @media (max-width:900px){
+      .nav-center-wrapper{ position:static; transform:none; padding:0 12px; }
+      .navbar{ padding:0 12px; }
+      .nav-links{ gap:1rem; max-width:100%; }
+    }
+
+    @media (max-width:600px){
+      .welcome-text{ font-size:3rem; }
+      .eco-logo{ width:140px; }
+      .nav-logo{ width:56px; }
+      .user-icon{ width:34px; }
+    }
+    /* Imagen decorativa arriba del texto */
+    .eco-cabeza {
+       display:block;
+       margin: 0 auto 40px auto;
+       width: 150px; /* tamaño pequeño */
+       opacity: 0.9;
+      }
+      /* controla CUÁNTO largo ocupa 
+      .eco-divisor {
+        display:block;
+        margin: 60px auto 0 auto;
+        width: 100%; 
+        max-width: 200px; 
+        opacity: 0.9;
+      }*/
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-fixed" id="bgFixed"></div>
+
+  <div class="page">
+
+    <header class="navbar">
+
+      <!-- izquierda: logo -->
+      <div class="nav-left">
+       <img src="logo-eco.png" class="nav-logo" onclick="window.location.href='menu.html'">
+      </div>
+
+      <!-- centro: envuelto en wrapper ABSOLUTO para centrar matemáticamente -->
+      <div class="nav-center-wrapper" aria-hidden="false">
+        <nav class="nav-links" role="navigation" aria-label="Menú principal">
+          <a id="formularioLink" href="#">Formulario</a>
+
+          <div class="dropdown" id="herramientasDropdown">
+            <button class="dropdown-btn" id="herramientasBtn" aria-haspopup="true" aria-expanded="false">Herramientas</button>
+            <div class="dropdown-content" aria-label="Lista de herramientas">
+              <a href="respiracion.html">Respiración guiada</a>
+              <a href="diario.html">Diario emocional</a>
+              <a href="consejos.html">Consejos</a>
+              <a href="afirmaciones.html">Afirmaciones</a>
+              <!-- NUEVA HERRAMIENTA <a href="musica.html">Música y meditaciones</a>-->
+            </div>
+          </div>
+
+          <a href="#sobre">Sobre ECO</a>
+        </nav>
+      </div>
+
+    <!-- derecha: usuario -->
+<div class="nav-right">
+  <div id="userSection"></div>
+</div>
+
+
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1 class="welcome-text">Bienvenido a</h1>
+
+        <img src="eco-logo.svg" class="eco-logo">
+
+        <p class="slogan">Tu voz importa, estamos para ayudarte y acompañarte</p>
+
+        <button class="btn-report" id="reportarBtn">Reportar caso</button>
+      </div>
+    </section>
+    <section class="sobre-eco" id="sobre">
+      <!-- ⭐ IMAGEN ARRIBA DEL TEXTO (cabeza) -->
+       <img src="cabeza.png" class="eco-cabeza" alt="Decoración">
+       <!-- TEXTO SOBRE ECO -->
+        <div class="texto-wrap" id="textoWrap"></div>
+        <!-- ⭐ IMAGEN AL FINAL DEL TEXTO (corazón largo) 
+         <img src="corazon.png" class="eco-divisor" alt="Divisor decorativo">-->
+    </section>
+  </div>
+
+  <script>
+
+    /* =============================
+          LOGICA DE USUARIO 
+       - dinámica: si está logueado y no es anónimo muestra perfil
+       - si no, muestra botones Iniciar sesión / Registrarse
+    ============================== */
+    const userLoggedIn = localStorage.getItem('ecoUserLogged') === 'true';
+    const anonimo = localStorage.getItem('ecoAnonimo') === 'true';
+    const userSection = document.getElementById("userSection");
+    const formularioLink = document.getElementById("formularioLink");
+    const reportarBtn = document.getElementById("reportarBtn");
+    /* =============================
+          Correcion si estoy en menu, cambia la direccion del boton home a menu y no a index
+          "window.location.href='login.html?from=menu'"
+          "window.location.href='registro.html?from=menu'"
+    ============================== */
+
+    if(userLoggedIn && !anonimo){
+      userSection.innerHTML = `<img src="user-icon.png" class="user-icon" onclick="window.location.href='perfil.html'">`;
+      formularioLink.href = "formulario_p.html";
+      reportarBtn.onclick = () => window.location.href="formulario_p.html";
+    } else {
+      userSection.innerHTML = `
+        <div class="auth-buttons">
+          <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
+          <button onclick="window.location.href='registro.html?from=menu'">Registrarse</button>
+        </div>`;
+      formularioLink.href = "formulario_a.html";
+      reportarBtn.onclick = () => window.location.href="formulario_a.html";
+    }
+
+    /* =============================
+          FONDO FADE SCROLL 
+    ============================== */
+    const bgFixed = document.getElementById("bgFixed");
+    const sobre = document.getElementById("sobre");
+
+    function updateBgOpacity(){
+      const rect = sobre.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const top = rect.top;
+
+      const start = vh * 0.05;
+      const end = vh * 0.65;
+
+      const p = Math.min(Math.max((vh - top - start) / (end - start), 0), 1);
+
+      bgFixed.style.opacity = (1 - p).toFixed(3);
+    }
+
+    window.addEventListener("scroll", updateBgOpacity, {passive:true});
+    window.addEventListener("resize", updateBgOpacity);
+    updateBgOpacity();
+
+    /* =============================
+       TEXTO SOBRE ECO (REVEAL FIX) 
+    ============================== */
+
+    const textoOriginal = `ECO es una plataforma creada para que cualquier estudiante pueda pedir ayuda de forma segura, clara y confidencial. Su principal objetivo es brindar un canal directo para reportar situaciones de bullying o malestar dentro del ámbito escolar, para que cada caso enviado llegue inmediatamente al equipo de psicólogos del colegio, quienes lo analizan y acompañan el proceso con respeto y profesionalismo. Además, ECO ofrece herramientas de autocuidado pensadas para acompañarte mientras atravesás el proceso: respiración guiada, diario emocional, afirmaciones y otros recursos breves que pueden ayudarte a regular emociones y entender mejor lo que sentís. Nuestro propósito es simple: crear un espacio de escucha donde puedas expresarte sin miedo y encontrar apoyo real cuando lo necesites.`;
+
+    const textoWrap = document.getElementById("textoWrap");
+
+    function splitWords(t){
+      return t.match(/\S+|\s+/g) || [];
+    }
+
+    const tokens = splitWords(textoOriginal);
+    textoWrap.innerHTML = "";
+    const wordSpans = [];
+
+    tokens.forEach(tok=>{
+      const span = document.createElement("span");
+      span.className = /\s+/.test(tok) ? "word space" : "word";
+      span.textContent = tok;
+      textoWrap.appendChild(span);
+      if(!/\s+/.test(tok)) wordSpans.push(span);
+    });
+
+    function revealText(){
+      const rect = textoWrap.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      const start = vh * 0.75;
+      const end = vh * -0.2;
+
+      const raw = (start - rect.top) / (start - end);
+      const progress = Math.min(Math.max(raw, 0), 1);
+
+      function ease(t){ return 1 - Math.pow(1 - t, 3); }
+      const eased = ease(progress);
+
+      let count = Math.ceil(eased * wordSpans.length);
+      count = Math.min(count, wordSpans.length);
+
+      wordSpans.forEach((s, i)=>{
+        if(i < count) s.classList.add("on");
+        else s.classList.remove("on");
+      });
+    }
+
+    window.addEventListener("scroll", revealText, { passive:true });
+    window.addEventListener("resize", revealText);
+    revealText();
+
+    /* =============================
+       DROPDOWN: mejora para permitir selección fiable
+       - conserva el comportamiento por hover original
+       - añade toggle por click (útil en pantallas táctiles)
+       - cierra al hacer click fuera
+    ============================== */
+    (function(){
+      const dropdown = document.getElementById('herramientasDropdown');
+      const btn = document.getElementById('herramientasBtn');
+
+      if(!dropdown || !btn) return;
+
+      // Toggle open class al hacer click en el botón
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        // cerrar cualquier otro dropdown abierto en la página (si existiera)
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+        if(!isOpen){
+          dropdown.classList.add('open');
+          btn.setAttribute('aria-expanded','true');
+        } else {
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+
+      // Evitar que clicks dentro del contenido cierren inmediatamente (útil en iOS/táctil)
+      dropdown.querySelector('.dropdown-content').addEventListener('click', function(e){
+        e.stopPropagation();
+      });
+
+      // Cerrar al clicar fuera
+      document.addEventListener('click', function(){
+        if(dropdown.classList.contains('open')){
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+
+      // Conservar accesibilidad por teclado: cerrar con Escape
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && dropdown.classList.contains('open')){
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+          btn.focus();
+        }
+      });
+    })();
+
+  </script>
+
+</body>
+</html>
+
+
+

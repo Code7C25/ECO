@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Acceso Psicólogo</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+</head>
+
+<body class="pagina-psicologo">
+
+  <main>
+    <h2>Acceso para psicólogos</h2>
+    <div id="psicoForm">
+      <input id="psicoDNI" type="text" placeholder="DNI" />
+      <input id="psicoClave" type="password" placeholder="Contraseña" />
+      <button id="psicoBtn">Ingresar</button>
+      <p id="psicoMsg"></p>
+    </div>
+
+    <div id="psicoDenied" style="display:none; text-align:center;">
+      <h3>Acceso denegado</h3>
+      <p>No tenés permisos para ver esta sección.</p>
+      <button onclick="window.location.href='index.html'">Volver</button>
+    </div>
+  </main>
+
+  <script src="menu.js"></script>
+  <script src="firebase.js"></script>
+
+
+  <script>
+  document.getElementById("psicoBtn").addEventListener("click", async () => {
+    const dni = document.getElementById("psicoDNI").value.trim();
+    const clave = document.getElementById("psicoClave").value.trim();
+    const msg = document.getElementById("psicoMsg");
+    const denied = document.getElementById("psicoDenied");
+    const form = document.getElementById("psicoForm");
+
+    msg.textContent = "";
+    msg.style.color = "red";
+
+    if (!/^\d{7,8}$/.test(dni)) {
+      msg.textContent = "El DNI debe tener solo números (7 u 8 dígitos).";
+      return;
+    }
+
+  
+    if (clave.length < 6) {
+      msg.textContent = "La contraseña debe tener al menos 6 caracteres.";
+      return;
+    }
+
+    try {
+
+      const query = await firebase.firestore()
+        .collection("psicologos")
+        .where("dni", "==", dni)
+        .where("clave", "==", clave)
+        .get();
+
+      if (!query.empty) {
+        msg.style.color = "green";
+        msg.textContent = "Acceso concedido ✅";
+        localStorage.setItem("psicoDNI", dni);
+
+        setTimeout(() => {
+          window.location.href = "psicologo_panel.html"; 
+        }, 1000);
+      } else {
+        <!-- Si no coincide, muestra el mensaje de acceso denegado -->
+        form.style.display = "none";
+        denied.style.display = "block";
+      }
+    } catch (error) {
+      msg.textContent = "Error al conectar con la base de datos.";
+    }
+  });
+  </script>
+
+</body>
+</html>

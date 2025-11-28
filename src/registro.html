@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO - Registrarse</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <style>
+    /* 🌿 Modal de alerta personalizada */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .alert-box {
+      background: white;
+      border-radius: 16px;
+      padding: 25px 35px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.3s ease;
+    }
+
+    .alert-box h3 {
+      color: #5e2b97;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .alert-box p {
+      color: #444;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .alert-box button {
+      background: #b288f5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .alert-box button:hover {
+      background: #a471f3;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* 🏠 Botón de inicio */
+    .home-btn {
+      background-color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body class="pagina-registro">
+  <!-- Botón de inicio -->
+  <div class="home-btn" onclick="volverSegunOrigen()">
+    <img src="home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8; cursor:pointer;">
+  </div>
+
+  <main>
+    <h2>Crear una cuenta</h2>
+
+    <div id="registerForm">
+      <input id="regEmail" type="email" placeholder="Correo electrónico" />
+      <input id="regPass" type="password" placeholder="Contraseña" />
+      <input id="regCurso" type="text" placeholder="Curso" />
+      <button id="registerBtn">Registrarse</button>
+    </div>
+
+    <div id="gracias" style="display:none; text-align:center;">
+      <h2>💜 Gracias por confiar en nosotros 💜</h2>
+      <p>Tu cuenta fue creada con éxito.</p>
+    </div>
+  </main>
+
+  <!-- 🌸 Modal de alerta -->
+  <div class="custom-alert" id="customAlert">
+    <div class="alert-box">
+      <h3 id="alertTitle">Aviso</h3>
+      <p id="alertMessage"></p>
+      <button onclick="closeAlert()">Aceptar</button>
+    </div>
+  </div>
+
+  <script src="firebase.js"></script>
+  <script>
+    // Funciones del modal
+    function showAlert(message, title = "Aviso") {
+      document.getElementById("alertTitle").textContent = title;
+      document.getElementById("alertMessage").textContent = message;
+      document.getElementById("customAlert").style.display = "flex";
+    }
+
+    function closeAlert() {
+      document.getElementById("customAlert").style.display = "none";
+    }
+
+    // 🚀 Si ya está logueado, entra directo
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("ecoUserLogged") === "true") {
+        window.location.replace("menu.html");
+      }
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const email = document.getElementById("regEmail").value.trim();
+      const pass = document.getElementById("regPass").value.trim();
+      const curso = document.getElementById("regCurso").value.trim();
+
+      const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      if (!emailRegex.test(email)) return showAlert("Correo no válido.");
+      if (pass.length < 6) return showAlert("La contraseña debe tener al menos 6 caracteres.");
+      if (!curso) return showAlert("Completá el campo de curso.");
+
+      try {
+        document.getElementById("registerBtn").innerText = "Registrando...";
+
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+        const user = userCredential.user;
+
+        await firebase.firestore().collection("usuarios").doc(user.uid).set({
+          email,
+          curso,
+          fechaRegistro: new Date()
+        });
+
+        // Guarda sesión local y redirige
+        localStorage.setItem("usuarioEmail", email);
+        localStorage.setItem("ecoUserLogged", "true");
+
+        showAlert("Tu cuenta fue creada con éxito 💜", "¡Registro completo!");
+        setTimeout(() => {
+          window.location.replace("menu.html");
+        }, 1500);
+
+      } catch (error) {
+        document.getElementById("registerBtn").innerText = "Registrarse";
+        if (error.code === "auth/email-already-in-use") {
+          showAlert("Este correo ya está registrado.");
+        } else {
+          showAlert("Error: " + error.message);
+        }
+      }
+    });
+  </script>
+  <script>
+     /* =============================
+          Correcion si estoy en menu, cambia la direccion del boton home segun origen
+    ============================== */
+  function volverSegunOrigen() {
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    if (from === "menu") {
+      window.location.href = "menu.html";
+    } else {
+      window.location.href = "index.html";
+    }
+}
+</script>
+</body>
+</html>  
