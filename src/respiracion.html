@@ -65,7 +65,7 @@
     background:rgba(255,255,255,0.85);
   }
 
-  /* Botones — ahora MÁS ABAJO */
+  /* Botones */
   .btn{
     padding:12px 25px;
     font-size:1rem;
@@ -73,7 +73,7 @@
     border:none;
     border-radius:20px;
     cursor:pointer;
-    margin:20px 8px 0 8px;   /* ← SUBIDO a 20px para bajarlos */
+    margin:20px 8px 0 8px;
     background:#b881f7;
     color:white;
     box-shadow:0 4px 15px rgba(0,0,0,0.2);
@@ -102,10 +102,37 @@
     line-height:1.5;
     opacity:0.75;
   }
+
+  /* 🏠 Botón de inicio (igual que login) */
+  .home-btn {
+    background-color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 9999;
+  }
+
+  .home-btn:hover {
+    transform: scale(1.05);
+  }
 </style>
 
 </head>
 <body>
+
+<!-- 🏠 CASITA (IGUAL QUE EN LOGIN) -->
+<div class="home-btn" onclick="window.location.href='menu.html'">
+  <img src="../assets/home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8;">
+</div>
 
 <h2>Respiración guiada</h2>
 
@@ -129,13 +156,7 @@ let paso = 0;
 const texto = document.getElementById("textoRespiracion");
 const circulo = document.getElementById("circulo");
 
-/*
-  Cada paso dura EXACTAMENTE 1 segundo.
-  1 → 1s  
-  2 → 1s  
-  3 → 1s  
-  4 → 1s  
-*/
+/* 1 segundo por paso */
 const fases = [
   { nombre:"Inhala", animacion:true },
   { nombre:"1", animacion:null },
@@ -179,7 +200,7 @@ function iniciar(){
       paso = 0;
     }
 
-  }, 1000);  // ← 1 segundo exacto por paso
+  }, 1000);
 }
 
 function detener(){
@@ -191,3 +212,4 @@ function detener(){
 
 </body>
 </html>
+
