@@ -93,6 +93,27 @@
       from { transform: scale(0.85); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
+    /* ===== AJUSTES DE POSICIÓN DEL LOGO Y RECTÁNGULO ===== */
+    .welcome-container {
+      text-align: center;
+      margin-top: 40px;      /* distancia desde arriba */
+      margin-bottom: 10px;   /* aire abajo del título */
+    }
+
+    .welcome-text {
+      margin-bottom: 5px;
+    }
+
+    .eco-logo {
+      display: block;
+      margin: 10px auto 0;   /* centrado y un poquito de aire */
+    }
+
+    .rectangulo-botones {
+      margin: 60px auto 0;   /* 🔹 baja el recuadro para que no se encime */
+      max-width: 480px;      /* opcional: ancho máx bonito */
+    }
   </style>
 
 </head>
@@ -102,8 +123,7 @@
 <body class="pagina-index">
   <div class="welcome-container">
     <h1 class="welcome-text">Bienvenido a</h1>
-    <img src="assets/eco-logo.png" alt="Logo ECO" class="eco-logo">
-
+    <img src="../assets/eco-logo.png" alt="Logo ECO" class="eco-logo">
   </div>
 
   <main class="rectangulo-botones">
@@ -141,7 +161,6 @@
   <script src="firebase.js"></script>
 
   <script>
-
     /* 🔐 Detectar usuario logueado */
     firebase.auth().onAuthStateChanged((user) => {
       const logoutBtn = document.getElementById("logoutBtn");
@@ -191,7 +210,6 @@
       localStorage.setItem("ecoAnonimo", "true");
       setTimeout(() => window.location.href = "menu.html", 400);
     });
-
   </script>
 
 </body>
