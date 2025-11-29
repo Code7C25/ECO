@@ -5,11 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Panel Psicólogo</title>
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+  .condiciones-link {
+    position: fixed;
+    bottom: 8px;
+    right: 10px;
+    font-size: 15px; 
+    opacity: 0.45;   
+    text-decoration: none;
+    color: #000;
+  }
+  .condiciones-link:hover {
+    opacity: 0.8;
+  }/* 🏠 Botón de inicio */
+    .home-btn {
+      background-color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.05);
+    }
+
+</style>
+
 </head>
 
 <body class="pagina-psicologo">
-  <!-- Botón de inicio -->
-  <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
+  <!-- Botón de inicio y correcion volver segun origen -->
+  <div class="home-btn" onclick="volverSegunOrigen()">
+    <img src="home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8;">
+  </div>
 
   <!-- Contenido principal -->
   <main style="text-align:center;">
@@ -18,10 +56,22 @@
 
     <div style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
       <button onclick="window.location.href='form_a.html'">Formularios anónimos</button>
-      <button onclick="window.location.href='form_p.html'">Formularios públicos</button>
+      <button onclick="window.location.href='form_p.html'">Formularios logueados</button>
     </div>
   </main>
 
+  <!-- Link discreto -->
+  <a class="condiciones-link" href="condiciones.pdf" target="_blank">condiciones</a>
+
   <script src="menu.js"></script>
+  <script>
+  /* =============================
+        BOTÓN HOME → Volver al inicio
+     ============================= */
+  function volverSegunOrigen() {
+    window.location.href = "index.html";
+  }
+</script>
 </body>
 </html>
+
