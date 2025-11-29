@@ -11,7 +11,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script>
 
-  <!-- Fuente -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -43,7 +42,7 @@
 
     p {
       color: #4a4a4a;
-      max-width: 400px;
+      max-width: 650px; /* 🔹 más ancho para que no corte la frase */
       text-align: center;
       font-size: 1rem;
       margin-bottom: 25px;
@@ -157,10 +156,16 @@
   <!-- 🌸 Botón Volver -->
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
-  <h2>Denuncia Pública</h2>
-  <p>Tu denuncia será visible para el equipo del proyecto. Por favor, completá con respeto y responsabilidad.</p>
+  <h2>Denuncia</h2>
+  <p>Tu denuncia será solo visible para el Gabinete de psicólogos. Por favor, completá con respeto y responsabilidad.</p>
+  
 
   <form id="denunciaPublicaForm">
+
+    <!-- 🔹 NUEVO CAMPO OBLIGATORIO: NOMBRE Y APELLIDO -->
+    <label for="nombreCompleto">Nombre y apellido:</label>
+    <input type="text" id="nombreCompleto" required placeholder="Ej: Maria Pérez">
+
     <label for="curso">Curso donde ocurrió la situación (opcional):</label>
     <select id="curso" name="curso">
       <option value="">Seleccionar...</option>
@@ -202,12 +207,13 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      const nombreCompleto = document.getElementById("nombreCompleto").value.trim();
       const curso = document.getElementById("curso").value.trim();
       const tipo = document.getElementById("tipo").value;
       const descripcion = document.getElementById("descripcion").value.trim();
       const participantes = document.getElementById("participantes").value.trim();
 
-      if (!tipo || !descripcion) {
+      if (!nombreCompleto || !tipo || !descripcion) {
         mensaje.textContent = "⚠️ Por favor, completá los campos obligatorios.";
         mensaje.style.color = "#b35dc1";
         return;
@@ -218,6 +224,7 @@
           .doc("publico")
           .collection("items")
           .add({
+            nombreCompleto,
             curso: curso || null,
             tipo,
             descripcion,
@@ -228,12 +235,10 @@
         mensaje.textContent = "✅ Tu denuncia fue enviada correctamente.";
         mensaje.style.color = "green";
         form.reset();
-        // direccionamiento a menu
 
         setTimeout(() => {
           window.location.href = "menu.html";
         }, 2000);
-
 
       } catch (error) {
         console.error("Error al enviar denuncia:", error);
@@ -243,18 +248,12 @@
     });
 
     function volver() {
-  // Si el usuario está logueado → volver al menú
-  if (localStorage.getItem("ecoUserLogged") === "true") {
-    window.location.href = "menu.html";
-    return;
-  }
-
-  // Si NO está logueado → volver al index
-  window.location.href = "index.html";
-}
-
+      if (localStorage.getItem("ecoUserLogged") === "true") {
+        window.location.href = "menu.html";
+        return;
+      }
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>
-
-
