@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Música Relajante - ECO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    padding: 60px 20px 40px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(160deg,#f3ddff,#d7eaff);
+    color: #472a63;
+    animation: fadeIn .6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* Botón inicio */
+  .home-btn {
+    background:white;
+    border-radius:50%;
+    width:48px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:fixed;
+    top:20px;
+    left:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    cursor:pointer;
+    transition:.25s;
+    z-index:1000;
+  }
+
+  .home-btn img {
+    width:26px;
+    opacity:.85;
+  }
+
+  .home-btn:hover {
+    transform:scale(1.06);
+  }
+
+  /* Títulos */
+  h2 {
+    margin-top:10px;
+    font-weight:600;
+    font-size:2rem;
+    text-align:center;
+    color:#4c195d;
+  }
+
+  .descripcion {
+    font-size:1rem;
+    color:#5c4f63;
+    max-width:420px;
+    text-align:center;
+    margin:0 auto 28px auto;
+    opacity:.9;
+  }
+
+  /* CONTENEDOR GRILLA DE CANCIONES */
+  .songs-grid {
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+    max-width:900px;
+    margin:0 auto;
+    margin-bottom:40px;
+  }
+
+  /* Tarjetas */
+  .song-card {
+    background:white;
+    border-radius:14px;
+    padding:12px 12px 16px;
+    box-shadow:0 6px 16px rgba(0,0,0,0.12);
+    text-align:center;
+    transition:.25s;
+  }
+
+  .song-card:hover {
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.18);
+  }
+
+  .song-title {
+    margin-bottom:8px;
+    font-weight:600;
+    color:#5a2e7a;
+    font-size:1rem;
+  }
+
+  .song-card audio {
+    width:100%;
+    outline:none;
+    border-radius:10px;
+    background:rgba(255,255,255,0.8);
+  }
+
+  /* Sección Elegí tu Música */
+  .link-box {
+    margin-top:10px;
+    background:white;
+    padding:22px 20px;
+    border-radius:14px;
+    max-width:600px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    box-shadow:0 6px 16px rgba(0,0,0,0.12);
+  }
+
+  .link-box p {
+    font-size:.95rem;
+    color:#5c4f63;
+    margin-bottom:15px;
+  }
+
+  .link-input-row {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+  }
+
+  .link-input-row input {
+    width:100%;
+    max-width:420px;
+    padding:10px 12px;
+    border-radius:18px;
+    border:none;
+    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+    font-family:inherit;
+  }
+
+  .link-input-row button {
+    padding:10px 22px;
+    border-radius:20px;
+    border:none;
+    background:#d96fc0;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 4px 12px rgba(0,0,0,0.18);
+  }
+
+  .link-input-row button:hover {
+    background:#b94fa3;
+    transform:translateY(-1px);
+  }
+
+  /* Error */
+  .error-msg {
+    margin-top:4px;
+    color:#b2353c;
+    font-size:.85rem;
+    min-height:16px;
+  }
+
+  /* Embed dinamico */
+  .embed-wrapper {
+    margin-top:18px;
+    display:none;
+  }
+
+  .embed-wrapper iframe {
+    width:100%;
+    max-width:420px;
+    height:200px;
+    border:none;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.14);
+  }
+
+  /* Responsive */
+  @media (max-width:768px) {
+    .songs-grid {
+      grid-template-columns:1fr;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<div class="home-btn" onclick="window.location.href='menu.html'">
+  <img src="../assets/home-icon.png" alt="Inicio">
+</div>
+
+<h2>Música para Calmar</h2>
+
+<p class="descripcion">
+  Elegí una melodía que te acompañe en este momento.  
+  Permitite respirar profundo y soltar un poco lo que pesa.
+</p>
+
+<!-- ⭐ RECOMENDACIONES (3 canciones en grilla, SOLO AUDIO) -->
+<div class="songs-grid">
+
+  <div class="song-card">
+    <p class="song-title">Piano</p>
+    <audio controls>
+      <source src="musica/piano.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+    </audio>
+  </div>
+
+  <div class="song-card">
+    <p class="song-title">Relajante</p>
+    <audio controls>
+      <source src="musica/relajante.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+    </audio>
+  </div>
+
+  <div class="song-card">
+    <p class="song-title">Romántica</p>
+    <audio controls>
+      <source src="musica/romantica.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+    </audio>
+  </div>
+
+</div>
+
+<!-- ⭐ PEGAR LINK -->
+<div class="link-box">
+  <p>O si querés escuchar otra canción que te guste, podés pegar un link:</p>
+
+  <div class="link-input-row">
+    <input id="musicLink" type="text" placeholder="Pegá aquí un link de YouTube o Spotify">
+    <button id="btnPlayLink">Escuchar</button>
+  </div>
+
+  <div id="errorMsg" class="error-msg"></div>
+
+  <div id="embedWrapper" class="embed-wrapper">
+    <iframe id="embedPlayer"></iframe>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById("musicLink");
+  const errorMsg = document.getElementById("errorMsg");
+  const wrapper = document.getElementById("embedWrapper");
+  const player = document.getElementById("embedPlayer");
+
+  function getYouTubeEmbed(url) {
+    try {
+      if (url.includes("youtu.be/"))
+        return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1].split(/[?&]/)[0];
+      const videoId = new URL(url).searchParams.get("v");
+      return videoId ? "https://www.youtube.com/embed/" + videoId : null;
+    } catch { return null; }
+  }
+
+  function getSpotifyEmbed(url) {
+    try {
+      const u = new URL(url);
+      if (!u.hostname.includes("open.spotify.com")) return null;
+      return "https://open.spotify.com/embed" + u.pathname;
+    } catch { return null; }
+  }
+
+  document.getElementById("btnPlayLink").addEventListener("click", () => {
+    const url = input.value.trim();
+    errorMsg.textContent = "";
+    wrapper.style.display = "none";
+
+    if (!url) {
+      errorMsg.textContent = "Pegá un link primero.";
+      return;
+    }
+
+    let finalURL = null;
+
+    if (url.includes("youtube.com") || url.includes("youtu.be"))
+      finalURL = getYouTubeEmbed(url);
+    else if (url.includes("open.spotify.com"))
+      finalURL = getSpotifyEmbed(url);
+
+    if (!finalURL) {
+      errorMsg.textContent = "No pude reconocer el link.";
+      return;
+    }
+
+    player.src = finalURL;
+    wrapper.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
