@@ -8,9 +8,35 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <style>
+    /* 🏠 Botón de inicio */
+    .home-btn {
+      background-color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 
 <body class="pagina-psicologo">
+  <!-- Botón de inicio y correcion volver segun origen -->
+  <div class="home-btn" onclick="volverSegunOrigen()">
+    <img src="home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8;">
+  </div>
 
   <main>
     <h2>Acceso para psicólogos</h2>
@@ -80,6 +106,15 @@
     }
   });
   </script>
+  <script>
+  /* =============================
+        BOTÓN HOME → Volver al inicio
+     ============================= */
+  function volverSegunOrigen() {
+    window.location.href = "index.html";
+  }
+</script>
+
 
 </body>
 </html>
