@@ -1,0 +1,1 @@
+ECO: es una aplicación creada para que los estudiantes del colegio puedan reportar de forma segura, confidencial y opcionalmente anónima cualquier situación relacionada con malestar, acoso escolar o violencia.
