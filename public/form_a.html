@@ -1,39 +1,52 @@
-<!DOCTYPE html> <!-- → Define que es un documento HTML5 -->
-<html lang="es"> <!-- → Indica que el idioma principal es español -->
+<!DOCTYPE html> <!-- → Documento HTML5 -->
+<html lang="es"> <!-- → Idioma principal: español -->
 <head>
-  <meta charset="UTF-8"> <!-- → Codificación de caracteres (acentos, ñ, etc.) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- → Adaptación a pantallas móviles -->
-  <title>ECO - Formularios Anónimos</title> <!-- → Título que aparece en la pestaña -->
+  <meta charset="UTF-8"> <!-- → Soporta acentos, ñ, etc. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- → Vista responsive -->
+  <title>ECO - Formularios Anónimos</title> <!-- → Título de pestaña -->
 
   <!-- → Fuente moderna desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    /* ================================
+          ESTÉTICA GENERAL DE LA PÁGINA
+       ================================= */
     body {
-      font-family: "Quicksand", sans-serif; /* → Aplica la fuente Quicksand */
-      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%); /* → Fondo con degradado verde claro */
+      font-family: "Quicksand", sans-serif;
+      background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%);
       margin: 0;
       padding: 0;
-      color: #000000;
-      min-height: 100vh; /* → Ocupa todo el alto de la pantalla */
-      display: flex; /* → Usa flexbox para centrar el contenido */
+      display: flex;
       flex-direction: column;
       align-items: center;
-      animation: fadeIn 0.8s ease-in-out; /* → Animación suave al cargar */
+      min-height: 100vh;
+      animation: fadeIn 0.8s ease-in-out;
     }
 
-    /* → Animación de aparición */
+    /* → Animación de aparición suave al cargar */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 🌸 Botón Volver */
+    /* Título principal de la pantalla */
+    h1 {
+      color: #3a2f3b;
+      font-size: 2rem;
+      margin-top: 80px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* ================================
+             BOTÓN VOLVER AL PANEL
+       ================================= */
     .volver-btn {
-      position: fixed; /* → Fijo en la pantalla */
+      position: fixed;
       top: 20px;
       left: 20px;
-      background-color: #b35dc1; /* → Color violeta */
+      background-color: #b35dc1;
       color: white;
       border: none;
       border-radius: 10px;
@@ -52,161 +65,325 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    header {
-      background: transparent; /* → Fondo transparente */
-      padding: 40px 20px 20px;
-      text-align: center;
-    }
-
-    header h2 {
-      color: #2c2b2b;
-      font-size: 2rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin: 0;
-    }
-
-    header p {
-      color: #2c2b2b;
-      font-size: 1rem;
-      margin-top: 8px;
-    }
-
-    #lista {
-      width: 90%; /* → Ocupa el 90% del ancho disponible */
-      max-width: 750px; /* → No más de 750px de ancho */
-      margin: 25px 0 60px;
+    /* ================================
+                FILTROS SUPERIORES
+       ================================= */
+    #filtros {
+      margin-top: 20px;
       display: flex;
-      flex-direction: column;
-      gap: 18px; /* → Espacio entre elementos */
-      padding: 0;
-      list-style: none; /* → Quita los puntos de la lista */
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
     }
 
-    li {
-      background: rgba(255, 255, 255, 0.85); /* → Fondo blanco translúcido */
-      backdrop-filter: blur(5px); /* → Efecto de desenfoque detrás */
-      border-radius: 18px; /* → Bordes redondeados */
-      padding: 22px 24px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); /* → Sombra suave */
-      transition: all 0.25s ease; /* → Transición suave */
-      border-left: 6px solid #c368d1; /* → Línea violeta decorativa */
-      position: relative;
-      overflow: hidden;
+    select {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #c5c5c5;
+      background: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    li::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to right, rgba(129,199,132,0.1), transparent); /* → Brillo sutil al pasar el mouse */
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    select:hover {
+      border-color: #b35dc1;
+      box-shadow: 0 3px 8px rgba(179, 93, 193, 0.2);
     }
 
-    li:hover {
-      transform: scale(1.01); /* → Efecto de agrandar ligeramente */
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* → Sombra más intensa al pasar el mouse */
-    }
-
-    li:hover::before {
-      opacity: 1;
-    }
-
-    li strong {
-      color: #c368d1; /* → Color violeta para los títulos */
-    }
-
-    li em {
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    #lista p {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.6);
+    /* ================================
+               TABLA (VISTA ESCRITORIO)
+       ================================= */
+    table {
+      width: 90%;
+      max-width: 800px;
+      border-collapse: collapse;
+      margin: 30px 0 60px;
+      background: white;
       border-radius: 12px;
-      padding: 20px;
-      font-style: italic;
-      color: #2c2c2c;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #b35dc1;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f7ebf9;
+    }
+
+    /* Animación de aparición de filas */
+    tr {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInRow 1s ease forwards;
+    }
+
+    @keyframes fadeInRow {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ================================
+                 FOOTER / MARCA ECO
+       ================================= */
     footer {
-      background: transparent;
-      text-align: center;
-      color: #c368d1;
+      margin-bottom: 15px;
+      color: #844e91;
       font-size: 0.9rem;
-      position: fixed; /* → Siempre visible al fondo */
-      bottom: 15px;
-      left: 0;
-      width: 100%;
+      opacity: 0.8;
     }
 
-    footer span {
-      opacity: 0.8;
+    /* ================================
+           VISTA MOBILE (TARJETAS)
+       ================================= */
+    #mobileList {
+      display: none;
+      width: 90%;
+      max-width: 800px;
+      margin: 20px 0 60px;
+    }
+
+    .mobile-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInCard 0.9s ease forwards;
+    }
+
+    .mobile-card strong {
+      color: #b35dc1;
+    }
+
+    @keyframes fadeInCard {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ================================
+                   RESPONSIVE
+       ================================= */
+    @media (max-width: 768px) {
+      /* En mobile ocultamos la tabla y usamos tarjetas */
+      table {
+        display: none;
+      }
+      #mobileList {
+        display: block;
+      }
+      h1 {
+        font-size: 1.6rem;
+        margin-top: 70px;
+      }
+      #filtros {
+        width: 90%;
+      }
+      select {
+        flex: 1 1 100%;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- 🌸 Botón Volver -->
+  <!-- 🌸 Botón Volver al panel del psicólogo -->
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
-  <header>
-    <h2>Formularios Anónimos</h2> <!-- → Título principal -->
-    <p>Denuncias enviadas por los alumnos (se actualizan en tiempo real)</p> <!-- → Subtítulo informativo -->
-  </header>
+  <!-- Título de la pantalla para psicólogos -->
+  <h1>Formularios Anónimos</h1>
 
-  <ul id="lista"></ul> <!-- → Lista vacía donde se mostrarán las denuncias -->
+  <!-- ================================
+             BLOQUE DE FILTROS
+       ================================= -->
+  <div id="filtros">
+    <!-- Filtro por curso (opcional) -->
+    <select id="cursoFiltro">
+      <option value="">Todos los cursos...</option>
+      <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
+      <option value="2°A">2°A</option><option value="2°B">2°B</option><option value="2°C">2°C</option>
+      <option value="3°A">3°A</option><option value="3°B">3°B</option><option value="3°C">3°C</option>
+      <option value="4°A">4°A</option><option value="4°B">4°B</option><option value="4°C">4°C</option>
+      <option value="5°A">5°A</option><option value="5°B">5°B</option><option value="5°C">5°C</option>
+      <option value="6°A">6°A</option><option value="6°B">6°B</option><option value="6°C">6°C</option>
+      <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
+    </select>
 
-  <footer>
-    <span>ECO - Proyecto Escolar</span> <!-- → Pie de página con el nombre del proyecto -->
-  </footer>
+    <!-- Filtro por tipo de situación (coincide con tipo de formulario anónimo) -->
+    <select id="tipoFiltro">
+      <option value="">Situación.</option>
+      <option value="Sufrí bullying">Sufrí bullying</option>
+      <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
+    </select>
+  </div>
 
-  <!-- → Conexión a Firebase -->
+  <!-- ================================
+            TABLA (VISTA ESCRITORIO)
+       ================================= -->
+  <table id="tablaFormularios">
+    <thead>
+      <tr>
+        <!-- Columnas correspondientes a los datos de formularios anónimos -->
+        <th>Curso</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Participantes</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- ================================
+            LISTA MOBILE (TARJETAS)
+       ================================= -->
+  <div id="mobileList"></div>
+
+  <!-- Marca ECO al pie -->
+  <footer>ECO - Proyecto Escolar</footer>
+
+  <!-- → Conexión a Firebase (mismo orden que tenías antes) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase.js"></script> <!-- → Archivo donde está la configuración del proyecto Firebase -->
 
   <script>
-    const lista = document.getElementById("lista"); // → Selecciona la lista donde se insertarán los datos
+    // ======================================
+    //   REFERENCIAS A ELEMENTOS DE LA VISTA
+    // ======================================
+    const tablaBody   = document.querySelector("#tablaFormularios tbody");
+    const cursoFiltro = document.getElementById("cursoFiltro");
+    const tipoFiltro  = document.getElementById("tipoFiltro");
+    const mobileList  = document.getElementById("mobileList");
 
-    // → Función para el botón "Volver"
+    // → Arreglo donde se guardan todas las denuncias anónimas traídas de Firestore
+    let todasLasDenuncias = [];
+
+    // ======================================
+    //   FUNCIÓN PARA EL BOTÓN "VOLVER"
+    //   (Regresa al panel del psicólogo)
+    // ======================================
     function volver() {
-      window.location.href = "psicologo_panel.html"; // 🔁 Redirige al panel del psicólogo
+      window.location.href = "psicologo_panel.html";
     }
 
-    // → Se conecta a la colección "formularios/anonimo/items" en Firestore
+    // ======================================
+    //  SUSCRIPCIÓN EN TIEMPO REAL A ANÓNIMO
+    //  (formularios/anonimo/items)
+    // ======================================
     db.collection("formularios")
-      .doc("anonimo")
+      .doc("anonimo")         // ← MISMA RUTA QUE TENÍAS ANTES
       .collection("items")
-      .orderBy("creado", "desc") // → Ordena por fecha, de más reciente a más viejo
-      .onSnapshot(snapshot => { // → Escucha los cambios en tiempo real
-        lista.innerHTML = ""; // → Limpia la lista antes de volver a llenarla
-
-        if (snapshot.empty) { // → Si no hay denuncias
-          lista.innerHTML = "<p>No hay denuncias aún.</p>"; // → Muestra mensaje vacío
+      .orderBy("creado", "desc") // ← Orden de más reciente a más antiguo
+      .onSnapshot(snapshot => {
+        // Si no hay documentos, mostramos mensaje vacío
+        if (snapshot.empty) {
+          todasLasDenuncias = [];
+          pintarVacio();
           return;
         }
 
-        snapshot.forEach(doc => { // → Recorre cada denuncia del snapshot
-          const data = doc.data(); // → Obtiene los datos del documento
-          const li = document.createElement("li"); // → Crea un elemento <li> para mostrarlo
-          li.innerHTML = `
-            <strong>Tipo:</strong> ${data.tipo || "(sin tipo)"}<br>
-            <strong>Descripción:</strong> ${data.descripcion || "(sin descripción)"}<br>
-            <strong>Curso:</strong> ${data.curso || "(no especificado)"}<br>
-            <strong>Participantes:</strong> ${data.participantes || "(no especificado)"}<br>
-            <small><em>Fecha: ${data.creado ? data.creado.toDate().toLocaleString() : "sin fecha"}</em></small>
-          `;
-          lista.appendChild(li); // → Agrega el elemento a la lista en el HTML
-        });
+        // Mapeamos cada documento a su data
+        todasLasDenuncias = snapshot.docs.map(doc => doc.data());
+
+        // Aplicamos filtros cada vez que llega un cambio
+        aplicarFiltros();
       });
+
+    // → Cuando cambian los filtros, recalculamos la vista
+    cursoFiltro.addEventListener("change", aplicarFiltros);
+    tipoFiltro.addEventListener("change", aplicarFiltros);
+
+    // ======================================
+    //    FUNCIÓN PARA PINTAR LISTADO VACÍO
+    // ======================================
+    function pintarVacio() {
+      tablaBody.innerHTML = "<tr><td colspan='5'>No hay denuncias aún.</td></tr>";
+      mobileList.innerHTML = "<p style='text-align:center;margin-top:20px;'>No hay denuncias aún.</p>";
+    }
+
+    // ======================================
+    //        APLICAR FILTROS Y PINTAR
+    //    TABLA (ESCRITORIO) + TARJETAS (MOBILE)
+    // ======================================
+    function aplicarFiltros() {
+      // Limpiar contenido actual de tabla y lista mobile
+      tablaBody.innerHTML = "";
+      mobileList.innerHTML = "";
+
+      const cursoSel = cursoFiltro.value;
+      const tipoSel  = tipoFiltro.value;
+
+      // Filtrado por curso y tipo (solo si están seleccionados)
+      const filtradas = todasLasDenuncias.filter(item =>
+        (!cursoSel || item.curso === cursoSel) &&
+        (!tipoSel  || item.tipo  === tipoSel)
+      );
+
+      // Si no hay resultados con el filtro, se muestra mensaje
+      if (filtradas.length === 0) {
+        tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        mobileList.innerHTML = "<p style='text-align:center;margin-top:20px;'>No hay registros con ese filtro.</p>";
+        return;
+      }
+
+      let delay = 0; // → Control para animación en cascada
+
+      filtradas.forEach(item => {
+        // ================================
+        //        FILA EN TABLA (PC)
+        // ================================
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${item.curso || "-"}</td>
+          <td>${item.tipo || "-"}</td>
+          <td>${item.descripcion || "-"}</td>
+          <td>${item.participantes || "-"}</td>
+          <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
+        `;
+        fila.style.animationDelay = `${delay}s`;
+        tablaBody.appendChild(fila);
+
+        // ================================
+        //        TARJETA EN MOBILE
+        // ================================
+        const card = document.createElement("div");
+        card.className = "mobile-card";
+        card.style.animationDelay = `${delay}s`;
+        card.innerHTML = `
+          <strong>Curso:</strong> ${item.curso || "-"}<br>
+          <strong>Tipo:</strong> ${item.tipo || "-"}<br>
+          <strong>Descripción:</strong> ${item.descripcion || "-"}<br>
+          <strong>Participantes:</strong> ${item.participantes || "-"}<br>
+          <small><em>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</em></small>
+        `;
+        mobileList.appendChild(card);
+
+        // Aumenta el delay para que cada fila/tarjeta aparezca un poquito después
+        delay += 0.6;
+      });
+    }
   </script>
 </body>
 </html>
+
