@@ -183,15 +183,15 @@
      /* =============================
           Correcion si estoy en menu, cambia la direccion del boton home segun origen
     ============================== */
-    function volverSegunOrigen() {
-      const params = new URLSearchParams(window.location.search);
-      const from = params.get("from");
-      if (from === "menu") {
-        window.location.href = "menu.html";
-      } else {
-        window.location.href = "index.html";
-      }
+  function volverSegunOrigen() {
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    if (from === "menu") {
+      window.location.href = "menu.html";
+    } else {
+      window.location.href = "index.html";
     }
-  </script>
+}
+</script>
 </body>
-</html>
+</html>  

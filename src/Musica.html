@@ -1,303 +1,236 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Música Relajante - ECO</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO — Música para Relajar</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Cardo&display=swap" rel="stylesheet">
 
-<style>
-  body {
-    margin: 0;
-    padding: 60px 20px 40px;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(160deg,#f3ddff,#d7eaff);
-    color: #472a63;
-    animation: fadeIn .6s ease;
-  }
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-  @keyframes fadeIn {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
-  }
-
-  /* Botón inicio */
-  .home-btn {
-    background:white;
-    border-radius:50%;
-    width:48px;
-    height:48px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:fixed;
-    top:20px;
-    left:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    cursor:pointer;
-    transition:.25s;
-    z-index:1000;
-  }
-
-  .home-btn img {
-    width:26px;
-    opacity:.85;
-  }
-
-  .home-btn:hover {
-    transform:scale(1.06);
-  }
-
-  /* Títulos */
-  h2 {
-    margin-top:10px;
-    font-weight:600;
-    font-size:2rem;
-    text-align:center;
-    color:#4c195d;
-  }
-
-  .descripcion {
-    font-size:1rem;
-    color:#5c4f63;
-    max-width:420px;
-    text-align:center;
-    margin:0 auto 28px auto;
-    opacity:.9;
-  }
-
-  /* CONTENEDOR GRILLA DE CANCIONES */
-  .songs-grid {
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:20px;
-    max-width:900px;
-    margin:0 auto;
-    margin-bottom:40px;
-  }
-
-  /* Tarjetas */
-  .song-card {
-    background:white;
-    border-radius:14px;
-    padding:12px 12px 16px;
-    box-shadow:0 6px 16px rgba(0,0,0,0.12);
-    text-align:center;
-    transition:.25s;
-  }
-
-  .song-card:hover {
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.18);
-  }
-
-  .song-title {
-    margin-bottom:8px;
-    font-weight:600;
-    color:#5a2e7a;
-    font-size:1rem;
-  }
-
-  .song-card audio {
-    width:100%;
-    outline:none;
-    border-radius:10px;
-    background:rgba(255,255,255,0.8);
-  }
-
-  /* Sección Elegí tu Música */
-  .link-box {
-    margin-top:10px;
-    background:white;
-    padding:22px 20px;
-    border-radius:14px;
-    max-width:600px;
-    margin-left:auto;
-    margin-right:auto;
-    text-align:center;
-    box-shadow:0 6px 16px rgba(0,0,0,0.12);
-  }
-
-  .link-box p {
-    font-size:.95rem;
-    color:#5c4f63;
-    margin-bottom:15px;
-  }
-
-  .link-input-row {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    align-items:center;
-  }
-
-  .link-input-row input {
-    width:100%;
-    max-width:420px;
-    padding:10px 12px;
-    border-radius:18px;
-    border:none;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
-    font-family:inherit;
-  }
-
-  .link-input-row button {
-    padding:10px 22px;
-    border-radius:20px;
-    border:none;
-    background:#d96fc0;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-    transition:.25s;
-    box-shadow:0 4px 12px rgba(0,0,0,0.18);
-  }
-
-  .link-input-row button:hover {
-    background:#b94fa3;
-    transform:translateY(-1px);
-  }
-
-  /* Error */
-  .error-msg {
-    margin-top:4px;
-    color:#b2353c;
-    font-size:.85rem;
-    min-height:16px;
-  }
-
-  /* Embed dinamico */
-  .embed-wrapper {
-    margin-top:18px;
-    display:none;
-  }
-
-  .embed-wrapper iframe {
-    width:100%;
-    max-width:420px;
-    height:200px;
-    border:none;
-    border-radius:12px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.14);
-  }
-
-  /* Responsive */
-  @media (max-width:768px) {
-    .songs-grid {
-      grid-template-columns:1fr;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(160deg, #f1e6ff, #f9f4ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      color: #3c2a4d;
     }
-  }
-</style>
 
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #d7c0f7;
+      color: #4c195d;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.25s ease;
+      z-index: 100;
+    }
+
+    .volver-btn:hover {
+      background-color: #c8aaf0;
+      transform: scale(1.05);
+    }
+
+    /* CONTENEDOR */
+    .playlist-box {
+      width: 95%;
+      max-width: 620px;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 110px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.1);
+      animation: fadeUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CABECERA PLAYLIST */
+    .playlist-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .playlist-cover {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .playlist-info h2 {
+      margin: 0;
+      font-size: 1.7rem;
+      color: #4B0082;
+      font-weight: 600;
+    }
+
+    .playlist-info p {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    /* LISTA DE TEMAS (vista previa) */
+    .song {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .song img {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .song-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .song-artist {
+      font-size: 0.88rem;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* BOTONES DE SERVICIOS */
+    .service-buttons {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .icon-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: 0.25s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.12);
+    }
+
+    .icon-btn img {
+      width: 40px;
+    }
+
+    /* TEXTO INFORMATIVO */
+    .text-info {
+      margin-top: 30px;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #4b3a62;
+      line-height: 1.7rem;
+      max-width: 600px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:520px){
+      .playlist-header { flex-direction: column; text-align: center; }
+      .playlist-info h2 { font-size: 1.5rem; }
+      .playlist-cover { width: 160px; height:160px; }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="home-btn" onclick="window.location.href='menu.html'">
-  <img src="../assets/home-icon.png" alt="Inicio">
+<button class="volver-btn" onclick="location.href='menu.html'">← Volver</button>
+
+<div class="playlist-box">
+
+  <div class="playlist-header">
+    <img src="../assets/logo-eco.png" class="playlist-cover">
+
+    <div class="playlist-info">
+      <h2>Música para relajar</h2>
+      <p>Playlist por ECO</p>
+    </div>
+  </div>
+
+  <!-- Vista previa REAL basada en tu captura -->
+  <div class="song">
+    <img src="../assets/cover1.jpg">
+    <div>
+      <div class="song-title">Desafinado</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="../assets/cover1.jpg">
+    <div>
+      <div class="song-title">Só Danço Samba</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="../assets/cover1.jpg">
+    <div>
+      <div class="song-title">Para Machuchar Meu Coração</div>
+      <div class="song-artist">Stan Getz, João Gilberto</div>
+    </div>
+  </div>
+
+  <div class="song">
+    <img src="../assets/cover2.jpg">
+    <div>
+      <div class="song-title">Chega De Saudade</div>
+      <div class="song-artist">João Gilberto</div>
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="service-buttons">
+    <button class="icon-btn" onclick="window.open('https://open.spotify.com/playlist/7D9bhxXZ6ZP4jAXNbQesaz?si=ePXph4x7QV2dZfDZCho6LQ')">
+      <img src="../assets/spotify.png">
+    </button>
+
+    <button class="icon-btn" onclick="window.open('https://music.youtube.com/playlist?list=PLqKCzJkGfl_M_Jwef-D8UcMJuJDAJj0bF&si=tWrwmN7g3p9Yxssv')">
+      <img src="../assets/ytmusic.png">
+    </button>
+  </div>
+
 </div>
 
-<h2>Música para Calmar</h2>
-
-<p class="descripcion">
-  Elegí una melodía que te acompañe en este momento.  
-  Permitite respirar profundo y soltar un poco lo que pesa.
+<p class="text-info">
+  La música ayuda a relajar, bajar la ansiedad y acompañarte en momentos de estrés o tensión.  
+  Elegí la plataforma que uses y disfrutá un espacio de calma.
 </p>
-
-<!-- ⭐ RECOMENDACIONES (3 canciones en grilla, SOLO AUDIO) -->
-<div class="songs-grid">
-
-  <div class="song-card">
-    <p class="song-title">Piano</p>
-    <audio controls>
-      <source src="musica/piano.mp3" type="audio/mpeg">
-      Tu navegador no soporta audio.
-    </audio>
-  </div>
-
-  <div class="song-card">
-    <p class="song-title">Relajante</p>
-    <audio controls>
-      <source src="musica/relajante.mp3" type="audio/mpeg">
-      Tu navegador no soporta audio.
-    </audio>
-  </div>
-
-  <div class="song-card">
-    <p class="song-title">Romántica</p>
-    <audio controls>
-      <source src="musica/romantica.mp3" type="audio/mpeg">
-      Tu navegador no soporta audio.
-    </audio>
-  </div>
-
-</div>
-
-<!-- ⭐ PEGAR LINK -->
-<div class="link-box">
-  <p>O si querés escuchar otra canción que te guste, podés pegar un link:</p>
-
-  <div class="link-input-row">
-    <input id="musicLink" type="text" placeholder="Pegá aquí un link de YouTube o Spotify">
-    <button id="btnPlayLink">Escuchar</button>
-  </div>
-
-  <div id="errorMsg" class="error-msg"></div>
-
-  <div id="embedWrapper" class="embed-wrapper">
-    <iframe id="embedPlayer"></iframe>
-  </div>
-</div>
-
-<script>
-  const input = document.getElementById("musicLink");
-  const errorMsg = document.getElementById("errorMsg");
-  const wrapper = document.getElementById("embedWrapper");
-  const player = document.getElementById("embedPlayer");
-
-  function getYouTubeEmbed(url) {
-    try {
-      if (url.includes("youtu.be/"))
-        return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1].split(/[?&]/)[0];
-      const videoId = new URL(url).searchParams.get("v");
-      return videoId ? "https://www.youtube.com/embed/" + videoId : null;
-    } catch { return null; }
-  }
-
-  function getSpotifyEmbed(url) {
-    try {
-      const u = new URL(url);
-      if (!u.hostname.includes("open.spotify.com")) return null;
-      return "https://open.spotify.com/embed" + u.pathname;
-    } catch { return null; }
-  }
-
-  document.getElementById("btnPlayLink").addEventListener("click", () => {
-    const url = input.value.trim();
-    errorMsg.textContent = "";
-    wrapper.style.display = "none";
-
-    if (!url) {
-      errorMsg.textContent = "Pegá un link primero.";
-      return;
-    }
-
-    let finalURL = null;
-
-    if (url.includes("youtube.com") || url.includes("youtu.be"))
-      finalURL = getYouTubeEmbed(url);
-    else if (url.includes("open.spotify.com"))
-      finalURL = getSpotifyEmbed(url);
-
-    if (!finalURL) {
-      errorMsg.textContent = "No pude reconocer el link.";
-      return;
-    }
-
-    player.src = finalURL;
-    wrapper.style.display = "block";
-  });
-</script>
 
 </body>
 </html>

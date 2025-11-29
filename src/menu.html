@@ -173,6 +173,13 @@
       align-items:center;
     }
 
+    .user-icon{
+      width:40px;
+      cursor:pointer;
+      transition:transform .3s;
+    }
+    .user-icon:hover{transform:scale(1.12);}
+
     .auth-buttons{
       display:flex;
       gap:10px;
@@ -190,23 +197,6 @@
       box-shadow:0 4px 10px rgba(0,0,0,0.15);
     }
     .auth-buttons button:hover{
-      background:#b94fa3;
-      transform:translateY(-2px);
-    }
-
-    /* 🔸 Botón Cerrar sesión / Volver escritorio */
-    .logout-btn{
-      background:#d96fc0;
-      border:none;
-      border-radius:20px;
-      padding:8px 16px;
-      color:white;
-      font-weight:600;
-      cursor:pointer;
-      transition:.25s;
-      box-shadow:0 4px 10px rgba(0,0,0,0.15);
-    }
-    .logout-btn:hover{
       background:#b94fa3;
       transform:translateY(-2px);
     }
@@ -541,13 +531,6 @@
     </section>
 
   </div>
-
-  <!-- Firebase para poder cerrar sesión correctamente -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="firebase.js"></script>
-
 <script>
 /* =====================================================
       LOGICA DE USUARIO (ESCRITORIO + MÓVIL)
@@ -564,79 +547,21 @@ const reportarBtn = document.getElementById("reportarBtn");
 const mobileFormularioLink = document.getElementById("mobileFormularioLink");
 const mobileAuth = document.getElementById("mobileAuth");
 
-/* 👉 función genérica para cerrar sesión */
-function cerrarSesion() {
-  try {
-    if (typeof firebase !== "undefined" && firebase.auth) {
-      firebase.auth().signOut().catch(() => {});
-    }
-  } catch (e) {
-    console.warn("Error al cerrar sesión en Firebase:", e);
-  }
-  localStorage.clear();
-  window.location.href = "index.html";
-}
+if(userLoggedIn && !anonimo){
 
-/* 👉 función para volver al index desde modo anónimo (sin forzar login) */
-function volverDesdeAnonimo() {
-  // si querés que deje de ser "anonimo" cuando vuelve:
-  // localStorage.removeItem("ecoAnonimo");
-  window.location.href = "index.html";
-}
+  /* 🖥️ ESCRITORIO LOGUEADO: SIN ICONO DE PERFIL */
+  userSection.innerHTML = ""; // acá antes estaba el <img user-icon>
 
-if (userLoggedIn && !anonimo) {
-
-  /* 🖥️ ESCRITORIO LOGUEADO: mostrar botón Cerrar sesión */
-  userSection.innerHTML = `
-    <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
-  `;
   formularioLink.href = "formulario_p.html";
   reportarBtn.onclick = () => window.location.href="formulario_p.html";
 
-  /* 📱 MÓVIL LOGUEADO: mostrar Cerrar sesión en el menú */
+  /* 📱 MÓVIL LOGUEADO */
   mobileFormularioLink.href = "formulario_p.html";
-  mobileAuth.innerHTML = `
-    <div class="mobile-auth">
-      <button id="logoutBtnMobile">Cerrar sesión</button>
-    </div>
-  `;
-
-  // listeners de logout
-  setTimeout(() => {
-    const logoutBtn = document.getElementById("logoutBtn");
-    const logoutBtnMobile = document.getElementById("logoutBtnMobile");
-    if (logoutBtn) logoutBtn.onclick = cerrarSesion;
-    if (logoutBtnMobile) logoutBtnMobile.onclick = () => { closeMobileMenu(); cerrarSesion(); };
-  }, 0);
-
-} else if (anonimo) {
-
-  /* 🕵️ MODO ANÓNIMO: NO ofrecer iniciar sesión, solo VOLVER */
-
-  userSection.innerHTML = `
-    <button class="logout-btn" id="volverAnonimoBtn">Volver</button>
-  `;
-  formularioLink.href = "formulario_a.html";
-  reportarBtn.onclick = () => window.location.href="formulario_a.html";
-
-  mobileFormularioLink.href = "formulario_a.html";
-  mobileAuth.innerHTML = `
-    <div class="mobile-auth">
-      <button id="volverAnonimoBtnMobile">Volver</button>
-    </div>
-  `;
-
-  setTimeout(() => {
-    const volverAnonimoBtn = document.getElementById("volverAnonimoBtn");
-    const volverAnonimoBtnMobile = document.getElementById("volverAnonimoBtnMobile");
-    if (volverAnonimoBtn) volverAnonimoBtn.onclick = volverDesdeAnonimo;
-    if (volverAnonimoBtnMobile) volverAnonimoBtnMobile.onclick = () => { closeMobileMenu(); volverDesdeAnonimo(); };
-  }, 0);
+  mobileAuth.innerHTML = ""; // no mostrar botones en móvil estando logueado
 
 } else {
 
-  /* 🚫 NO LOGUEADO Y NO ANÓNIMO: mostrar Iniciar / Registrarse */
-
+  /* 🖥️ ESCRITORIO NO LOGUEADO: mantiene los botones de iniciar/registrar */
   userSection.innerHTML = `
     <div class="auth-buttons">
       <button onclick="window.location.href='login.html?from=menu'">Iniciar sesión</button>
@@ -646,6 +571,7 @@ if (userLoggedIn && !anonimo) {
   formularioLink.href = "formulario_a.html";
   reportarBtn.onclick = () => window.location.href="formulario_a.html";
 
+  /* 📱 MÓVIL NO LOGUEADO */
   mobileFormularioLink.href = "formulario_a.html";
   mobileAuth.innerHTML = `
     <div class="mobile-auth">
@@ -721,7 +647,6 @@ tokens.forEach(tok => {
   textoWrap.appendChild(span);
   if(!/\s+/.test(tok)) wordSpans.push(span);
 });
-
 function revealText(){
   const rect = textoWrap.getBoundingClientRect();
   const vh = window.innerHeight;
@@ -730,9 +655,17 @@ function revealText(){
   const end = vh * -0.2;
 
   const raw = (start - rect.top) / (start - end);
-  const progress = Math.min(Math.max(raw, 0), 1);
+  let progress = Math.min(Math.max(raw, 0), 1);
 
-  /* easing cubic */
+  // ✅ Si llegaste casi al final de la página, fuerza el texto completo
+  const scrollBottom = window.scrollY + window.innerHeight;
+  const pageHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+
+  if (scrollBottom >= pageHeight - 5) {
+    progress = 1;
+  }
+
+  // easing cubic
   const ease = t => 1 - Math.pow(1 - t, 3);
   const eased = ease(progress);
 
@@ -744,7 +677,6 @@ function revealText(){
     else s.classList.remove("on");
   });
 }
-
 window.addEventListener("scroll", revealText, { passive:true });
 window.addEventListener("resize", revealText);
 revealText();
@@ -793,8 +725,7 @@ revealText();
     }
   });
 })();
-
-/* =====================================================
+ /* =====================================================
       MANUAL INTERACTIVO — INTRO.JS
 ===================================================== */
 

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Bienvenido</title>
@@ -19,7 +21,7 @@
   </script>
 
   <style>
-    /* ===== MODAL CERRAR SESIÓN ===== */
+    /* ===== MODAL CERRAR SESIÓN / GENÉRICO ===== */
     .modal-bg {
       position: fixed;
       top: 0; left: 0;
@@ -93,37 +95,14 @@
       from { transform: scale(0.85); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-
-    /* ===== AJUSTES DE POSICIÓN DEL LOGO Y RECTÁNGULO ===== */
-    .welcome-container {
-      text-align: center;
-      margin-top: 40px;      /* distancia desde arriba */
-      margin-bottom: 10px;   /* aire abajo del título */
-    }
-
-    .welcome-text {
-      margin-bottom: 5px;
-    }
-
-    .eco-logo {
-      display: block;
-      margin: 10px auto 0;   /* centrado y un poquito de aire */
-    }
-
-    .rectangulo-botones {
-      margin: 60px auto 0;   /* 🔹 baja el recuadro para que no se encime */
-      max-width: 480px;      /* opcional: ancho máx bonito */
-    }
   </style>
 
 </head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
-<script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
 
 <body class="pagina-index">
   <div class="welcome-container">
     <h1 class="welcome-text">Bienvenido a</h1>
-    <img src="../assets/eco-logo.png" alt="Logo ECO" class="eco-logo">
+    <img src="../assets/logo-eco.png" alt="Logo ECO" class="eco-logo">
   </div>
 
   <main class="rectangulo-botones">
@@ -150,6 +129,23 @@
       <div class="modal-buttons">
         <button class="cancel-btn" id="cancelLogout">Cancelar</button>
         <button class="confirm-btn" id="confirmLogout">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌸 MODAL CONFIRMAR INGRESO ANÓNIMO SI HAY SESIÓN -->
+  <div id="anonModal" class="modal-bg">
+    <div class="modal-box">
+      <h3>Ingresar como anónimo</h3>
+      <p>
+        Tenés una sesión iniciada. Si ingresás como anónimo, se cerrará la sesión
+        actual y entrarás sin identificarte.<br><br>
+        ¿Querés continuar?
+      </p>
+
+      <div class="modal-buttons">
+        <button class="cancel-btn" id="cancelAnon">Cancelar</button>
+        <button class="confirm-btn" id="confirmAnon">Sí, ingresar como anónimo</button>
       </div>
     </div>
   </div>
@@ -183,12 +179,12 @@
       }
     });
 
-    /* 🟪 Abrir modal */
+    /* 🟪 Abrir modal CERRAR SESIÓN */
     document.getElementById('logoutBtn').addEventListener('click', () => {
       document.getElementById('logoutModal').style.display = 'flex';
     });
 
-    /* ❌ Cancelar */
+    /* ❌ Cancelar cerrar sesión */
     document.getElementById('cancelLogout').addEventListener('click', () => {
       document.getElementById('logoutModal').style.display = 'none';
     });
@@ -204,11 +200,43 @@
       });
     });
 
-    /* 👤 Ingreso anónimo */
-    document.getElementById("btnAnonimo").addEventListener("click", () => {
+    /* Función reutilizable para activar anónimo y entrar al menú */
+    function activarAnonimoYEntrar() {
       localStorage.clear();
       localStorage.setItem("ecoAnonimo", "true");
       setTimeout(() => window.location.href = "menu.html", 400);
+    }
+
+    /* 👤 Ingreso anónimo con confirmación si hay sesión */
+    const btnAnonimo = document.getElementById("btnAnonimo");
+    const anonModal = document.getElementById("anonModal");
+    const cancelAnon = document.getElementById("cancelAnon");
+    const confirmAnon = document.getElementById("confirmAnon");
+
+    btnAnonimo.addEventListener("click", () => {
+      const logged = localStorage.getItem("ecoUserLogged") === "true";
+
+      if (logged) {
+        // Si hay sesión iniciada, pedimos confirmación
+        anonModal.style.display = "flex";
+      } else {
+        // Si no hay sesión, va directo como antes
+        activarAnonimoYEntrar();
+      }
+    });
+
+    // Cerrar modal anónimo sin hacer nada
+    cancelAnon.addEventListener("click", () => {
+      anonModal.style.display = "none";
+    });
+
+    // Confirmar: cerrar sesión y entrar como anónimo
+    confirmAnon.addEventListener("click", () => {
+      anonModal.style.display = "none";
+      // También cerramos sesión de Firebase por las dudas
+      firebase.auth().signOut().finally(() => {
+        activarAnonimoYEntrar();
+      });
     });
   </script>
 

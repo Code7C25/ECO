@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECO - Formularios Públicos</title>
 
-  <!-- Firebase -->
+  <!-- ================================
+        FIREBASE (APP + AUTH + DB)
+       ================================= -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <!-- Configuración propia de tu proyecto ECO (db, etc.) -->
   <script src="firebase.js"></script>
 
   <style>
+    /* ================================
+          ESTÉTICA GENERAL DE LA PÁGINA
+       ================================= */
     body {
       font-family: "Quicksand", sans-serif;
       background: linear-gradient(160deg, #e6f5e8 0%, #f8fff9 100%);
@@ -23,6 +29,7 @@
       min-height: 100vh;
     }
 
+    /* Título principal de la pantalla */
     h1 {
       color: #3a2f3b;
       font-size: 2rem;
@@ -31,7 +38,35 @@
       text-align: center;
     }
 
-    /* 🎨 Filtros sin recuadro */
+    /* ================================
+             BOTÓN VOLVER AL PANEL
+       ================================= */
+    .volver-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #b35dc1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      z-index: 1000;
+    }
+
+    .volver-btn:hover {
+      background-color: #9f4cad;
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* ================================
+                FILTROS SUPERIORES
+       ================================= */
     #filtros {
       margin-top: 20px;
       display: flex;
@@ -57,6 +92,9 @@
       box-shadow: 0 3px 8px rgba(179, 93, 193, 0.2);
     }
 
+    /* ================================
+               TABLA (VISTA ESCRITORIO)
+       ================================= */
     table {
       width: 90%;
       max-width: 800px;
@@ -84,6 +122,7 @@
       background-color: #f7ebf9;
     }
 
+    /* Animación de aparición de filas */
     tr {
       opacity: 0;
       transform: translateY(10px);
@@ -97,6 +136,9 @@
       }
     }
 
+    /* ================================
+                 FOOTER / MARCA ECO
+       ================================= */
     footer {
       margin-bottom: 15px;
       color: #844e91;
@@ -104,37 +146,69 @@
       opacity: 0.8;
     }
 
-    .volver-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background-color: #b35dc1;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.2s ease;
-      z-index: 1000;
+    /* ================================
+           VISTA MOBILE (TARJETAS)
+       ================================= */
+    #mobileList {
+      display: none;
+      width: 90%;
+      max-width: 800px;
+      margin: 20px 0 60px;
     }
 
-    .volver-btn:hover {
-      background-color: #9f4cad;
-      transform: scale(1.03);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    .mobile-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.9s ease forwards;
+    }
+
+    .mobile-card strong {
+      color: #b35dc1;
+    }
+
+    /* ================================
+                   RESPONSIVE
+       ================================= */
+    @media (max-width: 768px) {
+      /* En mobile ocultamos la tabla y usamos tarjetas */
+      table {
+        display: none;
+      }
+      #mobileList {
+        display: block;
+      }
+      h1 {
+        font-size: 1.6rem;
+        margin-top: 70px;
+      }
+      #filtros {
+        width: 90%;
+      }
+      select {
+        flex: 1 1 100%;
+      }
     }
   </style>
 </head>
 
 <body>
+  <!-- Botón para volver al panel del psicólogo -->
   <button class="volver-btn" onclick="volver()">← Volver</button>
 
-  <h1>Formularios Públicos</h1>
+  <!-- Título de la pantalla para psicólogos -->
+  <h1>Formularios Logueados</h1>
 
+  <!-- ================================
+             BLOQUE DE FILTROS
+       ================================= -->
   <div id="filtros">
+    <!-- Filtro por curso -->
     <select id="cursoFiltro">
       <option value="">Todos los cursos...</option>
       <option value="1°A">1°A</option><option value="1°B">1°B</option><option value="1°C">1°C</option>
@@ -146,16 +220,23 @@
       <option value="7°A">7°A</option><option value="7°B">7°B</option><option value="7°C">7°C</option>
     </select>
 
+    <!-- Filtro por tipo de situación -->
     <select id="tipoFiltro">
-      <option value="">Situación...</option>
+      <option value="">Situación.</option>
       <option value="Sufrí bullying">Sufrí bullying</option>
       <option value="Vi a alguien sufrir bullying">Vi a alguien sufrir bullying</option>
     </select>
   </div>
 
+  <!-- ================================
+            TABLA (VISTA ESCRITORIO)
+       ================================= -->
   <table id="tablaFormularios">
     <thead>
       <tr>
+        <!-- NUEVOS CAMPOS: Nombre y Apellido del estudiante -->
+        <th>Nombre</th>
+        <th>Apellido</th>
         <th>Curso</th>
         <th>Tipo</th>
         <th>Descripción</th>
@@ -166,50 +247,89 @@
     <tbody></tbody>
   </table>
 
+  <!-- ================================
+            LISTA MOBILE (TARJETAS)
+       ================================= -->
+  <div id="mobileList"></div>
+
+  <!-- Marca ECO al pie -->
   <footer>ECO - Proyecto Escolar</footer>
 
   <script>
-    const tablaBody = document.querySelector("#tablaFormularios tbody");
+    // ================================
+    //      REFERENCIAS A ELEMENTOS
+    // ================================
+    const tablaBody   = document.querySelector("#tablaFormularios tbody");
     const cursoFiltro = document.getElementById("cursoFiltro");
-    const tipoFiltro = document.getElementById("tipoFiltro");
+    const tipoFiltro  = document.getElementById("tipoFiltro");
+    const mobileList  = document.getElementById("mobileList");
+
+    // Arreglo donde se guardan todas las denuncias traídas de Firestore
     let todasLasDenuncias = [];
 
+    // ================================
+    //      FUNCIÓN BOTÓN VOLVER
+    //  (Regresa al panel de psicólogo)
+    // ================================
     function volver() {
       window.location.href = "psicologo_panel.html";
     }
 
-    // 🔁 Actualización en tiempo real desde Firestore
+    // ================================
+    //   SUSCRIPCIÓN EN TIEMPO REAL A
+    //   FORMULARIOS PÚBLICOS (publico)
+    // ================================
     db.collection("formularios")
-      .doc("anonimo")
+      .doc("publico")           // <- Colección de formularios públicos
       .collection("items")
       .orderBy("creado", "desc")
       .onSnapshot(snapshot => {
+        // Obtenemos los datos de cada documento
         todasLasDenuncias = snapshot.docs.map(doc => doc.data());
+        // Aplicamos filtros cada vez que hay un cambio
         aplicarFiltros();
       });
 
+    // Cuando cambian los filtros, se recalcula el listado
     cursoFiltro.addEventListener("change", aplicarFiltros);
     tipoFiltro.addEventListener("change", aplicarFiltros);
 
+    // ================================
+    //         APLICAR FILTROS Y
+    //   PINTAR TABLA + TARJETAS MOBILE
+    // ================================
     function aplicarFiltros() {
+      // Limpiar contenido actual de tabla y lista mobile
       tablaBody.innerHTML = "";
-      const cursoSel = cursoFiltro.value;
-      const tipoSel = tipoFiltro.value;
+      mobileList.innerHTML = "";
 
+      const cursoSel = cursoFiltro.value;
+      const tipoSel  = tipoFiltro.value;
+
+      // Filtrado por curso y tipo (si están seleccionados)
       const filtradas = todasLasDenuncias.filter(item =>
         (!cursoSel || item.curso === cursoSel) &&
-        (!tipoSel || item.tipo === tipoSel)
+        (!tipoSel  || item.tipo  === tipoSel)
       );
 
+      // Si no hay resultados con el filtro, se muestra mensaje
       if (filtradas.length === 0) {
-        tablaBody.innerHTML = "<tr><td colspan='5'>No hay registros con ese filtro.</td></tr>";
+        // IMPORTANTE: colspan actualizado a 7 (Nombre, Apellido, Curso, Tipo, Descripción, Participantes, Fecha)
+        tablaBody.innerHTML = "<tr><td colspan='7'>No hay registros con ese filtro.</td></tr>";
+        mobileList.innerHTML = "<p style='text-align:center;margin-top:20px;'>No hay registros con ese filtro.</p>";
         return;
       }
 
-      let delay = 0;
+      let delay = 0; // control para la animación en cascada
+
       filtradas.forEach(item => {
+        // ================================
+        //        FILA EN TABLA (PC)
+        // ================================
         const fila = document.createElement("tr");
         fila.innerHTML = `
+          <td>${item.nombre || "-"}</td>
+          <td>${item.apellido || "-"}</td>
           <td>${item.curso || "-"}</td>
           <td>${item.tipo || "-"}</td>
           <td>${item.descripcion || "-"}</td>
@@ -217,10 +337,30 @@
           <td>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</td>
         `;
         fila.style.animationDelay = `${delay}s`;
-        delay += 0.6;
         tablaBody.appendChild(fila);
+
+        // ================================
+        //        TARJETA EN MOBILE
+        // ================================
+        const card = document.createElement("div");
+        card.className = "mobile-card";
+        card.style.animationDelay = `${delay}s`;
+        card.innerHTML = `
+          <strong>Nombre:</strong> ${item.nombre || "-"}<br>
+          <strong>Apellido:</strong> ${item.apellido || "-"}<br>
+          <strong>Curso:</strong> ${item.curso || "-"}<br>
+          <strong>Tipo:</strong> ${item.tipo || "-"}<br>
+          <strong>Descripción:</strong> ${item.descripcion || "-"}<br>
+          <strong>Participantes:</strong> ${item.participantes || "-"}<br>
+          <small><em>${item.creado ? new Date(item.creado.seconds * 1000).toLocaleString() : "-"}</em></small>
+        `;
+        mobileList.appendChild(card);
+
+        // Aumenta el delay para que cada fila/tarjeta aparezca un poquito después
+        delay += 0.6;
       });
     }
   </script>
 </body>
 </html>
+
