@@ -6,6 +6,7 @@
   <title>ECO - Iniciar sesión</title>
   <link rel="stylesheet" href="style.css" />
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -88,7 +89,7 @@
 </head>
 
 <body class="pagina-login">
-  <!-- Botón de inicio y correcion volver segun origen -->
+  <!-- Botón de inicio y corrección volver según origen -->
   <div class="home-btn" onclick="volverSegunOrigen()">
     <img src="home-icon.png" alt="Inicio" style="width:28px; height:28px; opacity:0.8;">
   </div>
@@ -114,92 +115,108 @@
 
   <script src="firebase.js"></script>
   <script>
+    // Mostrar alerta personalizada
     function showAlert(message, title = "Aviso") {
       document.getElementById("alertTitle").textContent = title;
       document.getElementById("alertMessage").textContent = message;
       document.getElementById("customAlert").style.display = "flex";
     }
 
+    // Cerrar alerta
     function closeAlert() {
       document.getElementById("customAlert").style.display = "none";
     }
 
+    // Si ya está logueado, mandar directo al menú
     window.addEventListener("load", () => {
       if (localStorage.getItem("ecoUserLogged") === "true") {
         window.location.href = "menu.html";
       }
     });
 
+    // Manejo de inicio de sesión
     document.getElementById("loginBtn").addEventListener("click", async () => {
-      const email = document.getElementById("loginEmail").value.trim();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
       const pass = document.getElementById("loginPass").value.trim();
       const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+      // Validación de email
       if (!emailRegex.test(email)) {
         showAlert("Por favor, ingresá un correo válido (ejemplo: usuario@gmail.com).");
         return;
       }
-      if (pass.length < 6) {
-        showAlert("La contraseña debe tener al menos 6 caracteres.");
+
+      // Verificar que la contraseña no esté vacía
+      if (!pass) {
+        showAlert("Por favor, ingresá tu contraseña.");
         return;
       }
 
-      try {
-        document.getElementById("loginBtn").innerText = "Verificando...";
+      const btn = document.getElementById("loginBtn");
+      btn.innerText = "Verificando...";
+      btn.disabled = true;
 
+      try {
         const snapshot = await firebase.firestore()
           .collection("usuarios")
           .where("email", "==", email)
           .get();
 
-        let usuarioValido = false;
+        // 👉 Si no existe ningún usuario con ese mail
+        if (snapshot.empty) {
+          showAlert("Correo o contraseña incorrectos.");
+          return;
+        }
+
+        let credencialesCorrectas = false;
 
         snapshot.forEach(doc => {
           const data = doc.data();
-          if (data.password === pass) {
-            usuarioValido = true;
+          const storedPass = (data.password ?? "").toString();
+          if (storedPass === pass) {
+            credencialesCorrectas = true;
           }
         });
 
-        if (usuarioValido) {
-          localStorage.setItem("usuarioEmail", email);
-          localStorage.setItem("ecoUserLogged", "true");
-          localStorage.setItem("ecoAnonimo", "false");
-
-          showAlert("Inicio de sesión exitoso ✅", "¡Listo!");
-          setTimeout(() => {
-            window.location.href = "menu.html";
-          }, 1500);
-        } else {
+        if (!credencialesCorrectas) {
+          // 👉 Existe el mail pero la contraseña no coincide
           showAlert("Correo o contraseña incorrectos.");
+          return;
         }
 
-        document.getElementById("loginBtn").innerText = "Ingresar";
+        // ✅ Si llega acá, credenciales correctas
+        localStorage.setItem("usuarioEmail", email);
+        localStorage.setItem("ecoUserLogged", "true");
+        localStorage.setItem("ecoAnonimo", "false");
+
+        // No mostramos alerta de error ni de éxito, vamos directo al menú
+        window.location.href = "menu.html";
+
       } catch (error) {
         console.error(error);
         showAlert("Error al conectar con la base de datos.");
-        document.getElementById("loginBtn").innerText = "Ingresar";
+      } finally {
+        btn.innerText = "Ingresar";
+        btn.disabled = false;
       }
     });
   </script>
+
   <script>
-         /* =============================
-          Correcion si estoy en menu, cambia la direccion del boton home segun origen
+    /* =============================
+       Corrección: cambiar la dirección del botón home según origen
+       Si viene de ?from=menu -> vuelve al menú
+       Si no, va al index
     ============================== */
-  function volverSegunOrigen() {
-    const params = new URLSearchParams(window.location.search);
-    const from = params.get("from");
-    if (from === "menu") {
-      window.location.href = "menu.html";
-    } else {
-      window.location.href = "index.html";
+    function volverSegunOrigen() {
+      const params = new URLSearchParams(window.location.search);
+      const from = params.get("from");
+      if (from === "menu") {
+        window.location.href = "menu.html";
+      } else {
+        window.location.href = "index.html";
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
-
-
-
-
-
